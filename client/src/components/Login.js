@@ -1,16 +1,47 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { ReactComponent as GoogleIcon } from  '../assets/images/google-icon.svg';
 import TextField from '@material-ui/core/TextField';
 
+import { AuthenticationContext } from './AuthenticationContext';
+
 function Login({ accountCreated }) {
+  const {
+    createUserWithEmail,
+    signInWithEmail,
+    signInWithGoogle,
+  } = useContext(AuthenticationContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const history = useHistory();
+
+  const userLogin = () => {
+    signInWithEmail(email, password)
+      .then(() => history.push('/'))
+      .catch(error => console.log(error));
+  }
+
+  const userSignup = () => {
+    createUserWithEmail(email, password)
+      .then(() => history.push('/'))
+      .catch(error => console.log(error));
+  }
+
+  const googleLogin = () => {
+    signInWithGoogle()
+      .then(() => history.push('/'))
+      .catch(error => console.log(error));
+  }
+
   const submitForm = event => {
     event.preventDefault();
+
+    if (accountCreated) userLogin();
+    else userSignup()
   }
 
   return (
@@ -33,7 +64,9 @@ function Login({ accountCreated }) {
         />
         <button type="submit">{accountCreated ? 'Sign In' : 'Create an Account'}</button>
       </StyledForm>
-      <GoogleButton>
+      <GoogleButton
+        onClick={googleLogin}
+      >
         <StyledGoogleIcon />
         Continue with Google
       </GoogleButton>
