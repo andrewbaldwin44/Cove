@@ -6,8 +6,8 @@ function Header() {
   return (
     <Wrapper>
       <NavLinks>
-        <Link>Sign Up</Link>
-        <Link>Log In</Link>
+        <Link to='/users/sign_up'>Sign Up</Link>
+        <Link to='/users/log_in'>Log In</Link>
       </NavLinks>
     </Wrapper>
   )
