@@ -2,7 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   :root {
-
+    --main-black: #444146;
+    --navbar-height: 80px;
   }
 
   *,
@@ -43,6 +44,8 @@ const GlobalStyles = createGlobalStyle`
 
   body {
   	line-height: 1;
+    width: 100vw;
+    height: 100vh;
   }
 
   blockquote, q {
@@ -69,7 +72,7 @@ const GlobalStyles = createGlobalStyle`
     background-color: transparent;
     cursor: pointer;
   }
-  
+
   a {
     text-decoration: none;
     font-weight: inherit;
