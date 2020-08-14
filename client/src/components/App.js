@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import styled from 'styled-components';
 
 import GlobalStyles from "./GlobalStyles";
 
@@ -12,16 +13,22 @@ function App() {
     <Router>
       <GlobalStyles />
       <Header />
-      <Switch>
-        <Route exact path='/'>
-          <Homepage />
-        </Route>
-        <Route path='/'>
+      <Main>
+        <Switch>
+          <Route exact path='/'>
+            <Homepage />
+          </Route>
+          <Route path='/'>
             <FourOhFour />
-        </Route>
-      </Switch>
+          </Route>
+        </Switch>
+      </Main>
     </Router>
   )
 }
+
+const Main = styled.main`
+  margin: 20px;
+`;
 
 export default App;
