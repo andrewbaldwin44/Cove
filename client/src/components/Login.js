@@ -32,6 +32,9 @@ function Login({ accountCreated }) {
       case 'auth/wrong-password':
         newErrorMessage = 'Password is incorrect';
         break;
+      case 'auth/email-already-in-use':
+        newErrorMessage = 'Email in use';
+        break;
       case 'auth/cancelled-popup-request':
       case 'auth/popup-closed-by-user':
         return;
