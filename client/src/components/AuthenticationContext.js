@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
@@ -33,20 +33,28 @@ function signInWithGoogle() {
 }
 
 const AuthenticationProvider = ({ children, signOut, user }) => {
-  const [appUser, setAppUser] = useState({});
+  const [userData, setUserData] = useState(null);
   const [idToken, setIdToken] = useState(null);
   const [message, setMessage] = useState('');
 
   const handleSignOut = () => {
     signOut();
-    setAppUser({});
+    setUserData(null);
   }
+
+  useEffect(() => {
+    if (user) {
+      const { email } = user;
+
+      setUserData({ email });
+    }
+  }, [user]);
 
   const retrieveClientID = () => {
     if (firebase.auth().currentUser) {
       firebase.auth().currentUser.getIdToken(true)
         .then(idToken => setIdToken(idToken))
-        .catch(error => console.log('unauthorized'));
+        .catch(error => setIdToken('unauthorized'));
     }
     else {
       setIdToken('unauthorized');
@@ -60,7 +68,7 @@ const AuthenticationProvider = ({ children, signOut, user }) => {
   return (
     <AuthenticationContext.Provider
       value={{
-        appUser,
+        userData,
         createUserWithEmail,
         signInWithEmail,
         signInWithGoogle,
