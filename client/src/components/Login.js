@@ -7,6 +7,9 @@ import TextField from '@material-ui/core/TextField';
 
 import { AuthenticationContext } from './AuthenticationContext';
 
+import { PASSWORD_REQUIREMENTS } from '../constants';
+const { minimumPasswordRequirements, minimumPasswordLength } = PASSWORD_REQUIREMENTS;
+
 function Login({ accountCreated }) {
   const {
     createUserWithEmail,
@@ -16,25 +19,58 @@ function Login({ accountCreated }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const history = useHistory();
 
-  const userLogin = () => {
-    signInWithEmail(email, password)
-      .then(() => history.push('/'))
-      .catch(error => console.log(error));
+  const createUserErrorMessage = (code) => {
+    let newErrorMessage = '';
+    switch (code) {
+      case 'auth/user-not-found':
+        newErrorMessage = 'Email is invalid';
+        break;
+      case 'auth/wrong-password':
+        newErrorMessage = 'Password is incorrect';
+        break;
+      case 'auth/cancelled-popup-request':
+      case 'auth/popup-closed-by-user':
+        return;
+      default:
+        newErrorMessage = 'Email or Password is invalid';
+        break;
+    }
+
+    setErrorMessage(newErrorMessage);
   }
 
+  const redirectHome = () => history.push('/');
+  const sendErrorCode = ({ code }) => createUserErrorMessage(code);
+  const isStrongPassword = () => minimumPasswordRequirements.test(password);
+
   const userSignup = () => {
-    createUserWithEmail(email, password)
-      .then(() => history.push('/'))
-      .catch(error => console.log(error));
+    if (isStrongPassword(password)) {
+      createUserWithEmail(email, password)
+        .then(redirectHome)
+        .catch(sendErrorCode);
+    }
+    else if (password.length < minimumPasswordLength) {
+      setErrorMessage('Password is too short (minimum 8 characters)');
+    }
+    else {
+      setErrorMessage('Password should contain at least one upper case character, number or symbol');
+    }
+  }
+
+  const userLogin = () => {
+    signInWithEmail(email, password)
+      .then(redirectHome)
+      .catch(sendErrorCode);
   }
 
   const googleLogin = () => {
     signInWithGoogle()
-      .then(() => history.push('/'))
-      .catch(error => console.log(error));
+      .then(redirectHome)
+      .catch(sendErrorCode);
   }
 
   const submitForm = event => {
@@ -63,7 +99,11 @@ function Login({ accountCreated }) {
           required
         />
         <button type="submit">{accountCreated ? 'Sign In' : 'Create an Account'}</button>
+        <ErrorMessage errorMessage={errorMessage}>
+          <span>{errorMessage}</span>
+        </ErrorMessage>
       </StyledForm>
+
       <GoogleButton
         onClick={googleLogin}
       >
@@ -148,6 +188,17 @@ const StyledLink = styled(Link)`
   color: #0366d6;
   text-decoration: underline;
   padding-left: 10px;
+`;
+
+const ErrorMessage = styled.div`
+  display: ${({ errorMessage }) => errorMessage === '' ? 'none' : 'flex'};
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  background-color: #FFE3E3;
+  color: #f13240;
+  padding: 20px 10px;
 `;
 
 export default Login;
