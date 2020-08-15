@@ -5,3 +5,12 @@ export const PASSWORD_REQUIREMENTS = {
   minimumPasswordRequirements,
   minimumPasswordLength: 8,
 }
+
+export const AUTHENTICATION_ERROR_MESSAGES = {
+  invalidEmail: 'Email is invalid',
+  wrongPassword: 'Password is incorrect',
+  emailInUse: 'Email in use',
+  passwordTooShort: 'Password is too short (minimum 8 characters)',
+  missingPasswordRequirements: 'Password should contain at least one upper case character, number or symbol',
+  defaultMessage: 'Email or Password is invalid',
+}

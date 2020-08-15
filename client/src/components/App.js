@@ -8,7 +8,7 @@ import GlobalStyles from "./GlobalStyles";
 
 import Homepage from './Homepage';
 import Header from './Header';
-import Login from './Login';
+import Login from './Login/index';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';

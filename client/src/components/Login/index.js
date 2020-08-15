@@ -1,20 +1,28 @@
 import React, { useState, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { ReactComponent as GoogleIcon } from  '../assets/images/google-icon.svg';
 import TextField from '@material-ui/core/TextField';
 
-import { AuthenticationContext } from './AuthenticationContext';
+import Footer from './Footer';
 
-import { PASSWORD_REQUIREMENTS } from '../constants';
+import { AuthenticationContext } from '../AuthenticationContext';
+
+import { PASSWORD_REQUIREMENTS, AUTHENTICATION_ERROR_MESSAGES } from '../../constants';
 const { minimumPasswordRequirements, minimumPasswordLength } = PASSWORD_REQUIREMENTS;
+const {
+  invalidEmail,
+  wrongPassword,
+  emailInUse,
+  passwordTooShort,
+  missingPasswordRequirements,
+  defaultMessage,
+} = AUTHENTICATION_ERROR_MESSAGES;
 
 function Login({ accountCreated }) {
   const {
     createUserWithEmail,
     signInWithEmail,
-    signInWithGoogle,
   } = useContext(AuthenticationContext);
 
   const [email, setEmail] = useState('');
@@ -27,19 +35,19 @@ function Login({ accountCreated }) {
     let newErrorMessage = '';
     switch (code) {
       case 'auth/user-not-found':
-        newErrorMessage = 'Email is invalid';
+        newErrorMessage = invalidEmail;
         break;
       case 'auth/wrong-password':
-        newErrorMessage = 'Password is incorrect';
+        newErrorMessage = wrongPassword;
         break;
       case 'auth/email-already-in-use':
-        newErrorMessage = 'Email in use';
+        newErrorMessage = emailInUse;
         break;
       case 'auth/cancelled-popup-request':
       case 'auth/popup-closed-by-user':
         return;
       default:
-        newErrorMessage = 'Email or Password is invalid';
+        newErrorMessage = defaultMessage;
         break;
     }
 
@@ -57,21 +65,15 @@ function Login({ accountCreated }) {
         .catch(sendErrorCode);
     }
     else if (password.length < minimumPasswordLength) {
-      setErrorMessage('Password is too short (minimum 8 characters)');
+      setErrorMessage(passwordTooShort);
     }
     else {
-      setErrorMessage('Password should contain at least one upper case character, number or symbol');
+      setErrorMessage(missingPasswordRequirements);
     }
   }
 
   const userLogin = () => {
     signInWithEmail(email, password)
-      .then(redirectHome)
-      .catch(sendErrorCode);
-  }
-
-  const googleLogin = () => {
-    signInWithGoogle()
       .then(redirectHome)
       .catch(sendErrorCode);
   }
@@ -106,27 +108,11 @@ function Login({ accountCreated }) {
           <span>{errorMessage}</span>
         </ErrorMessage>
       </StyledForm>
-
-      <Seperator><span>OR</span></Seperator>
-
-      <GoogleButton
-        onClick={googleLogin}
-      >
-        <StyledGoogleIcon />
-        Continue with Google
-      </GoogleButton>
-      {accountCreated ? (
-          <NavigateContainer>
-            <span>{'New here? '}</span>
-            <StyledLink to='/users/sign_up'>Create an Account</StyledLink>
-          </NavigateContainer>
-        ) : (
-          <NavigateContainer>
-            <span>Already Have an Account?</span>
-            <StyledLink to='/users/log_in'>Log In</StyledLink>
-          </NavigateContainer>
-        )
-      }
+      <Footer
+        accountCreated={accountCreated}
+        redirectHome={redirectHome}
+        sendErrorCode={sendErrorCode}
+      />
     </Wrapper>
   )
 }
@@ -170,70 +156,6 @@ const SubmitButton = styled.button`
   &:hover {
     border-color: var(--light-blue);
   }
-`;
-
-const Seperator = styled.p`
-  margin: 45px 0;
-  line-height: 0.5;
-  text-align: center;
-  color: var(--light-gray);
-
-  span {
-    display: inline-block;
-    position: relative;
-
-    &:before, :after {
-      content: "";
-      position: absolute;
-      border-bottom: 1px solid var(--light-gray);
-      width: calc(var(--authentication-form-width) / 2 - 30px);
-      top: 50%;
-    }
-
-    :before {
-      right: 100%;
-      margin-right: 15px;
-    }
-
-    :after {
-      left: 100%;
-      margin-left: 15px;
-    }
-  }
-`;
-
-const GoogleButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  border: 1px solid black;
-  border-radius: 6px;
-  padding: 0 70px;
-  margin-bottom: 35px;
-  height: 60px;
-  width: 100%;
-  font-family: 'Inter', sans-serif;
-`;
-
-const StyledGoogleIcon = styled(GoogleIcon)`
-  height: 38px;
-  width: 38px;
-`;
-
-const NavigateContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid black;
-  border-radius: 6px;
-  height: 65px;
-  width: 100%;
-`;
-
-const StyledLink = styled(Link)`
-  color: #0366d6;
-  text-decoration: underline;
-  padding-left: 10px;
 `;
 
 const ErrorMessage = styled.div`
