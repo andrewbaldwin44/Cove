@@ -7,7 +7,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import GlobalStyles from "./GlobalStyles";
 
 import Homepage from './Homepage';
-import Header from './Header';
+import Header from './Header/index';
 import Login from './Login/index';
 import FourOhFour from './FourOhFour';
 
