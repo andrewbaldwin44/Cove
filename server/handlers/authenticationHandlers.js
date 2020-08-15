@@ -2,6 +2,10 @@
 
 const admin = require('firebase-admin');
 
+const {
+  isReturningUser,
+} = require('../utils/authenticationUtils');
+
 require('dotenv').config({path: '../.env'});
 
 admin.initializeApp({
@@ -23,17 +27,30 @@ admin.initializeApp({
 const database = admin.database();
 
 async function createUser(req, res) {
-  const { email, displayName, photoURL, uid } = req.body;
+  const { email, displayName, photoURL, uid: userID } = req.body;
   const acceptedData = { email, displayName, photoURL };
 
-  await database.ref(`appUsers/${uid}`).set(acceptedData);
+  const givenName = displayName ? displayName : email;
 
-  res.status(201).json({
-    status: 201,
-    data: acceptedData,
-    message: `Welcome ${displayName ? displayName : email}!`,
-  });
-};
+  try {
+    let message = '';
+    if (await isReturningUser(userID, database)) {
+      message = `Welcome back ${givenName}!`;
+    }
+
+    else {
+      await database.ref(`appUsers/${userID}`).set(acceptedData);
+
+      message = `Welcome ${givenName}!`
+    }
+
+    res.status(201).json({ status: 201, userData: acceptedData, message: message });
+
+  }
+  catch (error) {
+    res.status(401).json({ status: 401, message: error });
+  }
+}
 
 module.exports = {
   createUser,
