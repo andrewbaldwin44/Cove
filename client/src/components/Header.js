@@ -10,8 +10,6 @@ function Header() {
     handleSignOut,
   } = useContext(AuthenticationContext);
 
-  console.log(userData);
-
   const history = useHistory();
 
   const signOutRedirect = () => {
@@ -28,7 +26,10 @@ function Header() {
             <Link to='/users/log_in'>Log In</Link>
           </>
         ) : (
-          <button type='button' onClick={signOutRedirect}>Sign Out</button>
+          <>
+            <button type='button' onClick={signOutRedirect}>Sign Out</button>
+            <ProfileImage src={userData.photoURL} alt='Profile Image' />
+          </>
         )}
       </NavLinks>
     </Wrapper>
@@ -54,6 +55,12 @@ const NavLinks = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 10%;
+`;
+
+const ProfileImage = styled.img`
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
 `;
 
 export default Header;

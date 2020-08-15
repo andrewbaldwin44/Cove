@@ -4,6 +4,8 @@ import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import DefaultProfile from '../assets/images/default-profile.png';
+
 export const AuthenticationContext = createContext(null);
 
 const firebaseConfig = {
@@ -44,9 +46,11 @@ const AuthenticationProvider = ({ children, signOut, user }) => {
 
   useEffect(() => {
     if (user) {
-      const { email } = user;
+      let { email, displayName, photoURL } = user;
 
-      setUserData({ email });
+      if (!photoURL) photoURL = DefaultProfile
+
+      setUserData({ email, displayName, photoURL });
     }
   }, [user]);
 
