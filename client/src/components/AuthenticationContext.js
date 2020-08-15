@@ -22,6 +22,16 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAppAuth = firebaseApp.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+function sendUserData(userData) {
+  return fetch('/users', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+}
+
 function createUserWithEmail(email, password) {
   return firebase.auth().createUserWithEmailAndPassword(email, password);
 }
@@ -34,9 +44,8 @@ function signInWithGoogle() {
   return firebase.auth().signInWithPopup(googleProvider);
 }
 
-const AuthenticationProvider = ({ children, signOut, user }) => {
+function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
-  const [idToken, setIdToken] = useState(null);
   const [message, setMessage] = useState('');
 
   const handleSignOut = () => {
@@ -46,28 +55,20 @@ const AuthenticationProvider = ({ children, signOut, user }) => {
 
   useEffect(() => {
     if (user) {
-      let { email, displayName, photoURL } = user;
+      let { email, displayName, photoURL, uid } = user;
 
-      if (!photoURL) photoURL = DefaultProfile
+      if (!photoURL) photoURL = DefaultProfile;
 
-      setUserData({ email, displayName, photoURL });
+      sendUserData({ email, displayName, photoURL, uid })
+        .then(response => response.json())
+        .then(({ message }) => {
+          console.log(message)
+          setUserData({ email, displayName, photoURL });
+          setMessage(message);
+        })
+        .catch(({ message }) => setMessage(message));
     }
   }, [user]);
-
-  const retrieveClientID = () => {
-    if (firebase.auth().currentUser) {
-      firebase.auth().currentUser.getIdToken(true)
-        .then(idToken => setIdToken(idToken))
-        .catch(error => setIdToken('unauthorized'));
-    }
-    else {
-      setIdToken('unauthorized');
-    }
-  }
-
-  firebase.auth().onAuthStateChanged(() => {
-    retrieveClientID();
-  });
 
   return (
     <AuthenticationContext.Provider
@@ -77,7 +78,6 @@ const AuthenticationProvider = ({ children, signOut, user }) => {
         signInWithEmail,
         signInWithGoogle,
         handleSignOut,
-        idToken,
         message,
       }}
     >

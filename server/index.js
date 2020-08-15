@@ -8,6 +8,10 @@ const PORT = 4000;
 
 const app = express();
 
+const {
+  createUser,
+} = require('./handlers/authenticationHandlers');
+
 app
 .use(function(req, res, next) {
   res.header(
@@ -25,5 +29,7 @@ app
 .use(bodyParser.json())
 .use(express.urlencoded({ extended: false }))
 .use('/', express.static(__dirname + '/'))
+
+.post('/users', createUser)
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));
