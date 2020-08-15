@@ -46,7 +46,7 @@ function signInWithGoogle() {
 
 function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(null);
 
   const handleSignOut = () => {
     signOut();
@@ -60,13 +60,8 @@ function AuthenticationProvider({ children, signOut, user }) {
       if (!photoURL) photoURL = DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, uid })
-        .then(response => response.json())
-        .then(({ message }) => {
-          console.log(message)
-          setUserData({ email, displayName, photoURL });
-          setMessage(message);
-        })
-        .catch(({ message }) => setMessage(message));
+        .then(() => setUserData({ email, displayName, photoURL }))
+        .catch(({ message }) => setMessage(`We're sorry! ${message}`));
     }
   }, [user]);
 
@@ -79,6 +74,7 @@ function AuthenticationProvider({ children, signOut, user }) {
         signInWithGoogle,
         handleSignOut,
         message,
+        setMessage,
       }}
     >
       {children}

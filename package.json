@@ -4,5 +4,9 @@
   "description": "",
   "private": "true",
   "author": "Andrew Baldwin",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "styled-components": "^5.1.1"
+  }
 }

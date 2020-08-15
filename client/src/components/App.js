@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext   } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import GlobalStyles from "./GlobalStyles";
 
@@ -9,7 +11,18 @@ import Header from './Header';
 import Login from './Login';
 import FourOhFour from './FourOhFour';
 
+import { AuthenticationContext } from './AuthenticationContext';
+
 function App() {
+  const {
+    message,
+    setMessage,
+  } = useContext(AuthenticationContext);
+
+  const handleMessageClose = () => {
+    setMessage(null);
+  }
+
   return (
     <Router>
       <GlobalStyles />
@@ -30,6 +43,21 @@ function App() {
           </Route>
         </Switch>
       </Main>
+      {message && (
+        <Snackbar
+          open={message}
+          autoHideDuration={2000}
+          onClose={handleMessageClose}
+        >
+          <MuiAlert
+            onClose={handleMessageClose}
+            severity='error'
+            variant='filled'
+          >
+            {message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Router>
   )
 }
