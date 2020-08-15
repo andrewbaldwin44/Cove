@@ -98,11 +98,13 @@ function Login({ accountCreated }) {
           variant="outlined"
           required
         />
-        <button type="submit">{accountCreated ? 'Sign In' : 'Create an Account'}</button>
+        <SubmitButton type="submit">{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
         <ErrorMessage errorMessage={errorMessage}>
           <span>{errorMessage}</span>
         </ErrorMessage>
       </StyledForm>
+
+      <Seperator><span>OR</span></Seperator>
 
       <GoogleButton
         onClick={googleLogin}
@@ -134,7 +136,7 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   height: 80vh;
-  width: 400px;
+  width: var(--authentication-form-width);
 `;
 
 const PageLabel = styled.h2`
@@ -151,9 +153,50 @@ const StyledForm = styled.form`
   border: 1px solid black;
   border-radius: 6px;
   padding: 0 16px;
-  margin-bottom: 50px;
   height: 40%;
   width: 100%;
+`;
+
+const SubmitButton = styled.button`
+  height: 50px;
+  width: 100%;
+  border: 2px solid white;
+  border-radius: 6px;
+  transition: all 0.4s ease-in;
+
+  &:hover {
+    border-color: var(--light-blue);
+  }
+`;
+
+const Seperator = styled.p`
+  margin: 45px 0;
+  line-height: 0.5;
+  text-align: center;
+  color: var(--light-gray);
+
+  span {
+    display: inline-block;
+    position: relative;
+
+    &:before, :after {
+      content: "";
+      position: absolute;
+      border-bottom: 1px solid var(--light-gray);
+      width: calc(var(--authentication-form-width) / 2 - 30px);
+      top: 50%;
+    }
+
+    :before {
+      right: 100%;
+      margin-right: 15px;
+    }
+
+    :after {
+      left: 100%;
+      margin-left: 15px;
+    }
+  }
 `;
 
 const GoogleButton = styled.button`

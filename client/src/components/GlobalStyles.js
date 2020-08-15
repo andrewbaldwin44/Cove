@@ -3,7 +3,11 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
   :root {
     --main-black: #444146;
+    --light-gray: #9e9e9e;
+    --light-blue: #40c4ff;
+
     --navbar-height: 80px;
+    --authentication-form-width: 400px;
   }
 
   *,
@@ -46,6 +50,7 @@ const GlobalStyles = createGlobalStyle`
   	line-height: 1;
     width: 100vw;
     height: 100vh;
+    color: var(--main-black);
   }
 
   blockquote, q {
