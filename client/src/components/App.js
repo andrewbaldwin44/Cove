@@ -9,6 +9,7 @@ import GlobalStyles from "./GlobalStyles";
 import Homepage from './Homepage';
 import Header from './Header/index';
 import Login from './Login/index';
+import Profile from './Profile';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route exact path='/users/sign_up'>
             <Login accountCreated={false} />
+          </Route>
+          <Route exact path='/users/profile'>
+            <Profile />
           </Route>
           <Route path='/'>
             <FourOhFour />
