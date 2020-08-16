@@ -15,6 +15,7 @@ function Header() {
 
   return (
     <Wrapper>
+      <Logo to='/'>Home</Logo>
       <NavLinks>
         {isContainingData(userData) && (
             <Dropdown />
@@ -33,11 +34,17 @@ function Header() {
 const Wrapper = styled.nav`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 100px;
   width: 100vw;
   height: var(--navbar-height);
   background-color: var(--main-black);
+`;
+
+const Logo = styled(Link)`
+  color: white;
+  font-weight; bold;
+  font-size: 2.8em;
 `;
 
 const NavLinks = styled.div`
