@@ -28,7 +28,7 @@ admin.initializeApp({
 const database = admin.database();
 
 async function createUser(req, res) {
-  const { email, displayName, photoURL, uid: userID } = req.body;
+  const { email, displayName, photoURL, userID } = req.body;
   const acceptedData = { email, displayName, photoURL };
 
   const givenName = displayName ? displayName : email;
@@ -54,7 +54,7 @@ async function createUser(req, res) {
 }
 
 async function createNewRoom(req, res)  {
-  const { roomName, uid: userID } = req.body;
+  const { roomName, userID } = req.body;
 
   try {
     const roomNumber = await getRoomNumber(database);

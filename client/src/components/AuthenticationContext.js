@@ -55,12 +55,12 @@ function AuthenticationProvider({ children, signOut, user }) {
 
   useEffect(() => {
     if (user) {
-      let { email, displayName, photoURL, uid } = user;
+      let { email, displayName, photoURL, uid: userID } = user;
 
       if (!photoURL) photoURL = DefaultProfile;
 
-      sendUserData({ email, displayName, photoURL, uid })
-        .then(() => setUserData({ email, displayName, photoURL, uid }))
+      sendUserData({ email, displayName, photoURL, userID })
+        .then(() => setUserData({ email, displayName, photoURL, userID }))
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
     }
     else if (user === null) {

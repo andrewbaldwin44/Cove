@@ -36,9 +36,9 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     event.preventDefault();
 
     const roomName = roomNameInput.current.value;
-    const { uid } = userData;
+    const { userID } = userData;
 
-    const roomData = { roomName, uid };
+    const roomData = { roomName, userID };
 
     fetch('/rooms/newroom', {
       method: 'POST',
