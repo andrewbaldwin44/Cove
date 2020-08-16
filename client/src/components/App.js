@@ -45,9 +45,8 @@ function App() {
       </Main>
       {message && (
         <Snackbar
-          open={message}
-          autoHideDuration={2000}
-          onClose={handleMessageClose}
+          open={Boolean(message)}
+          autoHideDuration={5000}
         >
           <MuiAlert
             onClose={handleMessageClose}

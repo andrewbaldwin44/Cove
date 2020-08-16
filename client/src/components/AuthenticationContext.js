@@ -63,6 +63,9 @@ function AuthenticationProvider({ children, signOut, user }) {
         .then(() => setUserData({ email, displayName, photoURL }))
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
     }
+    else if (user === null) {
+      setUserData({});
+    }
   }, [user]);
 
   return (

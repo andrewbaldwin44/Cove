@@ -6,6 +6,8 @@ import Dropdown from './Dropdown';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
+import { isContainingData, isEmptyData } from '../../utils/index';
+
 function Header() {
   const {
     userData,
@@ -14,13 +16,14 @@ function Header() {
   return (
     <Wrapper>
       <NavLinks>
-        {userData === null ? (
+        {isContainingData(userData) && (
+            <Dropdown />
+        )}
+        {isEmptyData(userData) && (
           <>
             <Link to='/users/sign_up'>Sign Up</Link>
             <Link to='/users/log_in'>Log In</Link>
           </>
-        ) : (
-          <Dropdown />
         )}
       </NavLinks>
     </Wrapper>
