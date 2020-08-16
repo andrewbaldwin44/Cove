@@ -48,7 +48,9 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
       body: JSON.stringify(roomData),
     })
     .then(response => response.json())
-    .then(({ roomNumber }) => {
+    .then(data => {
+      console.log(data);
+      const { roomNumber } = data;
       history.push(`rooms/room/${roomNumber}`);
     })
     .catch(error => console.log(error));

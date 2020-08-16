@@ -2,6 +2,9 @@ const {
   DATABASE_PATHS: {
     APP_USERS_PATH,
     ROOM_NUMBER_PATH,
+    OWNED_ROOMS_PATH,
+    ALL_ROOMS_MEMBERS_PATH,
+    ALL_ROOMS_INFORMATION_PATH,
   },
 } = require('../constants');
 const handleError = ({ message }) => {throw new Error(message)};
@@ -40,7 +43,23 @@ async function getRoomNumber(database) {
   return roomNumber;
 }
 
+async function createNewRoom(database, userID, roomNumber, roomName) {
+  const userOwnedRoomsPath = `${APP_USERS_PATH}/${userID}/${OWNED_ROOMS_PATH}`;
+
+  database.ref(userOwnedRoomsPath).update({ [roomNumber]: true });
+  database.ref(ALL_ROOMS_MEMBERS_PATH).update({ [roomNumber]: { [userID]: true } });
+  database.ref(ALL_ROOMS_INFORMATION_PATH).update({
+    [roomNumber]: {
+      name: roomName,
+      dateCreated: new Date(),
+    }
+  });
+
+  return newRoomData;
+}
+
 module.exports = {
   isReturningUser,
   getRoomNumber,
+  createNewRoom,
 }

@@ -10,7 +10,7 @@ const app = express();
 
 const {
   createUser,
-  createNewRoom,
+  handleNewRoom,
 } = require('./handlers/authenticationHandlers');
 
 app
@@ -32,6 +32,6 @@ app
 .use('/', express.static(__dirname + '/'))
 
 .post('/users', createUser)
-.post('/rooms/newroom', createNewRoom)
+.post('/rooms/newroom', handleNewRoom)
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));
