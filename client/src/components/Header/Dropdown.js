@@ -1,4 +1,4 @@
-import React, { useContext, createRef, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState, createRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,7 +15,7 @@ function Dropdown() {
   } = useContext(AuthenticationContext);
 
   const [dropdownState, setDropdownState] = useState(false);
-  const dropdownMenu = createRef();
+  const dropdownButton = createRef();
 
   const history = useHistory();
 
@@ -24,24 +24,21 @@ function Dropdown() {
     history.push('/');
   }
 
-  const toggleDropdown = () => {
-    if (dropdownMenu.current) {
-      dropdownMenu.current.style.display = dropdownState ? 'none' : 'flex';
-      setDropdownState(!dropdownState);
-    }
-  }
+  const toggleDropdown = () => setDropdownState(!dropdownState);
 
   useEffect(() => {
-    window.onclick = event => toggleDropdown();
+    window.onclick = event => {
+      if (dropdownButton.current) setDropdownState(false);
+    }
     // eslint-disable-next-line
-  }, [dropdownState]);
+  });
 
   return (
     <Wrapper>
       <button onClick={toggleDropdown}>
-        <ProfileImage src={photoURL} alt='Profile Image' />
+        <ProfileImage src={photoURL} alt='Profile Image' ref={dropdownButton} />
       </button>
-      <DropdownMenu ref={dropdownMenu}>
+      <DropdownMenu dropdownState={dropdownState}>
         <h4>{displayName ? displayName : email}</h4>
         <Seperator />
         <Link to='users/profile'>View Profile</Link>
@@ -61,7 +58,7 @@ const Wrapper = styled.div`
 `;
 
 const DropdownMenu = styled.div`
-  display: none;
+  display: ${({ dropdownState }) => dropdownState ? 'flex' : 'none'};
   flex-direction: column;
   position: absolute;
   right: 0;
