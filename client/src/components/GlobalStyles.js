@@ -8,6 +8,8 @@ const GlobalStyles = createGlobalStyle`
     --dark-shadow: rgba(0,0,0,0.2);
     --light-green: #00e676;
 
+    --main-width-padding: 100px;
+    --main-height-padding: 50px;
     --navbar-height: 80px;
     --authentication-form-width: 400px;
   }

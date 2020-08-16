@@ -66,7 +66,7 @@ function App() {
 }
 
 const Main = styled.main`
-  margin: 20px;
+  margin: var(--main-height-padding) var(--main-width-padding);
 `;
 
 export default App;

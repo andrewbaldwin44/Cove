@@ -35,7 +35,7 @@ const Wrapper = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 100px;
+  padding: 0 var(--main-width-padding);
   width: 100vw;
   height: var(--navbar-height);
   background-color: var(--main-black);
