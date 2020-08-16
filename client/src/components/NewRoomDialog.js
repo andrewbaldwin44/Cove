@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React, { createRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components';
 
@@ -12,6 +12,8 @@ import Draggable from 'react-draggable';
 
 import { ReactComponent as DoorIcon } from '../assets/images/door.svg';
 
+import { AuthenticationContext } from './AuthenticationContext';
+
 function DraggableDialog(props) {
   return (
     <Draggable>
@@ -21,6 +23,9 @@ function DraggableDialog(props) {
 }
 
 function NewRoomDialog({ openDialog, setOpenDialog }) {
+  const {
+    userData,
+  } = useContext(AuthenticationContext);
 
   const history = useHistory();
   const roomNameInput = createRef();
@@ -31,8 +36,22 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     event.preventDefault();
 
     const roomName = roomNameInput.current.value;
+    const { uid } = userData;
 
-    history.push(`rooms/room/${roomName}`);
+    const roomData = { roomName, uid };
+
+    fetch('/rooms/newroom', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(roomData),
+    })
+    .then(response => response.json())
+    .then(({ roomNumber }) => {
+      history.push(`rooms/room/${roomNumber}`);
+    })
+    .catch(error => console.log(error));
   }
 
   return (

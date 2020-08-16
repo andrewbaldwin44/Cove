@@ -60,7 +60,7 @@ function AuthenticationProvider({ children, signOut, user }) {
       if (!photoURL) photoURL = DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, uid })
-        .then(() => setUserData({ email, displayName, photoURL }))
+        .then(() => setUserData({ email, displayName, photoURL, uid }))
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
     }
     else if (user === null) {
