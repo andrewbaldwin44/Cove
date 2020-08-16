@@ -6,6 +6,7 @@ const GlobalStyles = createGlobalStyle`
     --light-gray: #9e9e9e;
     --light-blue: #40c4ff;
     --dark-shadow: rgba(0,0,0,0.2);
+    --light-green: #00e676;
 
     --navbar-height: 80px;
     --authentication-form-width: 400px;
