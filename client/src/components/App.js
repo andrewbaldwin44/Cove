@@ -10,6 +10,7 @@ import Homepage from './Homepage';
 import Header from './Header/index';
 import Login from './Login/index';
 import Profile from './Profile';
+import Room from './Room';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route exact path='/users/profile'>
             <Profile />
+          </Route>
+          <Route exact path='/rooms/room/:roomID'>
+            <Room />
           </Route>
           <Route path='/'>
             <FourOhFour />
