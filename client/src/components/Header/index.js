@@ -38,10 +38,6 @@ const Wrapper = styled.nav`
   width: 100vw;
   height: var(--navbar-height);
   background-color: var(--main-black);
-
-  a {
-    color: white;
-  }
 `;
 
 const NavLinks = styled.div`
@@ -49,6 +45,10 @@ const NavLinks = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 10%;
+
+  > a {
+    color: white;
+  }
 `;
 
 export default Header;
