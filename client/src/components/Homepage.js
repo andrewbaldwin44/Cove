@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styled from "styled-components";
+import React, { useState, createRef } from 'react';
+import { useHistory } from 'react-router-dom'
+import styled from 'styled-components';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,9 +22,17 @@ function DraggableDialog(props) {
 
 function Homepage() {
   const [open, setOpen] = useState(false);
+  const history = useHistory();
+  const roomNameInput = createRef();
 
   const configureNewRoom = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const createNewRoom = () => {
+    const roomName = roomNameInput.current.value;
+    
+    history.push(`rooms/room/${roomName}`);
+  }
 
   return (
     <>
@@ -47,9 +56,12 @@ function Homepage() {
           </DialogContentText>
           <StyledInput
             type='text'
+            ref={roomNameInput}
           />
         <DialogActions>
-          <SubmitButton>
+          <SubmitButton
+            onClick={createNewRoom}
+          >
             <StyledDoorIcon />
             Open
           </SubmitButton>
