@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 
 const {
   isReturningUser,
+  getRoomNumber,
 } = require('../utils/authenticationUtils');
 
 require('dotenv').config({path: '../.env'});
@@ -52,6 +53,20 @@ async function createUser(req, res) {
   }
 }
 
+async function createNewRoom(req, res)  {
+  const { roomName, uid: userID } = req.body;
+
+  try {
+    const roomNumber = await getRoomNumber(database);
+
+    res.status(201).json({ status: 201, roomNumber });
+  }
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
+  }
+}
+
 module.exports = {
   createUser,
+  createNewRoom,
 };
