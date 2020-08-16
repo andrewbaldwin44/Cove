@@ -80,6 +80,8 @@ const GlobalStyles = createGlobalStyle`
     border: none;
     background-color: transparent;
     cursor: pointer;
+    margin: 0;
+    padding: 0;
   }
 
   a {
