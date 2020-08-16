@@ -1,7 +1,7 @@
 const {
   DATABASE_PATHS: {
-    appUsers,
-    roomNumber,
+    APP_USERS_PATH,
+    ROOM_NUMBER_PATH,
   },
 } = require('../constants');
 const handleError = ({ message }) => {throw new Error(message)};
@@ -17,7 +17,7 @@ function queryDatabase(path, database, successCallback, failureCallback = handle
 
 async function isReturningUser(userID, database) {
   let userExists;
-  const userDataPath = `appUsers/${userID}`;
+  const userDataPath = `${APP_USERS_PATH}/${userID}`;
 
   const verifyDataExistence = snapshot => {userExists = snapshot.exists()};
 
@@ -26,19 +26,18 @@ async function isReturningUser(userID, database) {
   return userExists;
 }
 
-async function updateRoomNumber(database, newRoomNumber) {
-  return database.ref().update({ [roomNumber]: newRoomNumber + 1 });
+async function updateRoomNumber(database, roomNumber) {
+  return database.ref().update({ [ROOM_NUMBER_PATH]: roomNumber + 1 });
 }
 
 async function getRoomNumber(database) {
-  let newRoomNumber;
-  const fetchedRoomNumber = snapshot => {newRoomNumber = snapshot.val()};
-  console.log(roomNumber)
+  let roomNumber;
+  const fetchedRoomNumber = snapshot => {roomNumber = snapshot.val()};
 
-  await queryDatabase(roomNumber, database, fetchedRoomNumber);
-  await updateRoomNumber(database, newRoomNumber);
+  await queryDatabase(ROOM_NUMBER_PATH, database, fetchedRoomNumber);
+  await updateRoomNumber(database, roomNumber);
 
-  return newRoomNumber;
+  return roomNumber;
 }
 
 module.exports = {
