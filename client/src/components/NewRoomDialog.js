@@ -50,8 +50,8 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      const { roomNumber } = data;
-      history.push(`rooms/room/${roomNumber}`);
+      const { roomID } = data;
+      history.push(`rooms/room/${roomID}`);
     })
     .catch(error => console.log(error));
   }
