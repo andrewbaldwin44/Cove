@@ -3,10 +3,16 @@
 const admin = require('firebase-admin');
 
 const {
+  writeDatabase,
   isReturningUser,
-  getRoomNumber,
   createNewRoom,
 } = require('../utils/authenticationUtils');
+
+const {
+  DATABASE_PATHS: {
+    USERS_PATH,
+  },
+} = require('../constants');
 
 require('dotenv').config({path: '../.env'});
 
@@ -26,31 +32,32 @@ admin.initializeApp({
   databaseURL: process.env.FB_DATABASE_URL,
 });
 
-const database = admin.database();
+const database = admin.firestore();
+const FieldValue = admin.firestore.FieldValue;
 
 async function createUser(req, res) {
-  const { email, displayName, photoURL, userID } = req.body;
-  const acceptedData = { email, displayName, photoURL };
+  let { email, displayName, photoURL, userID } = req.body;
 
-  const givenName = displayName ? displayName : email;
+  displayName = displayName ? displayName : email;
+
+  const acceptedData = { email, displayName, photoURL };
 
   try {
     let message = '';
     if (await isReturningUser(userID, database)) {
-      message = `Welcome back ${givenName}!`;
+      message = `Welcome back ${displayName}!`;
     }
 
     else {
-      await database.ref(`appUsers/${userID}`).set(acceptedData);
+      await writeDatabase(USERS_PATH, userID, acceptedData, database);
 
-      message = `Welcome ${givenName}!`
+      message = `Welcome ${displayName}!`
     }
 
-    res.status(201).json({ status: 201, userData: acceptedData, message: message });
-
+    res.status(201).json({ status: 201, userData: acceptedData, message });
   }
-  catch (error) {
-    res.status(401).json({ status: 401, message: error });
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
   }
 }
 
@@ -58,10 +65,10 @@ async function handleNewRoom(req, res)  {
   const { roomName, userID } = req.body;
 
   try {
-    const roomNumber = await getRoomNumber(database);
-    const roomData = await createNewRoom(database, userID, roomNumber, roomName);
+    const roomData = await createNewRoom(roomName, userID, database, FieldValue);
+    console.log(roomData)
 
-    res.status(201).json({ status: 201, roomNumber, roomData });
+    res.status(201).json({ status: 201, ...roomData });
   }
   catch ({ message }) {
     res.status(401).json({ status: 401, message });

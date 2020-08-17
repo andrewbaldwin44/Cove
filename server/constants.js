@@ -1,9 +1,8 @@
 const DATABASE_PATHS = {
-  APP_USERS_PATH: 'appUsers',
-  ROOM_NUMBER_PATH: 'roomNumber',
-  OWNED_ROOMS_PATH: 'ownedRooms',
-  ALL_ROOMS_MEMBERS_PATH: 'roomsMembers',
-  ALL_ROOMS_INFORMATION_PATH: 'roomsInformation',
+  USERS_PATH: 'users',
+  ROOMS_PATH: 'rooms',
+  ROOMS_MEMBERS_PATH: 'members',
+  ROOMS_DETAILS_PATH: 'details',
 }
 
 module.exports = { DATABASE_PATHS };
