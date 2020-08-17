@@ -29,25 +29,36 @@ async function isReturningUser(userID, database) {
   return userReference.exists;
 }
 
-async function createNewRoom(roomName, userID, database, FieldValue) {
-  const roomMembersReference = database.collection(ROOMS_PATH).doc(ROOMS_MEMBERS_PATH)
-                                       .collection(ROOMS_MEMBERS_PATH);
+function addRoomMembersData(data, database) {
+  const reference = database.collection(ROOMS_PATH).doc(ROOMS_MEMBERS_PATH)
+                            .collection(ROOMS_MEMBERS_PATH);
 
-  const roomMembersData = await roomMembersReference.add({ [userID]: true });
+  return reference.add(data);
+}
+
+function addRoomDetailsData(data, id, database) {
+  const reference = database.collection(ROOMS_PATH).doc(ROOMS_DETAILS_PATH)
+                            .collection(ROOMS_DETAILS_PATH).doc(id);
+
+  return reference.set(data);
+}
+
+async function createNewRoom(roomName, userID, database, FieldValue) {
+  const newRoomMembers = { [userID]: true };
+  const roomMembersData = await addRoomMembersData(newRoomMembers, database);
 
   const roomID = roomMembersData.id;
 
-  const roomDetailsReference = database.collection(ROOMS_PATH).doc(ROOMS_DETAILS_PATH)
-                                       .collection(ROOMS_DETAILS_PATH).doc(roomID);
-
-  const roomDetailsData = await roomDetailsReference.set({
+  const newRoomDetails = {
     name: roomName,
     dateCreated: FieldValue.serverTimestamp(),
-  });
+  };
+  const roomDetailsData = await addRoomDetailsData(newRoomDetails, roomID, database);
 
   return {
     name: roomName,
     owner: userID,
+    roomID,
   };
 }
 
