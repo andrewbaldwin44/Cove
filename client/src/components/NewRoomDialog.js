@@ -77,6 +77,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
             type='text'
             ref={roomNameInput}
             required
+            autoFocus
           />
           <DialogActions>
             <SubmitButton
