@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import NewRoomDialog from './NewRoomDialog';
 
+import { AuthenticationContext } from './AuthenticationContext';
+
+import { isContainingData } from '../utils/index';
+
 function Homepage() {
+  const {
+    userData,
+  } = useContext(AuthenticationContext);
+
   const [openDialog, setOpenDialog] = useState(false);
 
   const configureNewRoom = () => setOpenDialog(true);
 
   return (
     <>
-      <Add
-        onClick={configureNewRoom}
-      >
-        Add +
-      </Add>
-      <NewRoomDialog
-        openDialog={openDialog}
-        setOpenDialog={setOpenDialog}
-      />
+      {isContainingData(userData) && (
+        <>
+          <Add
+            onClick={configureNewRoom}
+          >
+            Add +
+          </Add>
+          <NewRoomDialog
+            openDialog={openDialog}
+            setOpenDialog={setOpenDialog}
+          />
+        </>
+    )}
     </>
   )
 }
