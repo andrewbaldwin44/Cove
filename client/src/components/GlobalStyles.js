@@ -13,6 +13,11 @@ const GlobalStyles = createGlobalStyle`
     --main-height-padding: 50px;
     --navbar-height: 80px;
     --authentication-form-width: 400px;
+
+    --portal-height: 150px;
+    --portal-width: 200px;
+    --portal-gap: 30px;
+    --portal-border-radius: 10px;
   }
 
   *,

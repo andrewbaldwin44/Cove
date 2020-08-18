@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import Header from './Header/index';
+import RoomPortal from './RoomPortal';
 import NewRoomDialog from './NewRoomDialog';
 
 import { AuthenticationContext } from './AuthenticationContext';
@@ -27,6 +28,14 @@ function Homepage() {
           >
             Add +
           </Add>
+          {userData.ownedRooms.map(roomID => {
+            return (
+              <RoomPortal
+                key={roomID}
+                roomID={roomID}
+              />
+            )
+          })}
           <NewRoomDialog
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
@@ -38,6 +47,9 @@ function Homepage() {
 }
 
 const Wrapper = styled.main`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   margin: var(--main-height-padding) var(--main-width-padding);
 `;
 
@@ -45,13 +57,15 @@ const Add = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: var(--portal-height);
+  width: var(--portal-width);
+  margin-bottom: var(--portal-gap);
+  margin-right: var(--portal-gap);
+  border-radius: var(--portal-border-radius);
   color: var(--light-green);
   font-size: 28px;
   font-weight: bold;
-  height: 150px;
-  width: 200px;
   border: 5px dashed var(--light-green);
-  border-radius: 10px;
   cursor: pointer;
 `;
 
