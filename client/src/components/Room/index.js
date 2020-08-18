@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import styled from 'styled-components';
 
 import Main from './Main';
 
@@ -8,7 +7,6 @@ import { AuthenticationContext } from '../AuthenticationContext';
 
 function Room() {
   const {
-    userData,
     retrieveClientID,
     validateRoomMember,
   } = useContext(AuthenticationContext);
@@ -25,7 +23,7 @@ function Room() {
         .then(data => setMemberData(data))
         .catch(({ message }) => console.log(message));
     }
-  }, [userData]);
+  }, [retrieveClientID, roomID, validateRoomMember]);
 
   if (!memberData) {
     return (
