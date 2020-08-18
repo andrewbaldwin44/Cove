@@ -66,7 +66,6 @@ async function handleNewRoom(req, res)  {
 
   try {
     const roomData = await createNewRoom(roomName, userID, database, FieldValue);
-    console.log(roomData)
 
     res.status(201).json({ status: 201, ...roomData });
   }

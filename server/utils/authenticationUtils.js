@@ -1,6 +1,7 @@
 const {
   DATABASE_PATHS: {
     USERS_PATH,
+    OWNED_ROOMS_PATH,
     ROOMS_PATH,
     ROOM_NUMBER_PATH,
     ROOMS_MEMBERS_PATH,
@@ -54,6 +55,11 @@ async function createNewRoom(roomName, userID, database, FieldValue) {
     dateCreated: FieldValue.serverTimestamp(),
   };
   const roomDetailsData = await addRoomDetailsData(newRoomDetails, roomID, database);
+
+  const newOwnedRoomsPath = `${OWNED_ROOMS_PATH}.${roomID}`;
+  const newOwnedRooms = { [newOwnedRoomsPath]: true };
+
+  await updateDatabase(USERS_PATH, userID, newOwnedRooms, database);
 
   return {
     name: roomName,
