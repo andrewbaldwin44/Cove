@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 
-import { AuthenticationContext } from './AuthenticationContext';
+import { AuthenticationContext } from '../AuthenticationContext';
 
 function Room() {
   const {

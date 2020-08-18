@@ -9,7 +9,7 @@ import GlobalStyles from "./GlobalStyles";
 import Homepage from './Homepage';
 import Login from './Login/index';
 import Profile from './Profile';
-import Room from './Room';
+import Room from './Room/index';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';
