@@ -3,6 +3,7 @@
 const admin = require('firebase-admin');
 
 const {
+  queryDatabase,
   writeDatabase,
   isReturningUser,
   createNewRoom,
@@ -11,6 +12,8 @@ const {
 const {
   DATABASE_PATHS: {
     USERS_PATH,
+    ROOMS_PATH,
+    ROOMS_MEMBERS_PATH,
   },
 } = require('../constants');
 
@@ -74,7 +77,41 @@ async function handleNewRoom(req, res)  {
   }
 }
 
+async function validateRoomMember(req, res) {
+  const { idToken, roomID } = req.body;
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const { user_id } = decodedToken;
+
+    const userResponse = await queryDatabase(USERS_PATH, user_id, database);
+    const userData = userResponse.data();
+
+    const { ownedRooms } = userData;
+
+    const roomResponse = await queryDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, database);
+    const roomData = roomResponse.data();
+
+    const roomMembers = roomData[roomID];
+
+    if (ownedRooms && ownedRooms[roomID]) {
+      res.status(201).json({ status: 201, isOwner: true, isMember: true });
+    }
+    else if (roomMembers && roomMembers[user_id]) {
+      res.status(201).json({ status: 201, isOwner: false, isMember: true });
+    }
+    else {
+      res.status(401).json({ status: 401, message: 'You do not have access to this room' });
+    }
+  }
+  catch (error) {
+    console.log(error);
+    res.status(401).json({ status: 401, ...error });
+  }
+}
+
 module.exports = {
   createUser,
   handleNewRoom,
+  validateRoomMember,
 };

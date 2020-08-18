@@ -74,6 +74,7 @@ async function createNewRoom(roomName, userID, database, FieldValue) {
 }
 
 module.exports = {
+  queryDatabase,
   writeDatabase,
   isReturningUser,
   createNewRoom,
