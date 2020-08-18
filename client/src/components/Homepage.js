@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
+import Header from './Header/index';
 import NewRoomDialog from './NewRoomDialog';
 
 import { AuthenticationContext } from './AuthenticationContext';
@@ -18,8 +19,9 @@ function Homepage() {
 
   return (
     <>
+      <Header />
       {isContainingData(userData) && (
-        <>
+        <Wrapper>
           <Add
             onClick={configureNewRoom}
           >
@@ -29,11 +31,15 @@ function Homepage() {
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
           />
-        </>
+        </Wrapper>
     )}
     </>
   )
 }
+
+const Wrapper = styled.main`
+  margin: var(--main-height-padding) var(--main-width-padding);
+`;
 
 const Add = styled.button`
   display: flex;

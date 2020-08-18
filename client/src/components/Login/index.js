@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import TextField from '@material-ui/core/TextField';
 
+import Header from '../Header/index';
 import Footer from './Footer';
 
 import { AuthenticationContext } from '../AuthenticationContext';
@@ -86,34 +87,37 @@ function Login({ accountCreated }) {
   }
 
   return (
-    <Wrapper>
-      <PageLabel>{accountCreated ? 'Log In' : 'Sign Up'}</PageLabel>
-      <StyledForm onSubmit={submitForm}>
-        <TextField
-          type="email"
-          label="Email"
-          onChange={event => setEmail(event.target.value)}
-          variant="outlined"
-          required
+    <>
+      <Header />
+      <Wrapper>
+        <PageLabel>{accountCreated ? 'Log In' : 'Sign Up'}</PageLabel>
+        <StyledForm onSubmit={submitForm}>
+          <TextField
+            type="email"
+            label="Email"
+            onChange={event => setEmail(event.target.value)}
+            variant="outlined"
+            required
+          />
+          <TextField
+            type="password"
+            label="Password"
+            onChange={event => setPassword(event.target.value)}
+            variant="outlined"
+            required
+          />
+          <SubmitButton type="submit">{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
+          <ErrorMessage errorMessage={errorMessage}>
+            <span>{errorMessage}</span>
+          </ErrorMessage>
+        </StyledForm>
+        <Footer
+          accountCreated={accountCreated}
+          redirectHome={redirectHome}
+          sendErrorCode={sendErrorCode}
         />
-        <TextField
-          type="password"
-          label="Password"
-          onChange={event => setPassword(event.target.value)}
-          variant="outlined"
-          required
-        />
-        <SubmitButton type="submit">{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
-        <ErrorMessage errorMessage={errorMessage}>
-          <span>{errorMessage}</span>
-        </ErrorMessage>
-      </StyledForm>
-      <Footer
-        accountCreated={accountCreated}
-        redirectHome={redirectHome}
-        sendErrorCode={sendErrorCode}
-      />
-    </Wrapper>
+      </Wrapper>
+    </>
   )
 }
 

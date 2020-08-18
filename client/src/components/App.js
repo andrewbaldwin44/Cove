@@ -7,7 +7,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import GlobalStyles from "./GlobalStyles";
 
 import Homepage from './Homepage';
-import Header from './Header/index';
 import Login from './Login/index';
 import Profile from './Profile';
 import Room from './Room';
@@ -28,8 +27,6 @@ function App() {
   return (
     <Router>
       <GlobalStyles />
-      <Header />
-      <Main>
         <Switch>
           <Route exact path='/'>
             <Homepage />
@@ -50,7 +47,6 @@ function App() {
             <FourOhFour />
           </Route>
         </Switch>
-      </Main>
       {message && (
         <Snackbar
           open={Boolean(message)}
@@ -68,9 +64,5 @@ function App() {
     </Router>
   )
 }
-
-const Main = styled.main`
-  margin: var(--main-height-padding) var(--main-width-padding);
-`;
 
 export default App;
