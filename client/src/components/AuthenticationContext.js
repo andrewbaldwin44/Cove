@@ -24,12 +24,23 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 function sendUserData(userData) {
   return fetch('/users', {
-    method: 'post',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(userData),
-  });
+  })
+}
+
+function validateRoomMember(idToken, roomID) {
+  return fetch('/users/rooms/validate_member', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ idToken, roomID }),
+  })
+    .then(response => response.json())
 }
 
 function createUserWithEmail(email, password) {
@@ -51,6 +62,12 @@ function AuthenticationProvider({ children, signOut, user }) {
   const handleSignOut = () => {
     signOut();
     setUserData(null);
+  }
+
+  const retrieveClientID = () => {
+    if (firebase.auth().currentUser) {
+      return firebase.auth().currentUser.getIdToken(true)
+    }
   }
 
   useEffect(() => {
@@ -76,6 +93,8 @@ function AuthenticationProvider({ children, signOut, user }) {
         signInWithEmail,
         signInWithGoogle,
         handleSignOut,
+        retrieveClientID,
+        validateRoomMember,
         message,
         setMessage,
       }}
