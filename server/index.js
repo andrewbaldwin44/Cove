@@ -9,7 +9,7 @@ const PORT = 4000;
 const app = express();
 
 const {
-  createUser,
+  handleLogin,
   handleNewRoom,
   validateRoomMember,
 } = require('./handlers/authenticationHandlers');
@@ -32,7 +32,7 @@ app
 .use(express.urlencoded({ extended: false }))
 .use('/', express.static(__dirname + '/'))
 
-.post('/users', createUser)
+.post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
 .post('/rooms/newroom', handleNewRoom)
 

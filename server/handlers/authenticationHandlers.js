@@ -38,7 +38,7 @@ admin.initializeApp({
 const database = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
-async function createUser(req, res) {
+async function handleLogin(req, res) {
   let { email, displayName, photoURL, userID } = req.body;
 
   displayName = displayName ? displayName : email;
@@ -111,7 +111,7 @@ async function validateRoomMember(req, res) {
 }
 
 module.exports = {
-  createUser,
+  handleLogin,
   handleNewRoom,
   validateRoomMember,
 };
