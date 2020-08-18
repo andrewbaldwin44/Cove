@@ -23,7 +23,7 @@ const firebaseAppAuth = firebaseApp.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 function sendUserData(userData) {
-  return fetch('/users', {
+  return fetch('/users/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -77,7 +77,17 @@ function AuthenticationProvider({ children, signOut, user }) {
       if (!photoURL) photoURL = DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, userID })
-        .then(() => setUserData({ email, displayName, photoURL, userID }))
+        .then(response => response.json())
+        .then(({ userData: { ownedRooms = [] } }) => {
+
+          setUserData({
+            email,
+            displayName,
+            photoURL,
+            userID,
+            ownedRooms,
+          })
+        })
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
     }
     else if (user === null) {

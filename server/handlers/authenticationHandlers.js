@@ -12,6 +12,7 @@ const {
 const {
   DATABASE_PATHS: {
     USERS_PATH,
+    OWNED_ROOMS_PATH,
     ROOMS_PATH,
     ROOMS_MEMBERS_PATH,
   },
@@ -48,6 +49,11 @@ async function handleLogin(req, res) {
   try {
     let message = '';
     if (await isReturningUser(userID, database)) {
+      const userResponse = await queryDatabase(USERS_PATH, userID, database);
+      const ownedRooms = userResponse.data().ownedRooms;
+
+      acceptedData.ownedRooms = Object.keys(ownedRooms);
+
       message = `Welcome back ${displayName}!`;
     }
 
