@@ -4,10 +4,5 @@
   "description": "",
   "private": "true",
   "author": "Andrew Baldwin",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "react-draggable": "^4.4.3",
-    "styled-components": "^5.1.1"
-  }
+  "license": "UNLICENSED"
 }
