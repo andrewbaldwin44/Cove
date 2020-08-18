@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import AppBar from './AppBar';
+
 import { BsArrowLeftShort, BsSearch } from 'react-icons/bs';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
@@ -16,6 +18,8 @@ function Main({ isOwner }) {
           <SearchInput type='text' placeholder='Search...' />
         </SearchContainer>
       </Header>
+      <AppBar length={'40%'} position={'left'} />
+      <AppBar length={'80%'} position={'bottom'} />
     </Wrapper>
   )
 }
@@ -67,6 +71,7 @@ const StyledSearchIcon = styled(BsSearch)`
   width: 20px;
   margin-left: 10px;
   color: inherit;
+
 `;
 
 export default Main;
