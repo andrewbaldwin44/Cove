@@ -9,6 +9,8 @@ const {
   },
 } = require('../constants');
 
+const { v4: uuidv4 } = require('uuid');
+
 function queryDatabase(path, doc, database) {
   const reference = database.collection(path).doc(doc);
   return reference.get();
@@ -45,20 +47,23 @@ function addRoomDetailsData(data, id, database) {
 }
 
 async function createNewRoom(roomName, userID, database, FieldValue) {
-  const newRoomMembers = { [userID]: true };
-  const roomMembersData = await addRoomMembersData(newRoomMembers, database);
+  const roomID = uuidv4();
 
-  const roomID = roomMembersData.id;
-
-  const newRoomDetails = {
-    name: roomName,
-    dateCreated: FieldValue.serverTimestamp(),
-  };
-  const roomDetailsData = await addRoomDetailsData(newRoomDetails, roomID, database);
-
+  const newRoomMembersPath = `${roomID}.${userID}`;
   const newOwnedRoomsPath = `${OWNED_ROOMS_PATH}.${roomID}`;
+
+  const newRoomMembers = { [newRoomMembersPath]: true };
+  const newRoomDetails = {
+    [roomID]: {
+      name: roomName,
+      dateCreated: FieldValue.serverTimestamp()
+    }
+  };
+
   const newOwnedRooms = { [newOwnedRoomsPath]: true };
 
+  await updateDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, newRoomMembers, database);
+  await updateDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, newRoomDetails, database);
   await updateDatabase(USERS_PATH, userID, newOwnedRooms, database);
 
   return {
