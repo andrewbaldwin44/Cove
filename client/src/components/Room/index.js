@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 
+import Main from './Main';
+
 import { AuthenticationContext } from '../AuthenticationContext';
 
 function Room() {
@@ -30,18 +32,9 @@ function Room() {
       <div>loading...</div>
     )
   }
-  else if (memberData.isOwner) {
+  else if (memberData.isOwner || memberData.isMember) {
     return (
-      <div>
-        Welcome to your new room {userData.displayName || userData.email}!
-      </div>
-    )
-  }
-  else if (memberData.isMember) {
-    return (
-      <div>
-        Welcome to the room!
-      </div>
+      <Main isOwner={memberData.isOwner} />
     )
   }
   else {
