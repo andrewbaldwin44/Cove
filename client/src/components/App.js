@@ -1,5 +1,5 @@
 import React, { useContext   } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -9,9 +9,12 @@ import Homepage from './Homepage';
 import Login from './Login/index';
 import Profile from './Profile';
 import Room from './Room/index';
+import TestCall from './TestCall';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';
+
+const { v4: uuidv4 } = require('uuid');
 
 function App() {
   const {
@@ -41,6 +44,12 @@ function App() {
           </Route>
           <Route exact path='/rooms/room/:roomID'>
             <Room />
+          </Route>
+          <Route exact path='/test_call'>
+            <Redirect from='/test_call' to={`/test_call/${uuidv4()}`} />
+          </Route>
+          <Route exact path='/test_call/:callID'>
+            <TestCall />
           </Route>
           <Route path='/'>
             <FourOhFour />
