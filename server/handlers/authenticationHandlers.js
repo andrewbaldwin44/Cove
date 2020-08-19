@@ -7,6 +7,9 @@ const {
   writeDatabase,
   isReturningUser,
   createNewRoom,
+  getUserID,
+  getUserData,
+  getRoomMembersData,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -87,32 +90,25 @@ async function validateRoomMember(req, res) {
   const { idToken, roomID } = req.body;
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const { user_id } = decodedToken;
-
-    const userResponse = await queryDatabase(USERS_PATH, user_id, database);
-    const userData = userResponse.data();
+    const userID = await getUserID(idToken, admin);
+    const userData = await getUserData(userID, database);
+    const roomMembersData = await getRoomMembersData(database);
 
     const { ownedRooms } = userData;
-
-    const roomResponse = await queryDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, database);
-    const roomData = roomResponse.data();
-
-    const roomMembers = roomData[roomID];
+    const roomMembers = roomMembersData[roomID];
 
     if (ownedRooms && ownedRooms[roomID]) {
       res.status(201).json({ status: 201, isOwner: true, isMember: true });
     }
-    else if (roomMembers && roomMembers[user_id]) {
+    else if (roomMembers && roomMembers[userID]) {
       res.status(201).json({ status: 201, isOwner: false, isMember: true });
     }
     else {
       res.status(401).json({ status: 401, message: 'You do not have access to this room' });
     }
   }
-  catch (error) {
-    console.log(error);
-    res.status(401).json({ status: 401, ...error });
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
   }
 }
 

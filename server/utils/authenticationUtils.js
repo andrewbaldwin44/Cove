@@ -73,9 +73,27 @@ async function createNewRoom(roomName, userID, database, FieldValue) {
   };
 }
 
+async function getUserID(idToken, admin) {
+  const decodedToken = await admin.auth().verifyIdToken(idToken);
+  return decodedToken.user_id || null;
+}
+
+async function getUserData(userID, database) {
+  const response = await queryDatabase(USERS_PATH, userID, database);
+  return response.data();
+}
+
+async function getRoomMembersData(database) {
+  const response = await queryDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, database);
+  return response.data();
+}
+
 module.exports = {
   queryDatabase,
   writeDatabase,
   isReturningUser,
   createNewRoom,
+  getUserID,
+  getUserData,
+  getRoomMembersData,
 }
