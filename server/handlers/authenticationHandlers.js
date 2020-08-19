@@ -52,10 +52,12 @@ async function handleLogin(req, res) {
   try {
     let message = '';
     if (await isReturningUser(userID, database)) {
-      const userResponse = await queryDatabase(USERS_PATH, userID, database);
-      const ownedRooms = userResponse.data().ownedRooms;
+      const userData = await getUserData(userID, database);
+      
+      const { ownedRooms } = userData;
+      const ownedRoomIDs = Object.keys(ownedRooms);
 
-      acceptedData.ownedRooms = Object.keys(ownedRooms);
+      acceptedData.ownedRooms = ownedRoomIDs;
 
       message = `Welcome back ${displayName}!`;
     }
