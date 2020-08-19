@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,9 +15,11 @@ function TestCall() {
     userData,
   } = useContext(AuthenticationContext);
 
-  const [userID, setUserID] = useState("");
-
   const { callID } = useParams();
+
+  const [stream, setStream] = useState();
+
+  const userVideoSource = useRef();
 
   useEffect(() => {
     if (isContainingData(userData)) {
@@ -28,13 +30,28 @@ function TestCall() {
       socket.on('user-connected', userID => {
         console.log('User Connected' + userID)
       });
+
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        setStream(stream);
+
+        if (userVideoSource.current) {
+          userVideoSource.current.srcObject = stream;
+        }
+      });
     }
     // eslint-disable-next-line
   }, [userData]);
 
+  let UserVideo;
+  if (stream) {
+    UserVideo = (
+      <Video playsInline muted ref={userVideoSource} autoPlay />
+    );
+  }
+
   return (
     <VideoGrid>
-
+      {UserVideo}
     </VideoGrid>
   )
 }
