@@ -25,7 +25,7 @@ function AppBar({ length, position }) {
         setElementStyle(length, defaultAppBarHeight, 'left', 'translateX');
       }
     }
-  }, [container]);
+  }, [container, length, position]);
 
   return (
     <Wrapper
