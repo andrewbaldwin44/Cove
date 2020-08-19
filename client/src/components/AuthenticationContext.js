@@ -78,7 +78,7 @@ function AuthenticationProvider({ children, signOut, user }) {
 
       sendUserData({ email, displayName, photoURL, userID })
         .then(response => response.json())
-        .then(({ userData: { ownedRooms = [] } }) => {
+        .then(({ userData: { ownedRooms = [], roomDetails = [] } }) => {
 
           setUserData({
             email,
@@ -86,6 +86,7 @@ function AuthenticationProvider({ children, signOut, user }) {
             photoURL,
             userID,
             ownedRooms,
+            roomDetails,
           })
         })
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
