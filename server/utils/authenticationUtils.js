@@ -88,6 +88,18 @@ async function getRoomMembersData(database) {
   return response.data();
 }
 
+async function getRoomDetails(ownedRoomIDs, database) {
+  const response = await queryDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, database);
+  const allRooms = Object.entries(response.data());
+
+  const ownedRoomDetails = allRooms.reduce((roomDetails, [id, data]) => {
+    if (ownedRoomIDs.includes(id)) roomDetails.push(data);
+    return roomDetails;
+  }, []);
+
+  return ownedRoomDetails;
+}
+
 module.exports = {
   queryDatabase,
   writeDatabase,
@@ -96,4 +108,5 @@ module.exports = {
   getUserID,
   getUserData,
   getRoomMembersData,
+  getRoomDetails,
 }

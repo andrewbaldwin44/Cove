@@ -10,6 +10,7 @@ const {
   getUserID,
   getUserData,
   getRoomMembersData,
+  getRoomDetails,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -53,11 +54,14 @@ async function handleLogin(req, res) {
     let message = '';
     if (await isReturningUser(userID, database)) {
       const userData = await getUserData(userID, database);
-      
+
       const { ownedRooms } = userData;
       const ownedRoomIDs = Object.keys(ownedRooms);
 
+      const roomDetails = await getRoomDetails(ownedRoomIDs, database);
+
       acceptedData.ownedRooms = ownedRoomIDs;
+      acceptedData.roomDetails = roomDetails;
 
       message = `Welcome back ${displayName}!`;
     }
