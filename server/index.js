@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const http = require('http');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
@@ -8,11 +9,21 @@ const PORT = 4000;
 
 const app = express();
 
+const server = http.createServer(app);
+const socket = require('socket.io');
+const io = socket(server);
+
 const {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
 } = require('./handlers/authenticationHandlers');
+
+const {
+  handleVideoCall,
+} = require('./handlers/socketHandlers');
+
+io.on('connection', socket => handleVideoCall(socket, io));
 
 app
 .use(function(req, res, next) {
@@ -34,6 +45,6 @@ app
 
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
-.post('/rooms/newroom', handleNewRoom)
+.post('/rooms/newroom', handleNewRoom);
 
-.listen(PORT, () => console.info(`Listening on port ${PORT}`));
+server.listen(PORT, () => console.info(`Listening on port ${PORT}`));
