@@ -1,3 +1,5 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-export default combineReducers({ });
+import window from './window-reducer';
+
+export default combineReducers({ window });

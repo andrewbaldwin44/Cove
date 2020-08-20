@@ -2,7 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useDispatch } from "react-redux";
+import { openApp } from "../../actions";
+
 import AppBar from './AppBar';
+import Window from './Window';
 
 import { BsArrowLeftShort, BsSearch } from 'react-icons/bs';
 import { SiKatana } from 'react-icons/si';
@@ -10,6 +14,12 @@ import { SiKatana } from 'react-icons/si';
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 
 function Main({ isOwner }) {
+  const dispatch = useDispatch();
+
+  const handleWindowOpen = app => {
+    dispatch(openApp(app));
+  }
+
   return (
     <Wrapper>
       <Header>
@@ -19,9 +29,10 @@ function Main({ isOwner }) {
           <SearchInput type='text' placeholder='Search...' />
         </SearchContainer>
       </Header>
+      <Window />
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
-        <WebIcon />
+        <WebIcon onClick={() => handleWindowOpen('web')} />
       </AppBar>
     </Wrapper>
   )
