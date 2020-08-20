@@ -2,15 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FiMaximize2 } from 'react-icons/fi';
-import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io'
+import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
+
+import { useDispatch } from "react-redux";
+import { closeWindow } from "../../actions";
 
 function Windows({ children }) {
+  const dispatch = useDispatch();
+
+  const handleWindowClose = app => {
+    dispatch(closeWindow(app));
+  }
+
   return (
     <Wrapper>
       <Header>
         <IoMdRemove />
         <FiMaximize2 />
-        <IoIosCloseCircleOutline />
+        <IoIosCloseCircleOutline onClick={() => handleWindowClose('web')} />
       </Header>
       {children}
     </Wrapper>
@@ -37,6 +46,7 @@ const Header = styled.div`
 
   svg {
     font-size: 1.2em;
+    cursor: pointer;
 
     &:not(:first-child) {
       margin-left: 20px;
