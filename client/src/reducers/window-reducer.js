@@ -1,18 +1,23 @@
 const initialState = {
-  openWindows: [],
+  openWindows: {},
 }
 
 export default function windowReducer(state = initialState, action) {
+  const { openWindows } = state;
+
   switch(action.type) {
-    case 'OPEN_APP': {
-      console.log(action.app)
-      const newWindow = { [action.app]: true };
+    case 'OPEN_WINDOW': {
+      const app = action.app;
+
       return {
         ...state,
-        openWindows: [
-          ...state.openWindows,
-          newWindow,
-        ]
+        openWindows: {
+          ...openWindows,
+          [app]: {
+            ...openWindows[app],
+            isOpen: true,
+          }
+        }
       }
     }
 

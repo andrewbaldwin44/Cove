@@ -5,15 +5,18 @@ import Browser from '../Windows/Browser';
 
 import { useSelector } from "react-redux";
 
+import { toArray } from '../../utils/index';
+
 function WindowManager() {
-  const windows = useSelector(state => state.window);
+  const openWindows = useSelector(state => toArray(state.window.openWindows));
 
   return (
     <div>
-      {windows.openWindows.map((window, index) => {
+      {openWindows.map(([app, appState], index) => {
+        console.log(app, appState)
         return (
           <Windows key={`window${index}`}>
-            {window['web'] && (
+            {app === 'web' && appState.isOpen && (
               <Browser />
             )}
           </Windows>

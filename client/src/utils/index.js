@@ -5,3 +5,7 @@ export function isContainingData(data) {
 export function isEmptyData(data) {
   return data && Object.keys(data).length === 0;
 }
+
+export function toArray(object) {
+  return Object.entries(object);
+}
