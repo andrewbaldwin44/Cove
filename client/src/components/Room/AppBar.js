@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const defaultAppBarHeight = '60px';
 
-function AppBar({ length, position }) {
+function AppBar({ children, length, position }) {
   const container = createRef();
 
   useEffect(() => {
@@ -30,12 +30,17 @@ function AppBar({ length, position }) {
   return (
     <Wrapper
       ref={container}
-    />
+    >
+      {children}
+    </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
   position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
   border-radius: 8px;
   background-color: var(--main-black);
   box-shadow: -2px -2px 8px var(--dark-shadow),

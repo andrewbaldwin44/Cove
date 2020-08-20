@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import AppBar from './AppBar';
 
 import { BsArrowLeftShort, BsSearch } from 'react-icons/bs';
+import { SiKatana } from 'react-icons/si';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 
@@ -19,7 +20,9 @@ function Main({ isOwner }) {
         </SearchContainer>
       </Header>
       <AppBar length={'40%'} position={'left'} />
-      <AppBar length={'80%'} position={'bottom'} />
+      <AppBar length={'80%'} position={'bottom'}>
+        <WebIcon />
+      </AppBar>
     </Wrapper>
   )
 }
@@ -71,7 +74,12 @@ const StyledSearchIcon = styled(BsSearch)`
   width: 20px;
   margin-left: 10px;
   color: inherit;
+`;
 
+const WebIcon = styled(SiKatana)`
+  font-size: 2.5em;
+  color: white;
+  cursor: pointer;
 `;
 
 export default Main;
