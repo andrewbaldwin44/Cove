@@ -15,11 +15,15 @@ function WindowManager() {
       {openWindows.map(([app, appState], index) => {
         if (app === 'web' && appState.isOpen) {
           return (
-            <Windows key={`window${index}`}>
+            <Windows
+              key={`window${index}`}
+              title={'Web'}
+            >
               <Browser />
             </Windows>
           )
         }
+        else return null;
       })}
     </div>
   )

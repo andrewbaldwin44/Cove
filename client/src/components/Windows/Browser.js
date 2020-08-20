@@ -2,9 +2,7 @@ import React from 'react';
 
 function Browser() {
   return (
-    <div>
-        Browser
-    </div>
+    <div>Browser</div>
   )
 }
 

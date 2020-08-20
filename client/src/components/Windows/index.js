@@ -7,7 +7,7 @@ import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
 import { useDispatch } from "react-redux";
 import { closeWindow } from "../../actions";
 
-function Windows({ children }) {
+function Windows({ children, title }) {
   const dispatch = useDispatch();
 
   const handleWindowClose = app => {
@@ -17,9 +17,14 @@ function Windows({ children }) {
   return (
     <Wrapper>
       <Header>
-        <IoMdRemove />
-        <FiMaximize2 />
-        <IoIosCloseCircleOutline onClick={() => handleWindowClose('web')} />
+        <div>
+            {title}
+        </div>
+        <div>
+          <IoMdRemove />
+          <FiMaximize2 />
+          <IoIosCloseCircleOutline onClick={() => handleWindowClose('web')} />
+        </div>
       </Header>
       {children}
     </Wrapper>
@@ -38,7 +43,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
   height: 50px;
   padding: 0 15px;
