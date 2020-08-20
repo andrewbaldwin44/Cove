@@ -45,6 +45,6 @@ app
 
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
-.post('/rooms/newroom', handleNewRoom);
+.post('/rooms/newroom', handleNewRoom)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));

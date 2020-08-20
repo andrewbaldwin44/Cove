@@ -48,7 +48,7 @@ function App() {
           <Route exact path='/test_call'>
             <Redirect from='/test_call' to={`/test_call/${uuidv4()}`} />
           </Route>
-          <Route exact path='/test_call/:callID'>
+          <Route exact path='/test_call/:roomID'>
             <TestCall />
           </Route>
           <Route path='/'>
