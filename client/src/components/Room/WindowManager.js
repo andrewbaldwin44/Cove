@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Windows from '../Windows/index';
 import Browser from '../Windows/Browser';
@@ -11,7 +12,7 @@ function WindowManager() {
   const openWindows = useSelector(state => toArray(state.window.openWindows));
 
   return (
-    <div>
+    <Wrapper>
       {openWindows.map(([app, appState], index) => {
         if (app === 'web' && appState.isOpen) {
           return (
@@ -25,8 +26,14 @@ function WindowManager() {
         }
         else return null;
       })}
-    </div>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  position: fixed;
+  height: 100vh;
+  width: 0;
+`;
 
 export default WindowManager;

@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Draggable from 'react-draggable';
+
 import { FiMaximize2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
 
@@ -15,8 +17,14 @@ function Windows({ children, title }) {
   }
 
   return (
+    <Draggable
+      handle='.anchor'
+      bounds={{ top: 0 }}
+    >
     <Wrapper>
-      <Header>
+      <Header
+        className='anchor'
+      >
         <div>
             {title}
         </div>
@@ -28,11 +36,11 @@ function Windows({ children, title }) {
       </Header>
       {children}
     </Wrapper>
+    </Draggable>
   )
 }
 
 const Wrapper = styled.div`
-  position: absolute;
   background-color: white;
   height: calc(100vh - 60px);
   width: 100vw;
@@ -48,6 +56,11 @@ const Header = styled.div`
   height: 50px;
   padding: 0 15px;
   background-color: lightblue;
+  cursor: grab;
+
+
+  &:active {
+  }
 
   svg {
     font-size: 1.2em;
