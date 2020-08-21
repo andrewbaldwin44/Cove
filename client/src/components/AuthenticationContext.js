@@ -8,6 +8,11 @@ import 'firebase/firestore';
 import DefaultProfile from '../assets/images/default-profile.png';
 
 import { isContainingData, toArray } from '../utils/index';
+import {
+  sendUserData,
+  validateRoomMember,
+  getRoomDetails,
+} from '../utils/authenticationUtils';
 
 export const AuthenticationContext = createContext(null);
 
@@ -23,46 +28,19 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAppAuth = firebaseApp.auth();
+const database = firebase.firestore();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-const postRequestHeaders = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-}
-
-function sendUserData(userData) {
-  return fetch('/users/login', {
-    ...postRequestHeaders,
-    body: JSON.stringify(userData),
-  })
-}
-
-function validateRoomMember(idToken, roomID) {
-  return fetch('/users/rooms/validate_member', {
-    ...postRequestHeaders,
-    body: JSON.stringify({ idToken, roomID }),
-  })
-    .then(response => response.json())
-}
-
-function getRoomDetails(userRooms) {
-  return fetch('/users/rooms/details', {
-    ...postRequestHeaders,
-    body: JSON.stringify({ userRooms }),
-  })
-    .then(response => response.json());
-}
-
 function createUserWithEmail(email, password) {
-  return firebase.auth().createUserWithEmailAndPassword(email, password);
+  return firebaseAppAuth.createUserWithEmailAndPassword(email, password);
 }
 
 function signInWithEmail(email, password) {
-  return firebase.auth().signInWithEmailAndPassword(email, password);
+  return firebaseAppAuth.signInWithEmailAndPassword(email, password);
 }
 
 function signInWithGoogle() {
-  return firebase.auth().signInWithPopup(googleProvider);
+  return firebaseAppAuth.signInWithPopup(googleProvider);
 }
 
 function AuthenticationProvider({ children, signOut, user }) {
@@ -77,8 +55,8 @@ function AuthenticationProvider({ children, signOut, user }) {
   }
 
   const retrieveClientID = () => {
-    if (firebase.auth().currentUser) {
-      return firebase.auth().currentUser.getIdToken(true)
+    if (firebaseAppAuth.currentUser) {
+      return firebaseAppAuth.currentUser.getIdToken(true)
     }
   }
 
@@ -110,7 +88,7 @@ function AuthenticationProvider({ children, signOut, user }) {
     if (isContainingData(userData)) {
       const { userID } = userData;
 
-      const roomReference = firebase.firestore().collection('users').doc(userID);
+      const roomReference = database.collection('users').doc(userID);
 
       observer = roomReference.onSnapshot(snapshot => {
         const data = snapshot.data();
