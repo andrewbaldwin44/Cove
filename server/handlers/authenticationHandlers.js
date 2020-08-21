@@ -55,7 +55,7 @@ async function handleReturningUser(userID, acceptedData, message) {
   const ownedRooms = userData.ownedRooms || {};
   const ownedRoomIDs = Object.keys(ownedRooms);
 
-  const participatingRooms = await getParticipatingRooms(userID, database);
+  const participatingRooms = await getParticipatingRooms(userID, ownedRoomIDs, database);
   const allUserRooms = [...participatingRooms, ...ownedRoomIDs];
 
   const roomDetails = await getRoomDetails(ownedRoomIDs, database);

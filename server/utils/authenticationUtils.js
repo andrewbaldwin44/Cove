@@ -116,12 +116,12 @@ async function getRoomDetails(ownedRoomIDs, database) {
   return ownedRoomDetails;
 }
 
-async function getParticipatingRooms(userID, database) {
+async function getParticipatingRooms(userID, ownedRoomIDs, database) {
   const snapshot = await queryDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, database);
   const roomData = snapshot.data();
 
   return Object.entries(roomData).reduce((participatingRooms, [roomID, roomMembers]) => {
-    if (roomMembers[userID]) {
+    if (roomMembers[userID] && !ownedRoomIDs.includes(roomID)) {
       participatingRooms.push(roomID);
     }
 
