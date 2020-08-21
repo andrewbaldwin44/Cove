@@ -12,7 +12,6 @@ const {
   getUserData,
   getRoomMembersData,
   getRoomDetails,
-  getParticipatingRooms,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -55,8 +54,10 @@ async function handleReturningUser(userID, acceptedData, message) {
   const ownedRooms = userData.ownedRooms || {};
   const ownedRoomIDs = Object.keys(ownedRooms);
 
-  const participatingRooms = await getParticipatingRooms(userID, ownedRoomIDs, database);
-  const allUserRooms = [...participatingRooms, ...ownedRoomIDs];
+  const participatingRooms = userData.participatingRooms || {};
+  const participatingRoomIDs = Object.keys(participatingRooms);
+
+  const allUserRooms = [...participatingRoomIDs, ...ownedRoomIDs];
 
   const roomDetails = await getRoomDetails(ownedRoomIDs, database);
 
