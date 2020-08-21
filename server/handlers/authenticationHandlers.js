@@ -64,7 +64,7 @@ async function handleReturningUser(userID, acceptedData, message) {
 }
 
 async function handleNewUser(userID, acceptedData) {
-  await writeDatabase(USERS_PATH, userID, acceptedData);
+  await writeDatabase(USERS_PATH, userID, acceptedData, database);
 }
 
 async function handleLogin(req, res) {
