@@ -28,7 +28,7 @@ function Homepage() {
           >
             Add +
           </Add>
-          {userData.ownedRooms.map(roomID => {
+          {userData.rooms.map(roomID => {
             return (
               <RoomPortal
                 key={roomID}

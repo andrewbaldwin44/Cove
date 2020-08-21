@@ -78,14 +78,14 @@ function AuthenticationProvider({ children, signOut, user }) {
 
       sendUserData({ email, displayName, photoURL, userID })
         .then(response => response.json())
-        .then(({ userData: { ownedRooms = [], roomDetails = [] } }) => {
+        .then(({ userData: { rooms = [], roomDetails = [] } }) => {
 
           setUserData({
             email,
             displayName,
             photoURL,
             userID,
-            ownedRooms,
+            rooms,
             roomDetails,
           })
         })
