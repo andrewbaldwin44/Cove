@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { StyledInput, FormAction } from './index';
+import { StyledInput } from './index';
 
 import { MdKeyboardArrowRight } from 'react-icons/md';
 

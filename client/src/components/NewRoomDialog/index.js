@@ -58,7 +58,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     const roomName = roomNameInput.current.value;
     const { userID } = userData;
 
-    const roomData = { roomName, userID };
+    const roomData = { roomName, userID, selectedMembers };
 
     requestNewRoom(roomData);
   }

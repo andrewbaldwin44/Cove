@@ -26,41 +26,57 @@ function updateDatabase(path, doc, newData, database) {
   return reference.update(newData);
 }
 
+async function getUidFromEmail(email, admin) {
+  const response = await admin.auth().getUserByEmail(email);
+  const { uid } = response;
+
+  return uid;
+}
+
 async function isReturningUser(userID, database) {
   const userReference = await queryDatabase(USERS_PATH, userID, database);
 
   return userReference.exists;
 }
 
-function addRoomMembersData(data, database) {
-  const reference = database.collection(ROOMS_PATH).doc(ROOMS_MEMBERS_PATH)
-                            .collection(ROOMS_MEMBERS_PATH);
+async function getMemberIDs(members, admin) {
+  const convertMemberEmails = members.map(async memberEmail => {
+    return await getUidFromEmail(memberEmail, admin);
+  });
 
-  return reference.add(data);
+  const memberIDs = await Promise.all(convertMemberEmails);
+
+  return memberIDs;
 }
 
-function addRoomDetailsData(data, id, database) {
-  const reference = database.collection(ROOMS_PATH).doc(ROOMS_DETAILS_PATH)
-                            .collection(ROOMS_DETAILS_PATH).doc(id);
-
-  return reference.set(data);
+function getRoomPath(path, id) {
+  return `${path}.${id}`
 }
 
-async function createNewRoom(roomName, userID, database, FieldValue) {
-  const roomID = uuidv4();
+function createRoomMembersData(memberIDs, roomID) {
+  return memberIDs.reduce((roomMembers, memberID) => {
+    roomMembers[getRoomPath(roomID, memberID)] = true;
 
-  const newRoomMembersPath = `${roomID}.${userID}`;
-  const newOwnedRoomsPath = `${OWNED_ROOMS_PATH}.${roomID}`;
+    return roomMembers;
+  }, {});
+}
 
-  const newRoomMembers = { [newRoomMembersPath]: true };
-  const newRoomDetails = {
+function createRoomDetailsData(roomID, roomName, FieldValue) {
+  return {
     [roomID]: {
       name: roomName,
       dateCreated: FieldValue.serverTimestamp()
     }
   };
+}
 
-  const newOwnedRooms = { [newOwnedRoomsPath]: true };
+async function createNewRoom(roomName, userID, memberIDs, database, FieldValue) {
+  const roomID = uuidv4();
+
+  const newRoomMemberIDs = [...memberIDs, userID];
+  const newRoomMembers = createRoomMembersData(newRoomMemberIDs, roomID);
+  const newRoomDetails = createRoomDetailsData(roomID, roomName, FieldValue);
+  const newOwnedRooms = { [getRoomPath(OWNED_ROOMS_PATH, roomID)]: true };
 
   await updateDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, newRoomMembers, database);
   await updateDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, newRoomDetails, database);
@@ -104,6 +120,7 @@ module.exports = {
   queryDatabase,
   writeDatabase,
   isReturningUser,
+  getMemberIDs,
   createNewRoom,
   getUserID,
   getUserData,

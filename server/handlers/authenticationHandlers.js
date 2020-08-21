@@ -6,6 +6,7 @@ const {
   queryDatabase,
   writeDatabase,
   isReturningUser,
+  getMemberIDs,
   createNewRoom,
   getUserID,
   getUserData,
@@ -84,15 +85,24 @@ async function handleLogin(req, res) {
 }
 
 async function handleNewRoom(req, res)  {
-  const { roomName, userID } = req.body;
+  const { roomName, userID, selectedMembers } = req.body;
 
   try {
-    const roomData = await createNewRoom(roomName, userID, database, FieldValue);
+    const memberIDs = await getMemberIDs(selectedMembers, admin);
+    
+    const roomData = await createNewRoom(
+      roomName,
+      userID,
+      memberIDs,
+      database,
+      FieldValue
+    );
 
     res.status(201).json({ status: 201, ...roomData });
   }
-  catch ({ message }) {
-    res.status(401).json({ status: 401, message });
+  catch (error) {
+    console.log(error)
+    res.status(401).json({ status: 401, ...error });
   }
 }
 

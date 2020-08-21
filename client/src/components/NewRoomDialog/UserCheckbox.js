@@ -8,7 +8,7 @@ function UserCheckbox({ userData, addMember }) {
 
   const selectUser = () => {
     setSelected(!selected);
-    addMember(userData);
+    addMember(email);
   }
 
   return (
