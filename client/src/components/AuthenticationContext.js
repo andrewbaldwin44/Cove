@@ -25,25 +25,32 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAppAuth = firebaseApp.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+const postRequestHeaders = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+}
+
 function sendUserData(userData) {
   return fetch('/users/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    ...postRequestHeaders,
     body: JSON.stringify(userData),
   })
 }
 
 function validateRoomMember(idToken, roomID) {
   return fetch('/users/rooms/validate_member', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    ...postRequestHeaders,
     body: JSON.stringify({ idToken, roomID }),
   })
     .then(response => response.json())
+}
+
+function getRoomDetails(userRooms) {
+  return fetch('/users/rooms/details', {
+    ...postRequestHeaders,
+    body: JSON.stringify({ userRooms }),
+  })
+    .then(response => response.json());
 }
 
 function createUserWithEmail(email, password) {
@@ -61,6 +68,7 @@ function signInWithGoogle() {
 function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
   const [userRooms, setUserRooms] = useState(null);
+  const [roomDetails, setRoomDetails] = useState(null);
   const [message, setMessage] = useState(null);
 
   const handleSignOut = () => {
@@ -87,7 +95,6 @@ function AuthenticationProvider({ children, signOut, user }) {
             email,
             displayName,
             photoURL,
-            userID,
           })
         })
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
@@ -106,15 +113,18 @@ function AuthenticationProvider({ children, signOut, user }) {
       const roomReference = firebase.firestore().collection('users').doc(userID);
 
       observer = roomReference.onSnapshot(snapshot => {
-        if (userData) {
-          const data = snapshot.data();
-          const { ownedRooms = {}, participatingRooms = {} } = data;
+        const data = snapshot.data();
+        const { ownedRooms = {}, participatingRooms = {} } = data;
 
-          const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
+        const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
 
-          setUserRooms(allRooms);
-        }
+        getRoomDetails(allRooms).then(({ roomDetails }) => setRoomDetails(roomDetails));
+        setUserRooms(allRooms);
       });
+    }
+
+    return () => {
+      if (observer) observer();
     }
   }, [userData]);
 
@@ -123,6 +133,7 @@ function AuthenticationProvider({ children, signOut, user }) {
       value={{
         userData,
         userRooms,
+        roomDetails,
         createUserWithEmail,
         signInWithEmail,
         signInWithGoogle,

@@ -49,22 +49,6 @@ admin.initializeApp({
 const database = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
-async function handleReturningUser(userID, acceptedData, message) {
-  const userData = await getUserData(userID, database);
-
-  const ownedRooms = userData.ownedRooms || {};
-  const ownedRoomIDs = toArray(ownedRooms, 'keys');
-
-  const participatingRooms = userData.participatingRooms || {};
-  const participatingRoomIDs = toArray(participatingRooms, 'keys');
-
-  const allUserRooms = [...participatingRoomIDs, ...ownedRoomIDs];
-
-  const roomDetails = await getRoomDetails(ownedRoomIDs, database);
-
-  return { ...acceptedData, rooms: allUserRooms, roomDetails };
-}
-
 async function handleNewUser(userID, acceptedData) {
   await writeDatabase(USERS_PATH, userID, acceptedData, database);
 }
@@ -80,8 +64,6 @@ async function handleLogin(req, res) {
     let message = '';
 
     if (await isReturningUser(userID, database)) {
-      acceptedData = await handleReturningUser(userID, acceptedData, message);
-
       message = `Welcome ${displayName}!`;
     }
     else {
@@ -146,6 +128,19 @@ async function validateRoomMember(req, res) {
   }
 }
 
+async function handleRoomDetails(req, res) {
+  try {
+    const { userRooms } = req.body;
+
+    const roomDetails = await getRoomDetails(userRooms, database);
+
+    res.status(201).json({ status: 201, roomDetails });
+  }
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
+  }
+}
+
 async function handleUserSearch(req, res) {
   const { search } = req.query || '';
 
@@ -165,5 +160,6 @@ module.exports = {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
+  handleRoomDetails,
   handleUserSearch,
 };

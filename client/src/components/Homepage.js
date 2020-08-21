@@ -13,7 +13,10 @@ function Homepage() {
   const {
     userData,
     userRooms,
+    roomDetails,
   } = useContext(AuthenticationContext);
+
+  console.log(roomDetails);
 
   const [openDialog, setOpenDialog] = useState(false);
 

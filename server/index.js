@@ -17,6 +17,7 @@ const {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
+  handleRoomDetails,
   handleUserSearch,
 } = require('./handlers/authenticationHandlers');
 
@@ -47,6 +48,7 @@ app
 
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
+.post('/users/rooms/details', handleRoomDetails)
 .post('/rooms/newroom', handleNewRoom)
 
 .get('/search_users', handleUserSearch)
