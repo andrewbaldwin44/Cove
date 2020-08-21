@@ -17,11 +17,13 @@ const {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
+  handleUserSearch,
 } = require('./handlers/authenticationHandlers');
 
 const {
   handleVideoCall,
 } = require('./handlers/socketHandlers');
+
 
 io.on('connection', socket => handleVideoCall(socket, io));
 
@@ -46,5 +48,7 @@ app
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
 .post('/rooms/newroom', handleNewRoom)
+
+.get('/search_users', handleUserSearch)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Header from './Header/index';
 import RoomPortal from './RoomPortal';
-import NewRoomDialog from './NewRoomDialog';
+import NewRoomDialog from './NewRoomDialog/index';
 
 import { AuthenticationContext } from './AuthenticationContext';
 
@@ -14,7 +14,7 @@ function Homepage() {
     userData,
   } = useContext(AuthenticationContext);
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(true);
 
   const configureNewRoom = () => setOpenDialog(true);
 

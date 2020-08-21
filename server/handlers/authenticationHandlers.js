@@ -14,6 +14,10 @@ const {
 } = require('../utils/authenticationUtils');
 
 const {
+  getSearchResults,
+} = require('../utils/index');
+
+const {
   DATABASE_PATHS: {
     USERS_PATH,
     OWNED_ROOMS_PATH,
@@ -118,8 +122,24 @@ async function validateRoomMember(req, res) {
   }
 }
 
+async function handleUserSearch(req, res) {
+  const { search } = req.query || '';
+
+  try {
+    const userDataSnapshot = await database.collection(USERS_PATH).get();
+    const searchedUsers = getSearchResults(userDataSnapshot, search);
+    const limitResults = searchedUsers.slice(0, 10);
+
+    res.status(200).json({ status: 200, searchedUsers: limitResults });
+  }
+  catch ({ message }) {
+    res.status(40).json({ status: 400, message });
+  }
+}
+
 module.exports = {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
+  handleUserSearch,
 };
