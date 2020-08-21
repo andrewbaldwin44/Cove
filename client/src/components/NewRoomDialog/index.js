@@ -1,6 +1,6 @@
 import React, { createRef, useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import Draggable from 'react-draggable';
 
@@ -15,6 +15,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
   } = useContext(AuthenticationContext);
 
   const [pageSwitch, setPageSwitch] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const history = useHistory();
   const roomNameInput = createRef();
@@ -29,6 +30,10 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
       window.onclick = null;
     }
   });
+
+  const addMember = member => {
+    setSelectedMembers([...selectedMembers, member]);
+  }
 
   const requestNewRoom = roomData => {
     fetch('/rooms/newroom', {
@@ -77,6 +82,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
             <PageTwo
               pageSwitch={pageSwitch}
               createNewRoom={createNewRoom}
+              addMember={addMember}
             />
           </FormPages>
       </Wrapper>
@@ -102,7 +108,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 265px;
+  min-height: 265px;
   width: 450px;
   padding: 30px;
   overflow: hidden;
@@ -133,13 +139,6 @@ export const StyledInput = styled.input`
   &:focus {
     border-color: var(--red-highlight);
   }
-`;
-
-export const FormAction = styled.div`
-  position: absolute;
-  align-self: flex-end;
-  width: 130px;
-  right: 40px;
 `;
 
 

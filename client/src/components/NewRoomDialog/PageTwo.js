@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { StyledInput, FormAction } from './index';
+import SelectUsers from './SelectUsers';
+
+import { StyledInput } from './index';
 
 import { ReactComponent as DoorIcon } from '../../assets/images/door.svg';
 
-function PageOne({ pageSwitch, createNewRoom }) {
+function PageTwo({ pageSwitch, createNewRoom, addMember }) {
+  const [users, setUsers] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
+
   const handleUserSearch = event => {
     const search = event.target.value;
 
+    if (search.length > 0) setHasSearched(true);
+    else setHasSearched(false);
+
     fetch(`/search_users?search=${search}`)
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(({ searchedUsers }) => setUsers(searchedUsers));
   }
 
   return (
@@ -26,15 +34,18 @@ function PageOne({ pageSwitch, createNewRoom }) {
         type='text'
         onInput={handleUserSearch}
       />
-      <FormAction>
-        <SubmitButton
-          type='submit'
-          pageSwitch={pageSwitch}
-        >
-          <StyledDoorIcon />
-          Open
-        </SubmitButton>
-      </FormAction>
+      <SelectUsers
+        users={users}
+        hasSearched={hasSearched}
+        addMember={addMember}
+      />
+      <SubmitButton
+        type='submit'
+        pageSwitch={pageSwitch}
+      >
+        <StyledDoorIcon />
+        Open
+      </SubmitButton>
     </Wrapper>
   )
 }
@@ -64,13 +75,14 @@ const Wrapper = styled.form`
 `;
 
 const SubmitButton = styled.button`
-  position: absolute;
+  //position: absolute;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-end;
   right: 0;
   padding: 10px 15px;
   margin-top: 15px;
+  width: 400px;
 `;
 
 const StyledDoorIcon = styled(DoorIcon)`
@@ -78,4 +90,4 @@ const StyledDoorIcon = styled(DoorIcon)`
   height: 60px;
 `;
 
-export default PageOne;
+export default PageTwo;
