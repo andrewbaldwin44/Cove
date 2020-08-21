@@ -2,6 +2,7 @@ const {
   DATABASE_PATHS: {
     USERS_PATH,
     OWNED_ROOMS_PATH,
+    PARTICPATING_ROOMS_PATH,
     ROOMS_PATH,
     ROOM_NUMBER_PATH,
     ROOMS_MEMBERS_PATH,
@@ -70,6 +71,16 @@ function createRoomDetailsData(roomID, roomName, FieldValue) {
   };
 }
 
+async function updateParticipantsData(memberIDs, roomID, database) {
+  const participantsUpdate = memberIDs.map(async memberID => {
+    const newParticipatingRooms = { [getRoomPath(PARTICPATING_ROOMS_PATH, roomID)]: true };
+
+    return await updateDatabase(USERS_PATH, memberID, newParticipatingRooms, database);
+  });
+
+  return Promise.all(participantsUpdate);
+}
+
 async function createNewRoom(roomName, userID, memberIDs, database, FieldValue) {
   const roomID = uuidv4();
 
@@ -78,9 +89,11 @@ async function createNewRoom(roomName, userID, memberIDs, database, FieldValue) 
   const newRoomDetails = createRoomDetailsData(roomID, roomName, FieldValue);
   const newOwnedRooms = { [getRoomPath(OWNED_ROOMS_PATH, roomID)]: true };
 
+
   await updateDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, newRoomMembers, database);
   await updateDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, newRoomDetails, database);
   await updateDatabase(USERS_PATH, userID, newOwnedRooms, database);
+  await updateParticipantsData(memberIDs, roomID, database);
 
   return {
     name: roomName,
