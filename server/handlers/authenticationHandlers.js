@@ -60,7 +60,7 @@ async function handleLogin(req, res) {
     if (await isReturningUser(userID, database)) {
       const userData = await getUserData(userID, database);
 
-      const { ownedRooms } = userData;
+      const ownedRooms = userData.ownedRooms || {};
       const ownedRoomIDs = Object.keys(ownedRooms);
 
       const roomDetails = await getRoomDetails(ownedRoomIDs, database);
@@ -79,8 +79,9 @@ async function handleLogin(req, res) {
 
     res.status(201).json({ status: 201, userData: acceptedData, message });
   }
-  catch ({ message }) {
-    res.status(401).json({ status: 401, message });
+  catch (error) {
+    console.log(error)
+    res.status(401).json({ status: 401, ...error });
   }
 }
 
@@ -89,7 +90,7 @@ async function handleNewRoom(req, res)  {
 
   try {
     const memberIDs = await getMemberIDs(selectedMembers, admin);
-    
+
     const roomData = await createNewRoom(
       roomName,
       userID,

@@ -14,7 +14,7 @@ function Homepage() {
     userData,
   } = useContext(AuthenticationContext);
 
-  const [openDialog, setOpenDialog] = useState(true);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const configureNewRoom = () => setOpenDialog(true);
 
