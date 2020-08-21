@@ -23,6 +23,7 @@ const Wrapper = styled(Link)`
 `;
 
 const HoverZoom = styled.div`
+  height: 100%;
   border-radius: var(--portal-border-radius);
   overflow: hidden;
 `;
