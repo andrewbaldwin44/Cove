@@ -12,6 +12,7 @@ import { isContainingData } from '../utils/index';
 function Homepage() {
   const {
     userData,
+    userRooms,
   } = useContext(AuthenticationContext);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -28,7 +29,7 @@ function Homepage() {
           >
             Add +
           </Add>
-          {userData.rooms.map(roomID => {
+          {userRooms && userRooms.map(roomID => {
             return (
               <RoomPortal
                 key={roomID}

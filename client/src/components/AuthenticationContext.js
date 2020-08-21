@@ -3,8 +3,11 @@ import React, { createContext, useState, useEffect } from 'react';
 import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 import DefaultProfile from '../assets/images/default-profile.png';
+
+import { isContainingData, toArray } from '../utils/index';
 
 export const AuthenticationContext = createContext(null);
 
@@ -57,6 +60,7 @@ function signInWithGoogle() {
 
 function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
+  const [userRooms, setUserRooms] = useState(null);
   const [message, setMessage] = useState(null);
 
   const handleSignOut = () => {
@@ -77,16 +81,13 @@ function AuthenticationProvider({ children, signOut, user }) {
       if (!photoURL) photoURL = DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, userID })
-        .then(response => response.json())
-        .then(({ userData: { rooms = [], roomDetails = [] } }) => {
-
+        .then(() => {
           setUserData({
+            userID,
             email,
             displayName,
             photoURL,
             userID,
-            rooms,
-            roomDetails,
           })
         })
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
@@ -96,10 +97,32 @@ function AuthenticationProvider({ children, signOut, user }) {
     }
   }, [user]);
 
+  useEffect(() => {
+    let observer;
+
+    if (isContainingData(userData)) {
+      const { userID } = userData;
+
+      const roomReference = firebase.firestore().collection('users').doc(userID);
+
+      observer = roomReference.onSnapshot(snapshot => {
+        if (userData) {
+          const data = snapshot.data();
+          const { ownedRooms = {}, participatingRooms = {} } = data;
+
+          const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
+
+          setUserRooms(allRooms);
+        }
+      });
+    }
+  }, [userData]);
+
   return (
     <AuthenticationContext.Provider
       value={{
         userData,
+        userRooms,
         createUserWithEmail,
         signInWithEmail,
         signInWithGoogle,
