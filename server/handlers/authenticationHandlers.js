@@ -49,36 +49,43 @@ admin.initializeApp({
 const database = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
+async function handleReturningUser(userID, acceptedData, message) {
+  const userData = await getUserData(userID, database);
+
+  const ownedRooms = userData.ownedRooms || {};
+  const ownedRoomIDs = Object.keys(ownedRooms);
+
+  const participatingRooms = await getParticipatingRooms(userID, database);
+  const allUserRooms = [...participatingRooms, ...ownedRoomIDs];
+
+  const roomDetails = await getRoomDetails(ownedRoomIDs, database);
+
+  return { ...acceptedData, rooms: allUserRooms, roomDetails };
+}
+
+async function handleNewUser(userID, acceptedData) {
+  await writeDatabase(USERS_PATH, userID, acceptedData);
+}
+
 async function handleLogin(req, res) {
   let { email, displayName, photoURL, userID } = req.body;
 
   displayName = displayName ? displayName : email;
 
-  const acceptedData = { email, displayName, photoURL };
+  let acceptedData = { email, displayName, photoURL };
 
   try {
     let message = '';
+
     if (await isReturningUser(userID, database)) {
-      const userData = await getUserData(userID, database);
-      const participatingRooms = await getParticipatingRooms(userID, database);
+      acceptedData = await handleReturningUser(userID, acceptedData, message);
 
-      const ownedRooms = userData.ownedRooms || {};
-      const ownedRoomIDs = Object.keys(ownedRooms);
-
-      const allUserRooms = [...participatingRooms, ...ownedRoomIDs];
-
-      const roomDetails = await getRoomDetails(ownedRoomIDs, database);
-
-      acceptedData.rooms = allUserRooms;
-      acceptedData.roomDetails = roomDetails;
+      message = `Welcome ${displayName}!`;
+    }
+    else {
+      await handleNewUser(userID, acceptedData);
 
       message = `Welcome back ${displayName}!`;
-    }
-
-    else {
-      await writeDatabase(USERS_PATH, userID, acceptedData, database);
-
-      message = `Welcome ${displayName}!`
     }
 
     res.status(201).json({ status: 201, userData: acceptedData, message });
