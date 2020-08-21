@@ -16,6 +16,7 @@ const {
 
 const {
   getSearchResults,
+  toArray,
 } = require('../utils/index');
 
 const {
@@ -52,10 +53,10 @@ async function handleReturningUser(userID, acceptedData, message) {
   const userData = await getUserData(userID, database);
 
   const ownedRooms = userData.ownedRooms || {};
-  const ownedRoomIDs = Object.keys(ownedRooms);
+  const ownedRoomIDs = toArray(ownedRooms, 'keys');
 
   const participatingRooms = userData.participatingRooms || {};
-  const participatingRoomIDs = Object.keys(participatingRooms);
+  const participatingRoomIDs = toArray(participatingRooms, 'keys');
 
   const allUserRooms = [...participatingRoomIDs, ...ownedRoomIDs];
 

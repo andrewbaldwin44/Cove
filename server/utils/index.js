@@ -21,4 +21,16 @@ function getSearchResults(dataToSearch, search) {
   return searchResults;
 }
 
-module.exports = { getSearchResults };
+function toArray(object, type) {
+  switch (type) {
+    case 'keys':
+      return Object.keys(object);
+    default:
+      return Object.entries(object);
+  }
+}
+
+module.exports = {
+  getSearchResults,
+  toArray,
+};

@@ -10,6 +10,10 @@ const {
   },
 } = require('../constants');
 
+const {
+  toArray,
+} = require('../utils/index');
+
 const { v4: uuidv4 } = require('uuid');
 
 function queryDatabase(path, doc, database) {
@@ -119,7 +123,7 @@ async function getRoomMembersData(database) {
 
 async function getRoomDetails(ownedRoomIDs, database) {
   const response = await queryDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, database);
-  const allRooms = Object.entries(response.data());
+  const allRooms = toArray(response.data());
 
   const ownedRoomDetails = allRooms.reduce((roomDetails, [id, data]) => {
     if (ownedRoomIDs.includes(id)) roomDetails.push(data);
