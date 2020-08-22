@@ -3,13 +3,18 @@ import styled from 'styled-components';
 
 import { BsSearch } from 'react-icons/bs';
 
-function Youtube() {
+import SearchedVideos from './SearchedVideos';
+import Video from './Video';
+
+import { RoomContext } from '../../RoomContext';
+
+function Youtube({ innerWindow }) {
+  const {
+    navigateInnerWindow,
+  } = useContext(RoomContext);
+
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
-
-  const openVideo = () => {
-
-  }
 
   const requestYoutubeResults = event => {
     event.preventDefault();
@@ -20,6 +25,8 @@ function Youtube() {
       fetch(`/api/youtube_search?search=${searchValue}`)
         .then(response => response.json())
         .then(({ searchResults }) => setSearchResults(searchResults));
+
+      navigateInnerWindow('youtube');
     }
   }
 
@@ -39,46 +46,15 @@ function Youtube() {
           </SearchButton>
         </form>
       </Header>
-      <Body>
-        {searchResults.map(result => {
-          const {
-            id: {
-              videoId
-            },
-            snippet: {
-              title,
-              channelTitle,
-              thumbnails: {
-                medium: {
-                  url,
-                  width,
-                  height
-                }
-              },
-            }
-          } = result;
-
-          return (
-            <Result
-              key={videoId}
-              style={{ height, width }}
-              onClick={() => openVideo(videoId)}
-            >
-              <img
-                src={url}
-                style={{ height, width }}
-              />
-              <div
-                style={{ width }}
-                className='video-information'
-              >
-                <span className='video-title'>{title}</span>
-                <span className='video-channel'>{channelTitle}</span>
-              </div>
-            </Result>
-          )
-        })}
-      </Body>
+      {innerWindow ? (
+        <Video
+          videoId={innerWindow}
+        />
+      ) : (
+        <SearchedVideos
+          searchResults={searchResults}
+        />
+      )}
     </Wrapper>
   )
 }
@@ -113,36 +89,6 @@ const SearchButton = styled.button`
 
   svg {
     color: white;
-  }
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-top: 90px;
-`;
-
-const Result = styled.div`
-  margin: 0 auto;
-  margin-bottom: 120px;
-  cursor: pointer;
-
-  .video-information {
-    display: flex;
-    flex-direction: column;
-    padding-left: 5px;
-    margin-top: 10px;
-  }
-
-  .video-title {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .video-channel {
-    font-size: 0.9em;
-    padding-left: 5px;
   }
 `;
 

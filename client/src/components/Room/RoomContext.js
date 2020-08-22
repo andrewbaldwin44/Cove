@@ -66,11 +66,17 @@ export function RoomProvider({ children, roomID, database }) {
       });
   }
 
+  const navigateInnerWindow = app => {
+    const newState = ['innerWindow', null];
+    changeWindowState(app, newState);
+  }
+
   return (
     <RoomContext.Provider
       value={{
         openWindows,
         changeWindowState,
+        navigateInnerWindow,
       }}
     >
       {children}

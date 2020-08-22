@@ -43,13 +43,17 @@ function WindowManager() {
           )
         }
         else if (app === 'youtube' && appState.isOpen) {
+          const { innerWindow } = appState;
+
           return (
             <Windows
               key={`window${index}`}
               title={'Youtube'}
               containing={'youtube'}
             >
-              <Youtube />
+              <Youtube
+                innerWindow={innerWindow}
+              />
             </Windows>
           )
         }

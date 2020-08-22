@@ -12,16 +12,12 @@ import { RoomContext } from '../RoomContext';
 function Windows({ children, title, containing }) {
   const {
     changeWindowState,
+    navigateInnerWindow,
   } = useContext(RoomContext);
 
   const closeWindow = app => {
     const newState = ['isOpen', false];
     changeWindowState(app, newState);
-  }
-
-  const naviagateInnerWindow = () => {
-    const newState = ['innerWindow', null];
-    changeWindowState('games', newState);
   }
 
   return (
@@ -35,7 +31,7 @@ function Windows({ children, title, containing }) {
       >
         <HeaderNav>
           <BsArrowLeftShort
-            onClick={naviagateInnerWindow}
+            onClick={() => navigateInnerWindow(containing)}
           />
           {title}
         </HeaderNav>
