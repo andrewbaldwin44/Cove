@@ -7,7 +7,7 @@ const YOUTUBE_RESULTS = 48;
 async function handleYoutubeSearch(req, res) {
   const { search } = req.query;
 
-  const searchResponse = await fetch(`${YOUTUBE_SEARCH_BASE_URL}&part=snippet&q=${search}&order=date&maxResults=${YOUTUBE_RESULTS}`);
+  const searchResponse = await fetch(`${YOUTUBE_SEARCH_BASE_URL}&part=snippet&q=${search}&maxResults=${YOUTUBE_RESULTS}`);
   const { items } = await searchResponse.json();
 
   const searchResults = items.reduce((searchResults, item) => {
