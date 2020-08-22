@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import AppBar from './AppBar';
 import WindowManager from './WindowManager';
+import VideoCall from './VideoCall';
 
 import { BsArrowLeftShort, BsSearch } from 'react-icons/bs';
 import { SiKatana } from 'react-icons/si';
@@ -27,6 +28,7 @@ function Main({ isOwner }) {
         </SearchContainer>
       </Header>
       <WindowManager />
+      <VideoCall />
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
         <WebIcon onClick={() => changeWindowState('web', true)} />

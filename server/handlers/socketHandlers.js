@@ -1,12 +1,14 @@
 const users = {};
 
 function handleVideoCall(socket, io) {
-  socket.emit('socketID', socket.id);
 
   socket.on('newConnection', ({ userData, roomID }) => {
+    socket.emit('socketID', socket.id);
+    
     if (!users[socket.id]) {
       users[socket.id] = userData;
     }
+
 
     io.sockets.emit("allUsers", users);
   });

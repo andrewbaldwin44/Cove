@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Peer from 'simple-peer';
 
+import Peer from 'simple-peer';
 import io from 'socket.io-client';
 
-import { AuthenticationContext } from './AuthenticationContext';
+import { IoIosCall } from 'react-icons/io';
 
-import { isContainingData, toArray } from '../utils/index';
+import { AuthenticationContext } from '../AuthenticationContext';
+
+import { isContainingData, toArray } from '../../utils/index';
 
 const socket = io.connect('http://localhost:4000');
 
-function TestCall() {
+function VideoCall() {
   const {
     userData,
   } = useContext(AuthenticationContext);
@@ -60,7 +62,7 @@ function TestCall() {
       setCallerSocketID(callerSocketID);
       setCallerSignal(signal);
     });
-  }, [])
+  }, []);
 
   const callPeer = (socketID) => {
     const { email } = userData;
@@ -128,45 +130,49 @@ function TestCall() {
   let incomingCall;
   if (receivingCall) {
     incomingCall = (
-      <div>
+      <IncomingCall>
         <h1>{caller} is calling you</h1>
         <button onClick={acceptCall}>Accept</button>
-      </div>
+      </IncomingCall>
     )
   }
 
   return (
-    <VideoGrid>
+    <Wrapper>
       {UserVideo}
       {PeerVideo}
       <div>
         {isContainingData(userData) && toArray(users).map(([socketID, memberData], index) => {
-          const { userID: memberID, email } = memberData;
+          const { userID: memberID, displayName, email } = memberData;
 
           if (memberID === userData.userID) {
             return null;
           }
           return (
-            <button
+            <CallButton
               key={`callButton${index}`}
               onClick={() => callPeer(socketID)}
+              type='button'
             >
-              Call {email}
-            </button>
+              <IoIosCall />
+              Call {displayName || email}
+            </CallButton>
           );
         })}
       </div>
-      <div>
-        {incomingCall}
-      </div>
-    </VideoGrid>
+      {incomingCall}
+    </Wrapper>
   )
 }
 
-const VideoGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  gird-auto-rows: 300px;
+const Wrapper = styled.div`
+  position: absolute;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 300px;
+  margin: 30px 30px;
 `;
 
 const Video = styled.video`
@@ -175,4 +181,28 @@ const Video = styled.video`
   object-fit: cover;
 `;
 
-export default TestCall;
+const CallButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  height: 60px;
+  min-width: 250px;
+  padding: 30px 15px;
+  background-color: #00C851;
+  font-size: 1.3em;
+  border-radius: 15px;
+
+  svg {
+    font-size: 1.5em;
+    margin-right: 10px;
+  }
+`;
+
+const IncomingCall = styled.div`
+  height: 50px;
+  min-width: 250px;
+  background-color: blue;
+`;
+
+export default VideoCall;
