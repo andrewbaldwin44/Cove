@@ -1,43 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import Windows from '../Windows/index';
-import Browser from '../Windows/Browser';
+import Windows from './Windows/index';
+import Browser from './Windows/Browser';
 
-import { toArray } from '../../utils/index';
+import { RoomContext } from './RoomContext';
 
-import { AuthenticationContext } from '../AuthenticationContext';
-
-function WindowManager({ roomID }) {
+function WindowManager() {
   const {
-    database,
-  } = useContext(AuthenticationContext);
-
-  const [openWindows, setOpenWindows] = useState([]);
-
-  useEffect(() => {
-    const windowStateReference = database.collection('rooms').doc('state')
-                                         .collection(roomID).doc('Windows');
-
-    const observer = windowStateReference.onSnapshot(snapshot => {
-      const data = snapshot.data() || [];
-      const openWindows = toArray(data);
-      setOpenWindows(openWindows);
-    });
-
-    return () => observer();
-    // eslint-disable-next-line
-  }, []);
-
-  const handleWindowClose = app => {
-    const reference = database.collection('rooms').doc('state')
-                              .collection(roomID).doc('Windows');
-    reference.set({
-      [app]: {
-        isOpen: false
-      }
-    });
-  }
+    openWindows,
+  } = useContext(RoomContext);
 
   return (
     <Wrapper>
@@ -47,7 +19,6 @@ function WindowManager({ roomID }) {
             <Windows
               key={`window${index}`}
               title={'Web'}
-              handleWindowClose={handleWindowClose}
             >
               <Browser />
             </Windows>

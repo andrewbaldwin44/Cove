@@ -14,3 +14,9 @@ export const AUTHENTICATION_ERROR_MESSAGES = {
   missingPasswordRequirements: 'Password should contain at least one upper case character, number or symbol',
   defaultMessage: 'Email or Password is invalid',
 }
+
+export const DATABASE_PATHS = {
+  ROOMS_PATH: 'rooms',
+  ROOM_STATE_PATH: 'state',
+  WINDOW_STATE_PATH: 'windows',
+}

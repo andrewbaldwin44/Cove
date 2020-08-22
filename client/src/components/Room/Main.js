@@ -10,22 +10,12 @@ import { SiKatana } from 'react-icons/si';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 
-import { AuthenticationContext } from '../AuthenticationContext';
+import { RoomContext } from './RoomContext';
 
-function Main({ roomID, isOwner }) {
+function Main({ isOwner }) {
   const {
-    database,
-  } = useContext(AuthenticationContext);
-
-  const handleWindowOpen = app => {
-    const reference = database.collection('rooms').doc('state')
-                              .collection(roomID).doc('Windows');
-    reference.set({
-      [app]: {
-        isOpen: true
-      }
-    });
-  }
+    changeWindowState,
+  } = useContext(RoomContext);
 
   return (
     <Wrapper>
@@ -36,10 +26,10 @@ function Main({ roomID, isOwner }) {
           <SearchInput type='text' placeholder='Search...' />
         </SearchContainer>
       </Header>
-      <WindowManager roomID={roomID} />
+      <WindowManager />
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
-        <WebIcon onClick={() => handleWindowOpen('web')} />
+        <WebIcon onClick={() => changeWindowState('web', true)} />
       </AppBar>
     </Wrapper>
   )

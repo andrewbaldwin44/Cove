@@ -4,11 +4,13 @@ import { useParams } from 'react-router-dom'
 import Main from './Main';
 
 import { AuthenticationContext } from '../AuthenticationContext';
+import { RoomProvider } from './RoomContext';
 
 function Room() {
   const {
     retrieveClientID,
     validateRoomMember,
+    database,
   } = useContext(AuthenticationContext);
 
   const { roomID } = useParams();
@@ -32,10 +34,14 @@ function Room() {
   }
   else if (memberData.isOwner || memberData.isMember) {
     return (
-      <Main
+      <RoomProvider
+        database={database}
         roomID={roomID}
-        isOwner={memberData.isOwner}
-      />
+      >
+        <Main
+          isOwner={memberData.isOwner}
+        />
+      </RoomProvider>
     )
   }
   else {

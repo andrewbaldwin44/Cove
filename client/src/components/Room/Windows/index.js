@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import Draggable from 'react-draggable';
@@ -6,7 +6,13 @@ import Draggable from 'react-draggable';
 import { FiMaximize2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
 
-function Windows({ children, title, handleWindowClose }) {
+import { RoomContext } from '../RoomContext';
+
+function Windows({ children, title }) {
+  const {
+    changeWindowState,
+  } = useContext(RoomContext);
+
   return (
     <Draggable
       handle='.anchor'
@@ -22,7 +28,7 @@ function Windows({ children, title, handleWindowClose }) {
         <div>
           <IoMdRemove />
           <FiMaximize2 />
-          <IoIosCloseCircleOutline onClick={() => handleWindowClose('web')} />
+          <IoIosCloseCircleOutline onClick={() => changeWindowState('web', false)} />
         </div>
       </Header>
       {children}
