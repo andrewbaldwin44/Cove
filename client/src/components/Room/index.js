@@ -32,7 +32,10 @@ function Room() {
   }
   else if (memberData.isOwner || memberData.isMember) {
     return (
-      <Main isOwner={memberData.isOwner} />
+      <Main
+        roomID={roomID}
+        isOwner={memberData.isOwner}
+      />
     )
   }
   else {

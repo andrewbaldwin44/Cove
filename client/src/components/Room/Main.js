@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { useDispatch } from "react-redux";
-import { openWindow } from "../../actions";
 
 import AppBar from './AppBar';
 import WindowManager from './WindowManager';
@@ -13,11 +10,21 @@ import { SiKatana } from 'react-icons/si';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 
-function Main({ isOwner }) {
-  const dispatch = useDispatch();
+import { AuthenticationContext } from '../AuthenticationContext';
+
+function Main({ roomID, isOwner }) {
+  const {
+    database,
+  } = useContext(AuthenticationContext);
 
   const handleWindowOpen = app => {
-    dispatch(openWindow(app));
+    const reference = database.collection('rooms').doc('state')
+                              .collection(roomID).doc('Windows');
+    reference.set({
+      [app]: {
+        isOpen: true
+      }
+    });
   }
 
   return (
@@ -29,7 +36,7 @@ function Main({ isOwner }) {
           <SearchInput type='text' placeholder='Search...' />
         </SearchContainer>
       </Header>
-      <WindowManager />
+      <WindowManager roomID={roomID} />
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
         <WebIcon onClick={() => handleWindowOpen('web')} />

@@ -6,16 +6,7 @@ import Draggable from 'react-draggable';
 import { FiMaximize2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
 
-import { useDispatch } from "react-redux";
-import { closeWindow } from "../../actions";
-
-function Windows({ children, title }) {
-  const dispatch = useDispatch();
-
-  const handleWindowClose = app => {
-    dispatch(closeWindow(app));
-  }
-
+function Windows({ children, title, handleWindowClose }) {
   return (
     <Draggable
       handle='.anchor'

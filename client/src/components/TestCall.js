@@ -34,6 +34,7 @@ function TestCall() {
     if (isContainingData(userData)) {
       socket.emit('newConnection', { userData, roomID });
     }
+    // eslint-disable-next-line
   }, [userData]);
 
   useEffect(() => {

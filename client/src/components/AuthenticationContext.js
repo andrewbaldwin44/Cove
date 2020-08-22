@@ -120,6 +120,7 @@ function AuthenticationProvider({ children, signOut, user }) {
         validateRoomMember,
         message,
         setMessage,
+        database,
       }}
     >
       {children}
