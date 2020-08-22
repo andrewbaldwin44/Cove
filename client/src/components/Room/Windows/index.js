@@ -5,10 +5,11 @@ import Draggable from 'react-draggable';
 
 import { FiMaximize2 } from 'react-icons/fi';
 import { IoIosCloseCircleOutline, IoMdRemove } from 'react-icons/io';
+import { BsArrowLeftShort } from 'react-icons/bs';
 
 import { RoomContext } from '../RoomContext';
 
-function Windows({ children, title }) {
+function Windows({ children, title, setWindowNavigation }) {
   const {
     changeWindowState,
   } = useContext(RoomContext);
@@ -22,9 +23,12 @@ function Windows({ children, title }) {
       <Header
         className='anchor'
       >
-        <div>
-            {title}
-        </div>
+        <HeaderNav>
+          <BsArrowLeftShort
+            onClick={() => setWindowNavigation('back')}
+          />
+          {title}
+        </HeaderNav>
         <div>
           <IoMdRemove />
           <FiMaximize2 />
@@ -38,6 +42,7 @@ function Windows({ children, title }) {
 }
 
 const Wrapper = styled.div`
+  position: relative;
   background-color: white;
   height: calc(100vh - 60px);
   width: 100vw;
@@ -66,6 +71,18 @@ const Header = styled.div`
     &:not(:first-child) {
       margin-left: 20px;
     }
+  }
+`;
+
+const HeaderNav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+  height: 100%;
+
+  svg {
+    font-size: 30px;
   }
 `;
 

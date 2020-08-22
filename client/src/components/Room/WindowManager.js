@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import Windows from './Windows/index';
 import Browser from './Windows/Browser';
-import Games from './Windows/Games';
+import Games from './Windows/Games/index';
 
 import { RoomContext } from './RoomContext';
 
@@ -11,6 +11,8 @@ function WindowManager() {
   const {
     openWindows,
   } = useContext(RoomContext);
+
+  const [windowNavigation, setWindowNavigation] = useState(null);
 
   return (
     <Wrapper>
@@ -30,8 +32,12 @@ function WindowManager() {
             <Windows
               key={`window${index}`}
               title={'Games'}
+              setWindowNavigation={setWindowNavigation}
             >
-              <Games />
+              <Games
+                windowNavigation={windowNavigation}
+                setWindowNavigation={setWindowNavigation}
+              />
             </Windows>
           )
         }
