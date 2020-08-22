@@ -15,6 +15,16 @@ function Windows({ children, title }) {
     setGamePlaying,
   } = useContext(RoomContext);
 
+  const closeWindow = app => {
+    const newState = ['isOpen', false];
+    changeWindowState(app, newState);
+  }
+
+  const naviagateInnerWindow = () => {
+    const newState = ['innerWindow', null];
+    changeWindowState('games', newState);
+  }
+
   return (
     <Draggable
       handle='.anchor'
@@ -26,14 +36,14 @@ function Windows({ children, title }) {
       >
         <HeaderNav>
           <BsArrowLeftShort
-            onClick={() => setGamePlaying(null)}
+            onClick={naviagateInnerWindow}
           />
           {title}
         </HeaderNav>
         <div>
           <IoMdRemove />
           <FiMaximize2 />
-          <IoIosCloseCircleOutline onClick={() => changeWindowState('web', false)} />
+          <IoIosCloseCircleOutline onClick={() => closeWindow('web')} />
         </div>
       </Header>
       {children}

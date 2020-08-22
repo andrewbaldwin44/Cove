@@ -10,6 +10,26 @@ const {
 
 export const RoomContext = createContext(null);
 
+function updateWindowState(app, newState, reference) {
+  const [stateType, stateChange] = newState;
+
+  const path = `${app}.${stateType}`;
+
+  reference.update({
+    [path]: stateChange
+  });
+}
+
+function writeWindowState(app, newState, reference) {
+  const [stateType, stateChange] = newState;
+
+  reference.set({
+    [app]: {
+      [stateType]: stateChange
+    }
+  });
+}
+
 export function RoomProvider({ children, roomID, database }) {
   const [openWindows, setOpenWindows] = useState([]);
   const [gamePlaying, setGamePlaying] = useState(null);
@@ -20,23 +40,31 @@ export function RoomProvider({ children, roomID, database }) {
 
     const observer = windowStateReference.onSnapshot(snapshot => {
       const data = snapshot.data() || [];
-      const openWindows = toArray(data);
+      const openWindows = data;
 
-      setOpenWindows(openWindows);
+      setOpenWindows(toArray(openWindows));
     });
 
     return () => observer();
     // eslint-disable-next-line
   }, []);
 
-  const changeWindowState = (app, state) => {
+  const changeWindowState = (app, newState) => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                               .collection(roomID).doc(WINDOW_STATE_PATH);
-    reference.set({
-      [app]: {
-        isOpen: state
-      }
-    });
+
+    reference
+      .get()
+      .then(snapshot => {
+        const data = snapshot.data();
+
+        if (snapshot.data()) {
+          updateWindowState(app, newState, reference);
+        }
+        else {
+          writeWindowState(app, newState, reference);
+        }
+      });
   }
 
   return (

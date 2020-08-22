@@ -19,6 +19,11 @@ function Main({ isOwner }) {
     changeWindowState,
   } = useContext(RoomContext);
 
+  const openWindow = app => {
+    const newState = ['isOpen', true];
+    changeWindowState(app, newState);
+  }
+
   return (
     <Wrapper>
       <Header>
@@ -32,11 +37,11 @@ function Main({ isOwner }) {
       <VideoCall />
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
-        <WebIcon onClick={() => changeWindowState('web', true)} />
+        <WebIcon onClick={() => openWindow('web')} />
         <StyledGameIcon
           src={GameIcon}
           alt='Games'
-          onClick={() => changeWindowState('games', true)}
+          onClick={() => openWindow('games')}
         />
       </AppBar>
     </Wrapper>
