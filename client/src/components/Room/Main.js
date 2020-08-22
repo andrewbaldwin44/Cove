@@ -11,6 +11,7 @@ import { SiKatana } from 'react-icons/si';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 import GameIcon from '../../assets/images/game.png';
+import YoutubeIcon from '../../assets/images/youtube.png';
 
 import { RoomContext } from './RoomContext';
 
@@ -43,6 +44,11 @@ function Main({ isOwner }) {
           alt='Games'
           onClick={() => openWindow('games')}
         />
+      <StyledYoutubeIcon
+        src={YoutubeIcon}
+        alt='Youtube'
+        onClick={() => openWindow('youtube')}
+      />
       </AppBar>
     </Wrapper>
   )
@@ -105,6 +111,11 @@ const WebIcon = styled(SiKatana)`
 const StyledGameIcon = styled.img`
   height: 40px;
   width: 40px;
+`;
+
+const StyledYoutubeIcon = styled.img`
+  height: 50px;
+  width: 50px;
 `;
 
 export default Main;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Windows from './Windows/index';
 import Browser from './Windows/Browser';
 import Games from './Windows/Games/index';
+import Youtube from './Windows/Youtube/index';
 
 import { RoomContext } from './RoomContext';
 
@@ -38,6 +39,17 @@ function WindowManager() {
               <Games
                 innerWindow={innerWindow}
               />
+            </Windows>
+          )
+        }
+        else if (app === 'youtube' && appState.isOpen) {
+          return (
+            <Windows
+              key={`window${index}`}
+              title={'Youtube'}
+              containing={'youtube'}
+            >
+              <Youtube />
             </Windows>
           )
         }
