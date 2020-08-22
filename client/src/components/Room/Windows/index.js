@@ -9,10 +9,9 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 
 import { RoomContext } from '../RoomContext';
 
-function Windows({ children, title }) {
+function Windows({ children, title, containing }) {
   const {
     changeWindowState,
-    setGamePlaying,
   } = useContext(RoomContext);
 
   const closeWindow = app => {
@@ -43,7 +42,7 @@ function Windows({ children, title }) {
         <div>
           <IoMdRemove />
           <FiMaximize2 />
-          <IoIosCloseCircleOutline onClick={() => closeWindow('web')} />
+          <IoIosCloseCircleOutline onClick={() => closeWindow(containing)} />
         </div>
       </Header>
       {children}

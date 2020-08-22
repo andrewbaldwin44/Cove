@@ -32,7 +32,6 @@ function writeWindowState(app, newState, reference) {
 
 export function RoomProvider({ children, roomID, database }) {
   const [openWindows, setOpenWindows] = useState([]);
-  const [gamePlaying, setGamePlaying] = useState(null);
 
   useEffect(() => {
     const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
@@ -58,7 +57,7 @@ export function RoomProvider({ children, roomID, database }) {
       .then(snapshot => {
         const data = snapshot.data();
 
-        if (snapshot.data()) {
+        if (data) {
           updateWindowState(app, newState, reference);
         }
         else {
@@ -72,8 +71,6 @@ export function RoomProvider({ children, roomID, database }) {
       value={{
         openWindows,
         changeWindowState,
-        gamePlaying,
-        setGamePlaying,
       }}
     >
       {children}

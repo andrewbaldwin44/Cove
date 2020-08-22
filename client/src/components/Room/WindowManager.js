@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import Windows from './Windows/index';
@@ -20,18 +20,24 @@ function WindowManager() {
             <Windows
               key={`window${index}`}
               title={'Web'}
+              containing={'web'}
             >
               <Browser />
             </Windows>
           )
         }
         else if (app === 'games' && appState.isOpen) {
+          const { innerWindow } = appState;
+
           return (
             <Windows
               key={`window${index}`}
               title={'Games'}
+              containing={'games'}
             >
-              <Games />
+              <Games
+                innerWindow={innerWindow}
+              />
             </Windows>
           )
         }

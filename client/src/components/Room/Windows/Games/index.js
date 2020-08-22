@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import BoardGames from './BoardGames';
 
 import { RoomContext } from '../../RoomContext';
 
-function Games() {
+function Games({ innerWindow }) {
   const {
     changeWindowState,
-    gamePlaying,
-    setGamePlaying,
   } = useContext(RoomContext);
 
   const openGame = game => {
@@ -17,7 +15,7 @@ function Games() {
     changeWindowState('games', newState);
   }
 
-  if (gamePlaying === null) {
+  if (!innerWindow) {
     return (
       <Wrapper>
         <GameTile
