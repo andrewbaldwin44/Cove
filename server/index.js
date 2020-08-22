@@ -25,6 +25,9 @@ const {
   handleVideoCall,
 } = require('./handlers/socketHandlers');
 
+const {
+  handleYoutubeSearch,
+} = require('./handlers/apiHandlers');
 
 io.on('connection', socket => handleVideoCall(socket, io));
 
@@ -52,5 +55,7 @@ app
 .post('/rooms/newroom', handleNewRoom)
 
 .get('/search_users', handleUserSearch)
+
+.get('/api/youtube_search', handleYoutubeSearch)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));
