@@ -12,8 +12,6 @@ function WindowManager() {
     openWindows,
   } = useContext(RoomContext);
 
-  const [windowNavigation, setWindowNavigation] = useState(null);
-
   return (
     <Wrapper>
       {openWindows.map(([app, appState], index) => {
@@ -32,12 +30,8 @@ function WindowManager() {
             <Windows
               key={`window${index}`}
               title={'Games'}
-              setWindowNavigation={setWindowNavigation}
             >
-              <Games
-                windowNavigation={windowNavigation}
-                setWindowNavigation={setWindowNavigation}
-              />
+              <Games />
             </Windows>
           )
         }

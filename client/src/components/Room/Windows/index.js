@@ -9,9 +9,10 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 
 import { RoomContext } from '../RoomContext';
 
-function Windows({ children, title, setWindowNavigation }) {
+function Windows({ children, title }) {
   const {
     changeWindowState,
+    setGamePlaying,
   } = useContext(RoomContext);
 
   return (
@@ -25,7 +26,7 @@ function Windows({ children, title, setWindowNavigation }) {
       >
         <HeaderNav>
           <BsArrowLeftShort
-            onClick={() => setWindowNavigation('back')}
+            onClick={() => setGamePlaying(null)}
           />
           {title}
         </HeaderNav>

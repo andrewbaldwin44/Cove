@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 import BoardGames from './BoardGames';
 
-function Games({ windowNavigation, setWindowNavigation }) {
-  const [gamePlaying, setGamePlaying] = useState(null);
+import { RoomContext } from '../../RoomContext';
 
-  useEffect(() => {
-    if (windowNavigation === 'back') {
-      setGamePlaying(null);
-      setWindowNavigation(null);
-    }
-  }, [windowNavigation]);
+function Games() {
+  const {
+    gamePlaying,
+    setGamePlaying,
+  } = useContext(RoomContext);
 
   if (gamePlaying === null) {
     return (
