@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Windows from './Windows/index';
 import Browser from './Windows/Browser';
+import Games from './Windows/Games';
 
 import { RoomContext } from './RoomContext';
 
@@ -21,6 +22,16 @@ function WindowManager() {
               title={'Web'}
             >
               <Browser />
+            </Windows>
+          )
+        }
+        else if (app === 'games' && appState.isOpen) {
+          return (
+            <Windows
+              key={`window${index}`}
+              title={'Games'}
+            >
+              <Games />
             </Windows>
           )
         }

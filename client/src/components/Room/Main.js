@@ -10,6 +10,7 @@ import { BsArrowLeftShort, BsSearch } from 'react-icons/bs';
 import { SiKatana } from 'react-icons/si';
 
 import DefaultBackground from '../../assets/images/default-background.jpeg';
+import GameIcon from '../../assets/images/game.png';
 
 import { RoomContext } from './RoomContext';
 
@@ -32,6 +33,11 @@ function Main({ isOwner }) {
       <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
         <WebIcon onClick={() => changeWindowState('web', true)} />
+        <StyledGameIcon
+          src={GameIcon}
+          alt='Games'
+          onClick={() => changeWindowState('games', true)}
+        />
       </AppBar>
     </Wrapper>
   )
@@ -89,7 +95,11 @@ const StyledSearchIcon = styled(BsSearch)`
 const WebIcon = styled(SiKatana)`
   font-size: 2.5em;
   color: white;
-  cursor: pointer;
+`;
+
+const StyledGameIcon = styled.img`
+  height: 40px;
+  width: 40px;
 `;
 
 export default Main;

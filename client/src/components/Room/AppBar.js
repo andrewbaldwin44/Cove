@@ -40,11 +40,19 @@ const Wrapper = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 30px;
   border-radius: 8px;
   background-color: var(--main-black);
   box-shadow: -2px -2px 8px var(--dark-shadow),
               4px 10px 5px var(--dark-shadow);
+
+  img, svg {
+    cursor: pointer;
+  }
+
+  img, svg:not(:first-child) {
+    margin-left: 30px;
+  }
 `;
 
 export default AppBar
