@@ -1,4 +1,4 @@
-import React, { useContext, createRef, useState } from 'react';
+import React, { useContext, createRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { BsSearch } from 'react-icons/bs';
@@ -16,24 +16,31 @@ function Youtube({ innerWindow }) {
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
 
-  const requestYoutubeResults = event => {
+  const requestYoutubeResults = searchValue => {
+    fetch(`/api/youtube_search?search=${searchValue}`)
+      .then(response => response.json())
+      .then(({ searchResults }) => setSearchResults(searchResults));
+  }
+
+  const getSearchResults = event => {
     event.preventDefault();
 
     const searchValue = searchInput.current.value;
 
     if (searchValue.length > 0) {
-      fetch(`/api/youtube_search?search=${searchValue}`)
-        .then(response => response.json())
-        .then(({ searchResults }) => setSearchResults(searchResults));
+      requestYoutubeResults(searchValue)
 
       navigateInnerWindow('youtube');
     }
   }
 
+  // homepage
+  useEffect(() => requestYoutubeResults(''), []);
+
   return (
     <Wrapper>
       <Header>
-        <form onSubmit={requestYoutubeResults}>
+        <form onSubmit={getSearchResults}>
           <YoutubeSearch
             type='text'
             ref={searchInput}

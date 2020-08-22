@@ -1,4 +1,4 @@
-import React, { useContext, createRef, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { RoomContext } from '../../RoomContext';
@@ -36,12 +36,13 @@ function SearchedVideos({ searchResults }) {
         return (
           <Result
             key={`${index}${videoId}`}
-            style={{ height, width }}
+            style={{ height, width, minWidth: width }}
             onClick={() => openVideo(videoId)}
           >
             <img
               src={url}
               style={{ height, width }}
+              alt='Youtube Thumbnail'
             />
             <div
               style={{ width }}
