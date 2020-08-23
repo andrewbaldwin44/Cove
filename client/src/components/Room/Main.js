@@ -12,6 +12,7 @@ import { SiKatana } from 'react-icons/si';
 import DefaultBackground from '../../assets/images/default-background.jpeg';
 import GameIcon from '../../assets/images/game.png';
 import YoutubeIcon from '../../assets/images/youtube.png';
+import DeezerIcon from '../../assets/images/deezer.png';
 
 import { RoomContext } from './RoomContext';
 
@@ -48,6 +49,11 @@ function Main({ isOwner }) {
         src={YoutubeIcon}
         alt='Youtube'
         onClick={() => openWindow('youtube')}
+      />
+      <StyledDeezerIcon
+        src={DeezerIcon}
+        alt='Deezer'
+        onClick={() => openWindow('deezer')}
       />
       </AppBar>
     </Wrapper>
@@ -114,6 +120,11 @@ const StyledGameIcon = styled.img`
 `;
 
 const StyledYoutubeIcon = styled.img`
+  height: 50px;
+  width: 50px;
+`;
+
+const StyledDeezerIcon = styled.img`
   height: 50px;
   width: 50px;
 `;
