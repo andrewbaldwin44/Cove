@@ -28,9 +28,9 @@ function handleDeezerRegistration(req, res) {
   const { userID, deezerID } = req.body;
 
   deezer.createSession(appID, appSecret, deezerID, async (error, response) => {
-    const accessToken = response.accessToken || null;
+    if (response) {
+      const { accessToken } = response;
 
-    if (accessToken) {
       const newUserData = { deezerID: accessToken };
 
       await updateDatabase(USERS_PATH, userID, newUserData, database);
@@ -45,20 +45,22 @@ function handleDeezerRegistration(req, res) {
 
 async function handleDeezerSearch(req, res) {
   const { search, code } = req.query;
-
+  //deezer.get("artist",{method:"top",id: "27"})
   try {
     const searchRequest = {
-      resource: 'search/artist',
+      resource: 'search/track',
       method: 'get',
       fields: { q: search }
     }
 
     deezer.request(code, searchRequest, (error, results) => {
       if (results) {
-        res.status(200).json({ status: 200, searchResults: results });
+        const { data } = results;
+
+        res.status(200).json({ status: 200, searchResults: data });
       }
       else {
-        res.status(400).json({ status: 400, ...error });
+        throw new Error(error);
       }
     });
   }

@@ -18,6 +18,9 @@ const GlobalStyles = createGlobalStyle`
     --portal-width: 200px;
     --portal-gap: 30px;
     --portal-border-radius: 10px;
+
+    --window-header-height: 50px;
+    --default-appbar-height: 60px;
   }
 
   *,

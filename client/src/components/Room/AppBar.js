@@ -46,6 +46,8 @@ const Wrapper = styled.div`
   box-shadow: -2px -2px 8px var(--dark-shadow),
               4px 10px 5px var(--dark-shadow);
 
+  z-index: 1;
+
   img, svg {
     cursor: pointer;
   }

@@ -55,15 +55,13 @@ function Home({ deezerID }) {
         setCurrentlyPlaying={setCurrentlyPlaying}
       />
       <Footer>
-        <iframe
+        <Player
           scrolling='no'
           frameBorder='0'
           allowtransparency='true'
-          src={`https://www.deezer.com/plugins/player?format=classic&playlist=true \
+          src={`https://www.deezer.com/plugins/player?format=classic&playlist=true&autoplay=true \
                 &color=007FEB&layout=dark&size=medium&type=tracks&id=${currentlyPlaying}& \
                 app_id=431662`}
-          width='700'
-          height='90'
         />
       </Footer>
     </Wrapper>
@@ -71,14 +69,12 @@ function Home({ deezerID }) {
 }
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100% + 2px);
 `;
 
 const Header = styled.div`
-  position: absolute;
-  top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,12 +100,13 @@ const SearchButton = styled.button`
   }
 `;
 
+const Player = styled.iframe`
+  width: 100vw;
+  height: 90px;
+`;
+
 const Footer = styled.div`
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-height: 0px;
+
 `;
 
 export default Home;

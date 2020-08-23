@@ -37,7 +37,6 @@ function Main({ isOwner }) {
       </Header>
       <WindowManager />
       <VideoCall />
-      <AppBar length={'40%'} position={'left'} />
       <AppBar length={'80%'} position={'bottom'}>
         <WebIcon onClick={() => openWindow('web')} />
         <StyledGameIcon
@@ -59,6 +58,8 @@ function Main({ isOwner }) {
     </Wrapper>
   )
 }
+
+//<AppBar length={'40%'} position={'left'} />
 
 const Wrapper = styled.div`
   display: flex;

@@ -5,14 +5,23 @@ function SearchedSongs({ searchResults, setCurrentlyPlaying }) {
   return (
     <Body>
       {searchResults && searchResults.map(result => {
-        const { id, title } = result;
+        const {
+          id,
+          title: songTitle,
+          artist: {
+            name: artist,
+            picture
+          }
+        } = result;
 
         return (
           <SearchResult
             key={id}
             onClick={() => setCurrentlyPlaying(id)}
           >
-            <span>{title}</span>
+            <img src={picture} />
+            <span>{songTitle}</span>
+            <span>{artist}</span>
           </SearchResult>
         )
       })}
@@ -24,8 +33,10 @@ const Body = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 40px;
+  justify-content: space-between;
+  padding: 40px 50px;
   height: 100%;
+  overflow-y: scroll;
 `;
 
 const SearchResult = styled.div`
@@ -33,6 +44,8 @@ const SearchResult = styled.div`
   flex-direction: column;
   height: 50px;
   width: 200px;
+  margin-bottom: 200px;
+  margin-right: 50px;
   cursor: pointer;
 `;
 

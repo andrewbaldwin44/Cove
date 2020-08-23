@@ -41,7 +41,9 @@ function Windows({ children, title, containing }) {
           <IoIosCloseCircleOutline onClick={() => closeWindow(containing)} />
         </div>
       </Header>
-      {children}
+      <Body>
+        {children}
+      </Body>
     </Wrapper>
     </Draggable>
   )
@@ -50,10 +52,8 @@ function Windows({ children, title, containing }) {
 const Wrapper = styled.div`
   position: relative;
   background-color: white;
-  height: calc(100vh - 60px);
+  height: calc(100vh - var(--default-appbar-height));
   width: 100vw;
-  left: 0;
-  top: 0;
 `;
 
 const Header = styled.div`
@@ -61,7 +61,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 50px;
+  height: var(--window-header-height);
   padding: 0 15px;
   background-color: lightblue;
   cursor: grab;
@@ -90,6 +90,12 @@ const HeaderNav = styled.div`
   svg {
     font-size: 30px;
   }
+`;
+
+const Body = styled.div`
+  position: relative;
+  top: 0;
+  height: calc(100% - var(--window-header-height));
 `;
 
 export default Windows;

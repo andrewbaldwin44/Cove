@@ -20,7 +20,7 @@ function Video({ videoId }) {
 
 const Body = styled.div`
   margin-top: 70px;
-  height: calc(100% - 72px);
+  height: 100%;
 `;
 
 export default Video;

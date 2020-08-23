@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styled from 'styled-components';
 
 import { AuthenticationContext } from '../../../AuthenticationContext';
 
+import Login from './Login';
 import Home from './Home';
 
 function Deezer() {
@@ -26,28 +26,15 @@ function Deezer() {
     }
   }, [userData]);
 
-  return (
-    <Body>
-    {loginUrl && (
-      <a
-        href={loginUrl}
-        target='_blank'
-        alt='Deezer Login'
-        rel='noopener noreferrer'
-      >
-        Login to Deezer
-      </a>
-    )}
-    {deezerID && (
+  if (deezerID) {
+    return (
       <Home deezerID={deezerID} />
-    )}
-    </Body>
-  )
+    )
+  }
+  else {
+    return (
+      <Login loginUrl={loginUrl} />
+    )
+  }
 }
-
-const Body = styled.div`
-  margin-top: 70px;
-  height: calc(100% - 72px);
-`;
-
 export default Deezer;

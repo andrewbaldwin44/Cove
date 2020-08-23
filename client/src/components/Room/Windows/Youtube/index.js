@@ -80,7 +80,7 @@ function Youtube({ innerWindow }) {
 const Wrapper = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
-  height: calc(100% - 50px);
+  height: 100%;
 `;
 
 const Header = styled.div`
