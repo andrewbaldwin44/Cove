@@ -6,6 +6,7 @@ import Browser from './Windows/Browser';
 import Games from './Windows/Games/index';
 import Youtube from './Windows/Youtube/index';
 import Deezer from './Windows/Deezer/index';
+import Activities from './Windows/Activities/index';
 
 import { RoomContext } from './RoomContext';
 
@@ -66,6 +67,17 @@ function WindowManager() {
               containing={'deezer'}
             >
               <Deezer />
+            </Windows>
+          )
+        }
+        else if (app === 'activity' && appState.isOpen) {
+          return (
+            <Windows
+              key={`window${index}`}
+              title={'Timed Activities'}
+              containing={'activity'}
+            >
+              <Activities />
             </Windows>
           )
         }

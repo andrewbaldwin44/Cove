@@ -4,5 +4,8 @@
   "description": "",
   "private": "true",
   "author": "Andrew Baldwin",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@lourenci/react-kanban": "^2.0.0"
+  }
 }

@@ -13,6 +13,7 @@ import DefaultBackground from '../../assets/images/default-background.jpeg';
 import GameIcon from '../../assets/images/game.png';
 import YoutubeIcon from '../../assets/images/youtube.png';
 import DeezerIcon from '../../assets/images/deezer.png';
+import ActivityIcon from '../../assets/images/activity.png';
 
 import { RoomContext } from './RoomContext';
 
@@ -53,6 +54,11 @@ function Main({ isOwner }) {
         src={DeezerIcon}
         alt='Deezer'
         onClick={() => openWindow('deezer')}
+      />
+      <StyledActivityIcon
+        src={ActivityIcon}
+        alt='Activities'
+        onClick={() => openWindow('activity')}
       />
       </AppBar>
     </Wrapper>
@@ -126,6 +132,11 @@ const StyledYoutubeIcon = styled.img`
 `;
 
 const StyledDeezerIcon = styled.img`
+  height: 50px;
+  width: 50px;
+`;
+
+const StyledActivityIcon = styled.img`
   height: 50px;
   width: 50px;
 `;
