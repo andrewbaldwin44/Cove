@@ -1,11 +1,16 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { BsSearch } from 'react-icons/bs';
 
+import SearchedSongs from './SearchedSongs';
+
 function Home({ deezerID }) {
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+
+  console.log(currentlyPlaying);
 
   const requestDeezerResults = searchValue => {
     fetch(`/api/deezer_search?search=${searchValue}&code=${deezerID}`)
@@ -26,6 +31,9 @@ function Home({ deezerID }) {
     }
   }
 
+  // homepage
+  useEffect(() => requestDeezerResults('chart'), []);
+
   return(
     <Wrapper>
       <Header>
@@ -42,7 +50,22 @@ function Home({ deezerID }) {
           </SearchButton>
         </form>
       </Header>
-      Whooooooo
+      <SearchedSongs
+        searchResults={searchResults}
+        setCurrentlyPlaying={setCurrentlyPlaying}
+      />
+      <Footer>
+        <iframe
+          scrolling='no'
+          frameBorder='0'
+          allowtransparency='true'
+          src={`https://www.deezer.com/plugins/player?format=classic&playlist=true \
+                &color=007FEB&layout=dark&size=medium&type=tracks&id=${currentlyPlaying}& \
+                app_id=431662`}
+          width='700'
+          height='90'
+        />
+      </Footer>
     </Wrapper>
   )
 }
@@ -54,7 +77,8 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
+  top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,6 +102,14 @@ const SearchButton = styled.button`
   svg {
     color: white;
   }
+`;
+
+const Footer = styled.div`
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 0px;
 `;
 
 export default Home;
