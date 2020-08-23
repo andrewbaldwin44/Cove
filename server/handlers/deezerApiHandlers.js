@@ -7,7 +7,7 @@ const appSecret = process.env.DEEZER_API_SECRET;
 let deezerID = {};
 
 function handleDeezerLogin(req, res) {
-  const redirectUrl = 'http://localhost:4000/api/deezer_authenticated';
+  const redirectUrl = 'http://localhost:3000/api/deezer_authenticated';
   const loginUrl = deezer.getLoginUrl(appId, redirectUrl);
 
   res.status(200).json({ status: 200, loginUrl });
@@ -22,7 +22,7 @@ async function handleDeezerAuthenticated(req, res) {
     if (code) {
       deezerID = code;
 
-      res.status(200).send('Login Successful! You may now return to your room');
+      res.status(200).send('');
     }
     else {
       throw new Error('Deezer authentication was unsuccesful');
@@ -60,5 +60,4 @@ async function handleDeezerAuthenticated(req, res) {
 
 module.exports = {
   handleDeezerLogin,
-  handleDeezerAuthenticated,
 };

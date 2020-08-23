@@ -31,7 +31,6 @@ const {
 
 const {
   handleDeezerLogin,
-  handleDeezerAuthenticated,
 } = require('./handlers/deezerApiHandlers');
 
 io.on('connection', socket => handleVideoCall(socket, io));
@@ -63,6 +62,5 @@ app
 
 .get('/api/youtube_search', handleYoutubeSearch)
 .get('/api/deezer_login', handleDeezerLogin)
-.get('/api/deezer_authenticated', handleDeezerAuthenticated)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));

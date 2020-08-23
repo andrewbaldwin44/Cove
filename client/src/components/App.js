@@ -9,6 +9,7 @@ import Homepage from './Homepage';
 import Login from './Login/index';
 import Profile from './Profile';
 import Room from './Room/index';
+import DeezerAuthenticated from './DeezerAuthenticated';
 import FourOhFour from './FourOhFour';
 
 import { AuthenticationContext } from './AuthenticationContext';
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route exact path='/rooms/room/:roomID'>
             <Room />
+          </Route>
+          <Route exact path='/api/deezer_authenticated'>
+            <DeezerAuthenticated />
           </Route>
           <Route path='/'>
             <FourOhFour />

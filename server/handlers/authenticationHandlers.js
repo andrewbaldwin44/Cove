@@ -49,6 +49,18 @@ admin.initializeApp({
 const database = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
+async function handleReturningUser(userID, acceptedData) {
+  const userData = await queryDatabase(USERS_PATH, userID, database);
+  const { deezerID } = userData.data();
+
+  if (deezerID) {
+    return { ...acceptedData, deezerID };
+  }
+  else {
+    return acceptedData;
+  }
+}
+
 async function handleNewUser(userID, acceptedData) {
   await writeDatabase(USERS_PATH, userID, acceptedData, database);
 }
@@ -64,6 +76,8 @@ async function handleLogin(req, res) {
     let message = '';
 
     if (await isReturningUser(userID, database)) {
+      acceptedData = await handleReturningUser(userID, acceptedData);
+
       message = `Welcome ${displayName}!`;
     }
     else {

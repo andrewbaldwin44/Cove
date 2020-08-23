@@ -1,13 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 
+import { AuthenticationContext } from '../../../AuthenticationContext';
+
+import Home from './Home';
+
 function Deezer() {
+  const {
+    userData,
+  } = useContext(AuthenticationContext);
+
   const [loginUrl, setLoginUrl] = useState(null);
+  const [deezerID, setDeezerID] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/deezer_login`)
-      .then(response => response.json())
-      .then(({ loginUrl }) => setLoginUrl(loginUrl));
+    const { deezerID = null } = userData;
+
+    if (deezerID) {
+      setDeezerID(deezerID);
+    }
+    else {
+      fetch(`/api/deezer_login`)
+        .then(response => response.json())
+        .then(({ loginUrl }) => setLoginUrl(loginUrl));
+    }
   }, []);
 
   return (
@@ -21,6 +37,9 @@ function Deezer() {
       >
         Login to Deezer
       </a>
+    )}
+    {deezerID && (
+      <Home deezerID={deezerID} />
     )}
     </Body>
   )

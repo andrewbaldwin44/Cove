@@ -60,6 +60,12 @@ function AuthenticationProvider({ children, signOut, user }) {
     }
   }
 
+  const updateUserData = (userID, newData) => {
+    const reference = database.collection('users').doc(userID);
+
+    reference.update(newData);
+  }
+
   useEffect(() => {
     if (user) {
       let { email, displayName, photoURL, uid: userID } = user;
@@ -67,9 +73,11 @@ function AuthenticationProvider({ children, signOut, user }) {
       if (!photoURL) photoURL = DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, userID })
-        .then(() => {
+        .then(response => response.json())
+        .then(({ userData: { deezerID = null }}) => {
           setUserData({
             userID,
+            deezerID,
             email,
             displayName,
             photoURL,
@@ -121,6 +129,7 @@ function AuthenticationProvider({ children, signOut, user }) {
         message,
         setMessage,
         database,
+        updateUserData,
       }}
     >
       {children}
