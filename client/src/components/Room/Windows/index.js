@@ -63,7 +63,8 @@ const Header = styled.div`
   width: 100%;
   height: var(--window-header-height);
   padding: 0 15px;
-  background-color: lightblue;
+  background-color: var(--main-black);
+  color: white;
   cursor: grab;
 
 
@@ -83,12 +84,12 @@ const Header = styled.div`
 const HeaderNav = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100px;
+  width: 400px;
   height: 100%;
 
   svg {
     font-size: 30px;
+    margin-right: 20px;
   }
 `;
 
