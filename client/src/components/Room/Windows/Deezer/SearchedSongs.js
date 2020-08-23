@@ -19,7 +19,7 @@ function SearchedSongs({ searchResults, setCurrentlyPlaying }) {
             key={id}
             onClick={() => setCurrentlyPlaying(id)}
           >
-            <img src={picture} />
+            <img src={picture} alt='Artist' />
             <span>{songTitle}</span>
             <span>{artist}</span>
           </SearchResult>

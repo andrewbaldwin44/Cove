@@ -32,6 +32,7 @@ function Home({ deezerID }) {
   }
 
   // homepage
+  // eslint-disable-next-line
   useEffect(() => requestDeezerResults('chart'), []);
 
   return(
