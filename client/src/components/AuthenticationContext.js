@@ -60,10 +60,8 @@ function AuthenticationProvider({ children, signOut, user }) {
     }
   }
 
-  const updateUserData = (userID, newData) => {
-    const reference = database.collection('users').doc(userID);
-
-    reference.update(newData);
+  const updateUserData = newData => {
+    setUserData({ ...userData, newData });
   }
 
   useEffect(() => {
@@ -118,6 +116,7 @@ function AuthenticationProvider({ children, signOut, user }) {
     <AuthenticationContext.Provider
       value={{
         userData,
+        updateUserData,
         userRooms,
         roomDetails,
         createUserWithEmail,
@@ -129,7 +128,6 @@ function AuthenticationProvider({ children, signOut, user }) {
         message,
         setMessage,
         database,
-        updateUserData,
       }}
     >
       {children}

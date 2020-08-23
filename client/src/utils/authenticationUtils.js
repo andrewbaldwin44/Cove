@@ -1,4 +1,4 @@
-const postRequestHeaders = {
+export const postRequestHeaders = {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
 }

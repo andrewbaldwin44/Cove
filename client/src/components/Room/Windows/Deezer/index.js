@@ -24,7 +24,7 @@ function Deezer() {
         .then(response => response.json())
         .then(({ loginUrl }) => setLoginUrl(loginUrl));
     }
-  }, []);
+  }, [userData]);
 
   return (
     <Body>

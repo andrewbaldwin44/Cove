@@ -133,6 +133,7 @@ async function getRoomDetails(roomIDs, database) {
 module.exports = {
   queryDatabase,
   writeDatabase,
+  updateDatabase,
   isReturningUser,
   getMemberIDs,
   createNewRoom,

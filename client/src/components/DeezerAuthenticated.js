@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { AuthenticationContext } from './AuthenticationContext';
 
+import { postRequestHeaders } from '../utils/authenticationUtils';
 import { isContainingData } from '../utils/index';
 
 function DeezerAuthenticated() {
   const {
     userData,
-    updateUserData
+    updateUserData,
   } = useContext(AuthenticationContext);
+
+  const [status, setStatus] = useState('loading');
 
   const location = useLocation();
   const code = new URLSearchParams(location.search).get('code');
@@ -17,13 +20,27 @@ function DeezerAuthenticated() {
   useEffect(() => {
     if (isContainingData(userData)) {
       const { userID } = userData;
-      const newUserData = { deezerID: code };
+      const newUserData = { userID: userID, deezerID: code };
 
-      updateUserData(userID, newUserData);
+      fetch('/api/register_deezer_id', {
+        ...postRequestHeaders,
+        body: JSON.stringify(newUserData)
+      })
+        .then(response => response.json())
+        .then(({ deezerID }) => {
+          updateUserData(deezerID);
+          setStatus('idle');
+        })
+        .catch(() => setStatus('error'));
     }
-  }, [userData]);
+  }, [userData, code, updateUserData]);
 
-  if (code) {
+  if (status === 'loading') {
+    return (
+      <div>Loading...</div>
+    )
+  }
+  else if (status === 'idle' && code) {
     return (
       <div>Login Successful! You may now return to your room</div>
     )
