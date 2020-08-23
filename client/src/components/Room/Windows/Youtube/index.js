@@ -15,11 +15,19 @@ function Youtube({ innerWindow }) {
 
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
+  const [message, setMessage] = useState('');
 
   const requestYoutubeResults = searchValue => {
     fetch(`/api/youtube_search?search=${searchValue}`)
       .then(response => response.json())
-      .then(({ searchResults }) => setSearchResults(searchResults));
+      .then(({ searchResults, message }) => {
+        if (searchResults) {
+          setSearchResults(searchResults)
+        }
+        else {
+          setMessage(message)
+        }
+      });
   }
 
   const getSearchResults = event => {
@@ -53,6 +61,9 @@ function Youtube({ innerWindow }) {
           </SearchButton>
         </form>
       </Header>
+      {message.length > 0 && (
+        <Error>{message}</Error>
+      )}
       {innerWindow ? (
         <Video
           videoId={innerWindow}
@@ -97,6 +108,11 @@ const SearchButton = styled.button`
   svg {
     color: white;
   }
+`;
+
+const Error = styled.div`
+  color: red;
+  margin: 80px 15px;
 `;
 
 export default Youtube;

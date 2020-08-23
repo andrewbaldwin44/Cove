@@ -10,14 +10,19 @@ async function handleYoutubeSearch(req, res) {
   const searchResponse = await fetch(`${YOUTUBE_SEARCH_BASE_URL}&part=snippet&q=${search}&maxResults=${YOUTUBE_RESULTS}`);
   const { items } = await searchResponse.json();
 
-  const searchResults = items.reduce((searchResults, item) => {
-    const { id, snippet } = item;
+  if (items) {
+    const searchResults = items.reduce((searchResults, item) => {
+      const { id, snippet } = item;
 
-    searchResults.push({ id, snippet });
-    return searchResults;
-  }, []);
+      searchResults.push({ id, snippet });
+      return searchResults;
+    }, []);
 
-  res.status(200).json({ status: 200, searchResults });
+    res.status(200).json({ status: 200, searchResults });
+  }
+  else {
+    res.status(400).json({ status: 400, message: 'Daily quota has been exceeded!' });
+  }
 }
 
 module.exports = {
