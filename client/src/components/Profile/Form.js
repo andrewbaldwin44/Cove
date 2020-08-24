@@ -15,7 +15,7 @@ function Form({ currentName, register }) {
           required
         />
       </fieldset>
-      <fieldset>
+      <StyledFieldSet>
         <label htmlFor='profile'>Choose a new Profile Picture</label>
         <input
           type='file'
@@ -23,7 +23,7 @@ function Form({ currentName, register }) {
           id='profile'
           ref={register}
         />
-      </fieldset>
+    </StyledFieldSet>
     </Wrapper>
   )
 }
@@ -53,6 +53,22 @@ const NameInput = styled.input`
   width: 70%;
   height: 45px;
   font-size: 1em;
+`;
+
+const StyledFieldSet = styled.fieldset`
+  &[type="file"], label {
+    background: var(--main-red);
+    border-radius: 5px;
+    color: white;
+    font-weight: normal;
+    padding: 20px;
+    width: 40%;
+    cursor: pointer;
+  }
+
+  & input {
+    display: none;
+  }
 `;
 
 export default Form;
