@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useState, createRef } from 'react';
 import styled from 'styled-components';
 
 import ThemeSelector from './ThemeSelector';
 import Form from './Form';
 
-function User({ userData }) {
+function User({ userData, updateUserDatabase }) {
   const { displayName, email, photoURL } = userData;
 
-  console.log(userData);
+  const [selectedTheme, setSelectedTheme] = useState(userData.selectedTheme);
+  const nameInput = createRef();
+
+  const updateUserData = event => {
+    event.preventDefault();
+
+    let name = displayName;
+    if (nameInput.current) name = nameInput.current.value;
+
+    if (selectedTheme !== 'default' || name && name !== displayName) {
+      const newUserData = { selectedTheme, displayName: name };
+
+      updateUserDatabase(newUserData);
+    }
+  }
 
   return (
-    <Wrapper>
+    <Wrapper onSubmit={updateUserData}>
       <Left>
         <ProfilePicture src={photoURL} alt='Profile' />
         <h2>{displayName}</h2>
@@ -18,9 +32,21 @@ function User({ userData }) {
       </Left>
       <Right>
         <h3>Preferences</h3>
-        <ThemeSelector />
+        <ThemeSelector
+          selectedTheme={selectedTheme}
+          setSelectedTheme={setSelectedTheme}
+        />
         <h3 className='bottom-right'>Edit Public Profile</h3>
-        <Form userData={userData} />
+        <Form
+          currentName={displayName}
+          nameInput={nameInput}
+        />
+        <SaveButton
+          type='submit'
+          onClick={updateUserData}
+        >
+          Save
+        </SaveButton>
       </Right>
     </Wrapper>
   )
@@ -58,7 +84,8 @@ const ProfilePicture = styled.img`
   border: 3px solid black;
 `;
 
-const Right = styled.div`
+const Right = styled.form`
+  position: relative;
   border: 1px solid black;
   width: 60vw;
   height: 80vh;
@@ -66,7 +93,7 @@ const Right = styled.div`
 
   h3 {
     font-size: 1.4em;
-    color: red;
+    color: var(--main-red);
     font-weight: bold;
     text-decoration: underline;
   }
@@ -74,6 +101,17 @@ const Right = styled.div`
   .bottom-right {
     margin-top: 50px;
   }
+`;
+
+const SaveButton = styled.button`
+  position: absolute;
+  right: 50px;
+  bottom: 40px;
+  border-radius: 10px;
+  background-color: var(--light-green);
+  font-weight: bold;
+  height: 50px;
+  width: 150px;
 `;
 
 export default User;

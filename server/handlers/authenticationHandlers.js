@@ -51,14 +51,9 @@ const FieldValue = admin.firestore.FieldValue;
 
 async function handleReturningUser(userID, acceptedData) {
   const userData = await queryDatabase(USERS_PATH, userID, database);
-  const { deezerID } = userData.data();
+  const { deezerID, selectedTheme } = userData.data();
 
-  if (deezerID) {
-    return { ...acceptedData, deezerID };
-  }
-  else {
-    return acceptedData;
-  }
+  return { ...acceptedData, deezerID, selectedTheme };
 }
 
 async function handleNewUser(userID, acceptedData) {

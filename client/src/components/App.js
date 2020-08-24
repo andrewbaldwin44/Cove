@@ -1,4 +1,4 @@
-import React, { useContext   } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -14,16 +14,32 @@ import Room from './Room/index';
 import DeezerAuthenticated from './DeezerAuthenticated';
 import FourOhFour from './FourOhFour';
 
+import { useDispatch } from "react-redux";
+import { changeTheme } from '../actions';
+
 import { AuthenticationContext } from './AuthenticationContext';
+import { isContainingData } from '../utils/index';
+import { themes } from '../themes';
 
 function App() {
   const {
+    userData,
     message,
     setMessage,
   } = useContext(AuthenticationContext);
 
+  const dispatch = useDispatch();
+
   const colors = useSelector(state => state.theme.colors);
-  //console.log(colors);
+
+  useEffect(() => {
+    if (isContainingData(userData)) {
+      const { selectedTheme } = userData;
+      const themeColors = themes[selectedTheme].colors;
+
+      if (selectedTheme !== 'default') dispatch(changeTheme(themeColors));
+    }
+  }, [userData]);
 
   const handleMessageClose = () => {
     setMessage(null);
@@ -32,29 +48,29 @@ function App() {
   return (
     <Router>
       <GlobalStyles colors={colors} />
-        <Switch>
-          <Route exact path='/'>
-            <Homepage />
-          </Route>
-          <Route exact path='/users/log_in'>
-            <Login accountCreated={true} />
-          </Route>
-          <Route exact path='/users/sign_up'>
-            <Login accountCreated={false} />
-          </Route>
-          <Route exact path='/users/profile'>
-            <Profile />
-          </Route>
-          <Route exact path='/rooms/room/:roomID'>
-            <Room />
-          </Route>
-          <Route exact path='/api/deezer_authenticated'>
-            <DeezerAuthenticated />
-          </Route>
-          <Route path='/'>
-            <FourOhFour />
-          </Route>
-        </Switch>
+      <Switch>
+        <Route exact path='/'>
+          <Homepage />
+        </Route>
+        <Route exact path='/users/log_in'>
+          <Login accountCreated={true} />
+        </Route>
+        <Route exact path='/users/sign_up'>
+          <Login accountCreated={false} />
+        </Route>
+        <Route exact path='/users/profile'>
+          <Profile />
+        </Route>
+        <Route exact path='/rooms/room/:roomID'>
+          <Room />
+        </Route>
+        <Route exact path='/api/deezer_authenticated'>
+          <DeezerAuthenticated />
+        </Route>
+        <Route path='/'>
+          <FourOhFour />
+        </Route>
+      </Switch>
       {message && (
         <Snackbar
           open={Boolean(message)}

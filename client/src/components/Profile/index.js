@@ -12,6 +12,7 @@ import { isContainingData, isEmptyData } from '../../utils/index';
 function Profile() {
   const {
     userData,
+    updateUserDatabase,
   } = useContext(AuthenticationContext);
 
   return (
@@ -19,7 +20,10 @@ function Profile() {
       <Header />
       <Wrapper>
         {isContainingData(userData) && (
-          <User userData={userData} />
+          <User
+            userData={userData}
+            updateUserDatabase={updateUserDatabase}
+          />
         )}
         {isEmptyData(userData) && (
           <Redirect from='/users/profile' to='/users/log_in' />

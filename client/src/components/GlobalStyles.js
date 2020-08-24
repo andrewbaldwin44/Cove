@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
     --dark-shadow: rgba(0,0,0,0.2);
     --light-green: #00e676;
     --red-highlight: #f44336;
+    --main-red: #f44336;
 
     --main-width-padding: 100px;
     --main-height-padding: 50px;

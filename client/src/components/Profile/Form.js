@@ -1,8 +1,7 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-function Form({ userData }) {
-  const { displayName } = userData;
+function Form({ nameInput, currentName }) {
 
   const imageSelector = event => {
     console.log(event.target.value)
@@ -16,7 +15,9 @@ function Form({ userData }) {
           type='text'
           name='display-name'
           id='display-name'
-          defaultValue={displayName}
+          defaultValue={currentName}
+          ref={nameInput}
+          required
         />
       </fieldset>
       <fieldset>
@@ -32,7 +33,7 @@ function Form({ userData }) {
   )
 }
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

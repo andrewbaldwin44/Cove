@@ -7,13 +7,14 @@ import { changeTheme } from '../../actions';
 import { themes } from '../../themes';
 import { toArray } from '../../utils/index';
 
-import Default from '../../assets/images/default.jpeg';
-
-function ThemeSelector() {
+function ThemeSelector({ selectedTheme, setSelectedTheme }) {
   const dispatch = useDispatch();
 
-  const handleThemeSelection = colors => {
-    dispatch(changeTheme(colors));
+  const handleThemeSelection = (theme, colors) => {
+    if (theme !== selectedTheme) {
+      setSelectedTheme(theme);
+      dispatch(changeTheme(colors));
+    }
   }
 
   return (
@@ -26,9 +27,11 @@ function ThemeSelector() {
           return (
             <ThemeContainer key={`theme${index}`}>
               <ThemeIcon
-                src={Default}
-                alt='Theme'
-                onClick={() => handleThemeSelection(colors)}
+                src={img}
+                alt={`${name} Theme`}
+                theme={theme}
+                selectedTheme={selectedTheme}
+                onClick={() => handleThemeSelection(theme, colors)}
               />
               <span>{name}</span>
             </ThemeContainer>
@@ -39,7 +42,7 @@ function ThemeSelector() {
   )
 }
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   height: 30%;
   width: 100%;
   margin: 20px 0;
@@ -59,13 +62,6 @@ const Icons = styled.div`
   width: 100%;
 `;
 
-const ThemeIcon = styled.img`
-  height: 110px;
-  width: 110px;
-  border-radius: 50%;
-  cursor: pointer;
-`;
-
 const ThemeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,6 +72,18 @@ const ThemeContainer = styled.div`
     padding-top: 15px;
     font-style: italic;
   }
+`;
+
+const ThemeIcon = styled.img`
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: ${({ theme, selectedTheme }) => {
+    return theme === selectedTheme
+      ? '2px solid var(--main-red)'
+      : '';
+  }};
 `;
 
 export default ThemeSelector;

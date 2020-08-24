@@ -102,7 +102,7 @@ function Windows({ children, title, containing }) {
     const { position } = windowProperties;
 
     if (position) handleWindowLocking(position);
-  }, [windowProperties]);
+  }, [windowProperties, handleWindowLocking]);
 
   return (
     <Draggable

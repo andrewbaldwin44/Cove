@@ -14,6 +14,11 @@ import {
   getRoomDetails,
 } from '../utils/authenticationUtils';
 
+import { DATABASE_PATHS } from '../constants';
+const {
+  USERS_PATH,
+} = DATABASE_PATHS;
+
 export const AuthenticationContext = createContext(null);
 
 const firebaseConfig = {
@@ -64,6 +69,16 @@ function AuthenticationProvider({ children, signOut, user }) {
     setUserData({ ...userData, newData });
   }
 
+  const updateUserDatabase = newData => {
+    if (isContainingData(userData)) {
+      const { userID } = userData;
+
+      const userReference = database.collection(USERS_PATH).doc(userID);
+
+      userReference.update(newData);
+    }
+  }
+
   useEffect(() => {
     if (user) {
       let { email, displayName, photoURL, uid: userID } = user;
@@ -72,13 +87,14 @@ function AuthenticationProvider({ children, signOut, user }) {
 
       sendUserData({ email, displayName, photoURL, userID })
         .then(response => response.json())
-        .then(({ userData: { deezerID = null }}) => {
+        .then(({ userData: { deezerID = null, selectedTheme = 'default' }}) => {
           setUserData({
             userID,
             deezerID,
             email,
             displayName,
             photoURL,
+            selectedTheme,
           })
         })
         .catch(({ message }) => setMessage(`We're sorry! ${message}`));
@@ -128,6 +144,7 @@ function AuthenticationProvider({ children, signOut, user }) {
         message,
         setMessage,
         database,
+        updateUserDatabase,
       }}
     >
       {children}

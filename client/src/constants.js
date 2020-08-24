@@ -19,4 +19,5 @@ export const DATABASE_PATHS = {
   ROOMS_PATH: 'rooms',
   ROOM_STATE_PATH: 'state',
   WINDOW_STATE_PATH: 'windows',
+  USERS_PATH: 'users',
 }
