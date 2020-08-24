@@ -53,7 +53,7 @@ export const themes = {
     name: 'Hot Pink',
     colors: {
       mainHeaders: '#c51162',
-      mainBackground: '#f06292',
+      mainBackground: '#f8bbd0',
     }
   },
 }

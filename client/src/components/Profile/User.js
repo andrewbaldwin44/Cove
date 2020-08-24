@@ -91,8 +91,10 @@ const Left = styled.div`
 `;
 
 const ProfilePicture = styled.img`
+  min-height: 150px;
+  min-width: 150px;
   height: 150px;
-  width: 150;
+  width: 150px;
   border-radius: 100%;
   margin-bottom: 20px;
   border: 3px solid black;
@@ -127,6 +129,7 @@ const Message = styled.div`
   display: flex;
   visibility: ${({ message }) => message === null ? 'hidden' : 'visible'};
   align-items: center;
+  color: black;
   justify-content: center;
   background-image:linear-gradient(to bottom right, var(--light-green), lightgreen);
   border-radius: 5px;
@@ -138,6 +141,7 @@ const SaveButton = styled.button`
   border-radius: 10px;
   background-color: var(--light-green);
   font-weight: bold;
+  color: black;
   height: 50px;
   width: 150px;
 `;

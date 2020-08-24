@@ -7,7 +7,7 @@ const GlobalStyles = createGlobalStyle`
     --main-background: ${({ colors }) => colors.mainBackground};
     --main-font: ${({ colors }) => colors.fontColor || colors.mainHeaders};
 
-    --main-black: #444146
+    --main-black: #444146;
     --light-gray: #9e9e9e;
     --light-blue: #40c4ff;
     --dark-shadow: rgba(0,0,0,0.2);
