@@ -10,7 +10,7 @@ function BoardGames() {
 }
 
 const Wrapper = styled.iframe`
-  height: calc(100% - 50px);
+  height: 100%;
   width: 100%;
 `;
 

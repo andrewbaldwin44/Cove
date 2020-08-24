@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 
 import Draggable from 'react-draggable';
@@ -13,19 +13,107 @@ function Windows({ children, title, containing }) {
   const {
     changeWindowState,
     navigateInnerWindow,
+    windowProperties,
+    setWindowProperties,
   } = useContext(RoomContext);
+
+  const appWindow = createRef();
+
+  const [windowY, setWindowY] = useState(0);
+  const [mouseX, setMouseX] = useState(0);
+  const [windowPosition, setWindowPosition] = useState(null);
+
+  const handleMouseMove = event => {
+    const { clientX } = event;
+
+    setMouseX(clientX);
+  }
 
   const closeWindow = app => {
     const newState = ['isOpen', false];
     changeWindowState(app, newState);
   }
 
+  const handleDrag = (event, ui) => {
+    const { deltaY } = ui;
+
+    setWindowY(windowY + deltaY);
+  }
+
+  const handleWindowMove = () => {
+    setWindowProperties({ position: null });
+    setWindowPosition(null);
+  };
+
+  const handleMouseRelease = () => {
+    const windowWidth = window.innerWidth - 1;
+
+    if (windowY === 0) {
+      setWindowProperties({ position: 'top' });
+    }
+    else if (mouseX === 0) {
+      setWindowProperties({ position: 'left' });
+    }
+    else if (mouseX === windowWidth) {
+      setWindowProperties({ position: 'right' });
+    }
+  }
+
+  const resetDeltaY = () => setWindowY(0);
+  const setWindowTopLeft = () => setWindowPosition({ x: 0, y: 0 });
+  const setWindowTopRight = () => {
+    const windowWidth = window.innerWidth;
+    const windowCenter = windowWidth / 2;
+
+    setWindowPosition({ x: windowCenter, y: 0 });
+  }
+
+  const maximizeWindow = () => {
+    setWindowTopLeft();
+    resetDeltaY();
+    appWindow.current.style.width = '100vw';
+  }
+
+  const handleWindowLocking = position => {
+    const windowElement = appWindow.current;
+
+    if (position === 'left') {
+      setWindowTopLeft();
+      resetDeltaY();
+      windowElement.style.width = '50vw';
+    }
+    else if (position === 'top') {
+      maximizeWindow();
+    }
+    else if (position === 'right') {
+      setWindowTopRight();
+      windowElement.style.width = '50vw';
+      resetDeltaY();
+    }
+  }
+
+  useEffect(() => {
+    document.onmousemove = handleMouseMove;
+
+    return () => document.onmousemove = null;
+  }, []);
+
+  useEffect(() => {
+    const { position } = windowProperties;
+
+    if (position) handleWindowLocking(position);
+  }, [windowProperties]);
+
   return (
     <Draggable
       handle='.anchor'
       bounds={{ top: 0 }}
+      onDrag={handleDrag}
+      onStart={handleWindowMove}
+      onStop={handleMouseRelease}
+      position={windowPosition}
     >
-    <Wrapper>
+    <Wrapper ref={appWindow}>
       <Header
         className='anchor'
       >
@@ -37,7 +125,7 @@ function Windows({ children, title, containing }) {
         </HeaderNav>
         <div>
           <IoMdRemove />
-          <FiMaximize2 />
+          <FiMaximize2 onClick={maximizeWindow} />
           <IoIosCloseCircleOutline onClick={() => closeWindow(containing)} />
         </div>
       </Header>
@@ -50,7 +138,9 @@ function Windows({ children, title, containing }) {
 }
 
 const Wrapper = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: white;
   height: calc(100vh - var(--default-appbar-height));
   width: 100vw;

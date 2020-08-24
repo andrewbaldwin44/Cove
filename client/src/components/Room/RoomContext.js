@@ -32,6 +32,10 @@ function writeWindowState(app, newState, reference) {
 
 export function RoomProvider({ children, roomID, database }) {
   const [openWindows, setOpenWindows] = useState([]);
+  const [windowProperties, setWindowProperties] = useState({
+    isMinimized: false,
+    position: null,
+  });
 
   useEffect(() => {
     const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
@@ -77,6 +81,8 @@ export function RoomProvider({ children, roomID, database }) {
         openWindows,
         changeWindowState,
         navigateInnerWindow,
+        windowProperties,
+        setWindowProperties,
       }}
     >
       {children}
