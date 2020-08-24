@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -39,7 +39,7 @@ function App() {
 
       if (selectedTheme !== 'default') dispatch(changeTheme(themeColors));
     }
-  }, [userData]);
+  }, [userData, dispatch]);
 
   const handleMessageClose = () => {
     setMessage(null);

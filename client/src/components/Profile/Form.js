@@ -1,32 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Form({ nameInput, currentName }) {
-
-  const imageSelector = event => {
-    console.log(event.target.value)
-  }
-
+function Form({ currentName, register }) {
   return (
     <Wrapper>
       <fieldset>
-        <label htmlFor='display-name'>Display Name</label>
+        <label htmlFor='name'>Display Name</label>
         <NameInput
           type='text'
-          name='display-name'
-          id='display-name'
+          name='name'
+          id='name'
           defaultValue={currentName}
-          ref={nameInput}
+          ref={register}
           required
         />
       </fieldset>
       <fieldset>
-        <label htmlFor='profile-picture'>Choose a new Profile Picture</label>
+        <label htmlFor='profile'>Choose a new Profile Picture</label>
         <input
           type='file'
-          name='profile-picture'
-          id='profile-picture'
-          onChange={imageSelector}
+          name='profile'
+          id='profile'
+          ref={register}
         />
       </fieldset>
     </Wrapper>

@@ -4,6 +4,7 @@ import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage'
 
 import DefaultProfile from '../assets/images/default-profile.png';
 
@@ -79,15 +80,34 @@ function AuthenticationProvider({ children, signOut, user }) {
     }
   }
 
+  const uploadFile = async file => {
+    const storageRef = firebaseApp.storage().ref();
+    const fileRef = storageRef.child(file.name);
+
+    await fileRef.put(file);
+    const fileUrl = await fileRef.getDownloadURL();
+    const newUserData = { photoURL: fileUrl };
+
+    updateUserDatabase(newUserData);
+  }
+
   useEffect(() => {
     if (user) {
       let { email, displayName, photoURL, uid: userID } = user;
 
-      if (!photoURL) photoURL = DefaultProfile;
+      photoURL = photoURL || DefaultProfile;
 
       sendUserData({ email, displayName, photoURL, userID })
         .then(response => response.json())
-        .then(({ userData: { deezerID = null, selectedTheme = 'default' }}) => {
+        .then(({ userData:
+          {
+            deezerID = null,
+            selectedTheme = 'default',
+            photoURL,
+            displayName
+          }
+        }) => {
+
           setUserData({
             userID,
             deezerID,
@@ -145,6 +165,7 @@ function AuthenticationProvider({ children, signOut, user }) {
         setMessage,
         database,
         updateUserDatabase,
+        uploadFile,
       }}
     >
       {children}

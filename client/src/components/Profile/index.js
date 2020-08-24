@@ -13,6 +13,7 @@ function Profile() {
   const {
     userData,
     updateUserDatabase,
+    uploadFile,
   } = useContext(AuthenticationContext);
 
   return (
@@ -23,6 +24,7 @@ function Profile() {
           <User
             userData={userData}
             updateUserDatabase={updateUserDatabase}
+            uploadFile={uploadFile}
           />
         )}
         {isEmptyData(userData) && (

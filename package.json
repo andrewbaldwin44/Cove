@@ -6,6 +6,7 @@
   "author": "Andrew Baldwin",
   "license": "UNLICENSED",
   "dependencies": {
-    "@lourenci/react-kanban": "^2.0.0"
+    "@lourenci/react-kanban": "^2.0.0",
+    "react-hook-form": "^6.5.1"
   }
 }

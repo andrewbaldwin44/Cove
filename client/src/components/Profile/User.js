@@ -1,30 +1,42 @@
-import React, { useState, createRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 
 import ThemeSelector from './ThemeSelector';
 import Form from './Form';
 
-function User({ userData, updateUserDatabase }) {
-  const { displayName, email, photoURL } = userData;
+function User({ userData, updateUserDatabase, uploadFile }) {
+  const { displayName, email, photoURL, selectedTheme: currentTheme } = userData;
+  const { register, handleSubmit } = useForm();
 
-  const [selectedTheme, setSelectedTheme] = useState(userData.selectedTheme);
-  const nameInput = createRef();
+  const [selectedTheme, setSelectedTheme] = useState(currentTheme);
+  const [message, setMessage] = useState(null);
 
-  const updateUserData = event => {
-    event.preventDefault();
+  const onSubmit = async data => {
+    const {
+      name,
+      profile
+    } = data;
 
-    let name = displayName;
-    if (nameInput.current) name = nameInput.current.value;
+    const [file] = profile;
 
-    if (selectedTheme !== 'default' || name && name !== displayName) {
+    if (file) {
+      await uploadFile(file);
+    }
+
+    if (selectedTheme !== 'default' || name !== displayName) {
       const newUserData = { selectedTheme, displayName: name };
 
-      updateUserDatabase(newUserData);
+      await updateUserDatabase(newUserData);
+    }
+
+    if (file || selectedTheme !== 'default' || name !== displayName) {
+      setMessage('Profile Updated!');
     }
   }
 
   return (
-    <Wrapper onSubmit={updateUserData}>
+    <Wrapper onSubmit={handleSubmit(onSubmit)}>
       <Left>
         <ProfilePicture src={photoURL} alt='Profile' />
         <h2>{displayName}</h2>
@@ -39,14 +51,16 @@ function User({ userData, updateUserDatabase }) {
         <h3 className='bottom-right'>Edit Public Profile</h3>
         <Form
           currentName={displayName}
-          nameInput={nameInput}
+          register={register}
         />
-        <SaveButton
-          type='submit'
-          onClick={updateUserData}
-        >
-          Save
-        </SaveButton>
+        <Footer>
+          <Message message={message}>{message}</Message>
+          <SaveButton
+            type='submit'
+          >
+            Save
+          </SaveButton>
+        </Footer>
       </Right>
     </Wrapper>
   )
@@ -103,10 +117,24 @@ const Right = styled.form`
   }
 `;
 
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Message = styled.div`
+  display: flex;
+  visibility: ${({ message }) => message === null ? 'hidden' : 'visible'};
+  align-items: center;
+  justify-content: center;
+  background-image:linear-gradient(to bottom right, var(--light-green), lightgreen);
+  border-radius: 5px;
+  height: 50px;
+  width: 70%;
+`;
+
 const SaveButton = styled.button`
-  position: absolute;
-  right: 50px;
-  bottom: 40px;
   border-radius: 10px;
   background-color: var(--light-green);
   font-weight: bold;

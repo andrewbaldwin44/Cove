@@ -102,7 +102,8 @@ function Windows({ children, title, containing }) {
     const { position } = windowProperties;
 
     if (position) handleWindowLocking(position);
-  }, [windowProperties, handleWindowLocking]);
+    // eslint-disable-next-line
+  }, [windowProperties]);
 
   return (
     <Draggable
