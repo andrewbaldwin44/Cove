@@ -11,6 +11,21 @@ const board = {
       id: 1,
       title: 'Add a new Activity',
       cards: [
+        {
+          id: 1,
+          title: "Card title 1",
+          description: "Card content"
+        },
+        {
+          id: 2,
+          title: "Card title 2",
+          description: "Card content"
+        },
+        {
+          id: 3,
+          title: "Card title 3",
+          description: "Card content"
+        }
       ]
     }
   ]
@@ -19,6 +34,9 @@ const board = {
 function Items() {
   return (
     <Wrapper>
+      <StartButton type='button'>
+          Start
+      </StartButton>
       <Board
         disableColumnDrag
         onCardRemove={console.log}
@@ -48,8 +66,20 @@ const Wrapper = styled.div`
   position: relative;
   border-right: 1px solid black;
   height: 100%;
-  width: 70%;
+  width: 100%;
   padding: 20px 50px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+
+const StartButton = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  background-color: var(--light-green);
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
 `;
 
 export default Items;

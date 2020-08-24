@@ -54,6 +54,7 @@ const Header = styled.div`
 const Body = styled.div`
   display: flex;
   height: 100%;
+  overflow-y: scroll;
 `;
 
 export default Activities;
