@@ -38,7 +38,7 @@ const Wrapper = styled.nav`
   padding: 0 var(--main-width-padding);
   width: 100vw;
   height: var(--navbar-height);
-  background-color: var(--main-black);
+  background-color: var(--main-headers);
 `;
 
 const Logo = styled(Link)`

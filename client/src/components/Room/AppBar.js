@@ -42,7 +42,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 0 30px;
   border-radius: 8px;
-  background-color: var(--main-black);
+  background-color: var(--main-headers);
   box-shadow: -2px -2px 8px var(--dark-shadow),
               4px 10px 5px var(--dark-shadow);
 

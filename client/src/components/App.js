@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import { useSelector } from "react-redux";
+
 import GlobalStyles from "./GlobalStyles";
 
 import Homepage from './Homepage';
 import Login from './Login/index';
-import Profile from './Profile';
+import Profile from './Profile/index';
 import Room from './Room/index';
 import DeezerAuthenticated from './DeezerAuthenticated';
 import FourOhFour from './FourOhFour';
@@ -20,13 +22,16 @@ function App() {
     setMessage,
   } = useContext(AuthenticationContext);
 
+  const colors = useSelector(state => state.theme.colors);
+  //console.log(colors);
+
   const handleMessageClose = () => {
     setMessage(null);
   }
 
   return (
     <Router>
-      <GlobalStyles />
+      <GlobalStyles colors={colors} />
         <Switch>
           <Route exact path='/'>
             <Homepage />

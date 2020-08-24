@@ -153,7 +153,7 @@ const Header = styled.div`
   width: 100%;
   height: var(--window-header-height);
   padding: 0 15px;
-  background-color: var(--main-black);
+  background-color: var(--main-headers);
   color: white;
   cursor: grab;
 
