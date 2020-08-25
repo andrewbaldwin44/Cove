@@ -1,32 +1,17 @@
-const users = {};
+const allUsers = {};
 
 function handleVideoCall(socket, io) {
+  socket.on('join-room', (roomID, userData) => {
+    const { userID } = userData;
 
-  socket.on('newConnection', ({ userData, roomID }) => {
-    socket.emit('socketID', socket.id);
-    
-    if (!users[socket.id]) {
-      users[socket.id] = userData;
-    }
+    if (!allUsers[userID]) allUsers[userID] = userData;
 
+    socket.join(roomID);
+    io.in(roomID).emit('user-connected', allUsers);
 
-    io.sockets.emit("allUsers", users);
-  });
-
-  socket.on('disconnect', () => {
-    delete users[socket.id];
-  });
-
-  socket.on('callUser', ({ peerSocketID, signalData, userSocketID, caller }) => {
-    io.to(peerSocketID).emit('incomingCall', {
-      signal: signalData,
-      callerSocketID: userSocketID,
-      caller
+    socket.on('disconnect', () => {
+      socket.to(roomID).broadcast.emit('user-disconnected', userID)
     });
-  });
-
-  socket.on('acceptCall', ({ callerSocketID, peerSignal }) => {
-    io.to(callerSocketID).emit('callAccepted', peerSignal);
   });
 }
 

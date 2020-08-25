@@ -9,7 +9,7 @@ const PORT = 4000;
 
 const app = express();
 
-const server = http.createServer(app);
+const server = http.Server(app);
 const socket = require('socket.io');
 const io = socket(server);
 

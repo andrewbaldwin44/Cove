@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@lourenci/react-kanban": "^2.0.0",
+    "peer": "^0.5.3",
+    "peerjs": "^1.3.1",
     "react-hook-form": "^6.5.1"
   }
 }
