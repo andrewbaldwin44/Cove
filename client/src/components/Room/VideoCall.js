@@ -36,8 +36,9 @@ function VideoCall() {
       const { userID } = userData;
 
       const newPeerConnection = new Peer(userID, {
+        path: '/peerjs',
         host: '/',
-        port: '3001'
+        port: '4000',
       });
 
       socket.emit('join-room', roomID, userData);

@@ -13,6 +13,11 @@ const server = http.Server(app);
 const socket = require('socket.io');
 const io = socket(server);
 
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+});
+
 const {
   handleLogin,
   handleNewRoom,
@@ -54,6 +59,7 @@ app
 .use(bodyParser.json())
 .use(express.urlencoded({ extended: false }))
 .use('/', express.static(__dirname + '/'))
+.use('/peerjs', peerServer)
 
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
