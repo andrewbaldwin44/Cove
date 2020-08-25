@@ -24,13 +24,13 @@ function User({ userData, updateUserDatabase, uploadFile }) {
       await uploadFile(file);
     }
 
-    if (selectedTheme !== 'default' || name !== displayName) {
+    if (selectedTheme !== currentTheme || name !== displayName) {
       const newUserData = { selectedTheme, displayName: name };
 
       await updateUserDatabase(newUserData);
     }
 
-    if (file || selectedTheme !== 'default' || name !== displayName) {
+    if (file || selectedTheme !== currentTheme || name !== displayName) {
       setMessage('Profile Updated!');
     }
   }
