@@ -22,10 +22,11 @@ function VideoCall() {
 
   const [peerConnection, setPeerConnection] = useState(null);
   const [userStream, setUserStream] = useState();
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [caller, setCaller] = useState('');
-  const [callerSignal, setCallerSignal] = useState();
-  const [callAccepted, setCallAccepted] = useState(false);
+  const [callStarted, setCallStarted] = useState(false);
+  // const [receivingCall, setReceivingCall] = useState(false);
+  // const [caller, setCaller] = useState('');
+  // const [callerSignal, setCallerSignal] = useState();
+  // const [callAccepted, setCallAccepted] = useState(false);
   const [allUsers, setAllUsers] = useState({});
 
   const [peerStreams, setPeerStreams] = useState([]);
@@ -36,9 +37,19 @@ function VideoCall() {
     if (isContainingData(userData)) {
       const { userID } = userData;
 
+      socket.emit('join-room');
+      socket.on('room-status', callStarted => {
+        if (callStarted) setCallStarted('join');
+      });
+
+
       const newPeerConnection = new Peer(userID, {
         host: '/',
         port: '3001'
+      });
+
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
+        setUserStream(userStream);
       });
 
       setPeerConnection(newPeerConnection);
@@ -46,33 +57,49 @@ function VideoCall() {
     // eslint-disable-next-line
   }, [userData]);
 
-  useEffect(() => {
-    if (peerConnection) {
-      peerConnection.on('open', () => {
-        socket.emit('join-room', roomID, userData);
+  const startCall = () => {
+    setCallStarted(true);
+    socket.emit('call-started', roomID, userData);
+    socket.emit('join-call', roomID, userData);
 
-        socket.on('user-connected', newUsers => {
-          setAllUsers(newUsers);
-        });
-      });
+    socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
+      setAllUsers(newUsers);
+      if (newUserID !== userData.userID) connectToPeer(newUserID)
+    });
 
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
-        setUserStream(userStream);
+    peerConnection.on('call', call => {
+      call.answer(userStream);
 
-        peerConnection.on('call', call => {
-          call.answer(userStream);
+      call.on('stream', peerStream => {
+        addPeerStream(peerStream)
+      })
+    });
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
+      setUserStream(userStream);
+    });
+  }
 
-          call.on('stream', peerStream => {
-            addPeerStream(peerStream)
-          })
-        })
+  const joinCall = () => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
+      setUserStream(userStream);
+    });
 
-        socket.on('user-disconnected', peerID => {
+    setCallStarted(true)
 
-        })
-      });
-    }
-  }, [peerConnection]);
+    socket.emit('join-call', roomID, userData);
+
+    socket.on('user-connected', ({ allUsers: newUsers }) => {
+      setAllUsers(newUsers);
+    });
+
+    peerConnection.on('call', call => {
+      call.answer(userStream);
+
+      call.on('stream', peerStream => {
+        addPeerStream(peerStream)
+      })
+    });
+  }
 
   const createVideoElement = (stream, index, muted = false) => {
     const videoElement = (
@@ -108,28 +135,38 @@ function VideoCall() {
     setPeerStreams([...peerStreams, peerStream]);
   }
 
-  return (
-    <Wrapper>
-      {createVideoElement(userStream, 0, true)}
-      {peerStreams.map((peerStream, index) => {
-        return (
-          createVideoElement(peerStream, index + 1) // user video is index 0
-        )
-      })}
-      {toArray(allUsers).map(([peerID, peerData], index) => {
-        const { displayName } = peerData;
-        const { userID } = userData;
-
-        if (peerID === userID) return null;
-
-        return (
-          <StyledButton onClick={() => connectToPeer(peerID)} key={`call${index}`}>
-            CLICK ME {displayName}
-          </StyledButton>
-        )
-      })}
-    </Wrapper>
-  )
+  if (callStarted === 'join') {
+    return (
+      <CallButton onClick={joinCall}>
+          Join Call
+      </CallButton>
+    )
+  }
+  else if (callStarted) {
+    return (
+      <Wrapper>
+        {createVideoElement(userStream, 0, true)}
+        {peerStreams.map((peerStream, index) => {
+          return (
+            createVideoElement(peerStream, index + 1) // user video is index 0
+          )
+        })}
+      </Wrapper>
+    )
+  }
+  else if (peerConnection) {
+    return (
+      <CallButton onClick={startCall}>
+        <IoIosCall />
+        Start Call
+      </CallButton>
+    )
+  }
+  else {
+    return (
+      <div></div>
+    )
+  }
 }
 
 const Wrapper = styled.div`
