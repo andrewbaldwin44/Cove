@@ -23,10 +23,6 @@ function VideoCall() {
   const [peerConnection, setPeerConnection] = useState(null);
   const [userStream, setUserStream] = useState();
   const [callStarted, setCallStarted] = useState(false);
-  // const [receivingCall, setReceivingCall] = useState(false);
-  // const [caller, setCaller] = useState('');
-  // const [callerSignal, setCallerSignal] = useState();
-  // const [callAccepted, setCallAccepted] = useState(false);
   const [allUsers, setAllUsers] = useState({});
 
   const [peerStreams, setPeerStreams] = useState([]);
@@ -37,7 +33,7 @@ function VideoCall() {
     if (isContainingData(userData)) {
       const { userID } = userData;
 
-      socket.emit('join-room');
+      socket.emit('join-room', roomID, userData);
       socket.on('room-status', callStarted => {
         if (callStarted) setCallStarted('join');
       });
@@ -59,8 +55,8 @@ function VideoCall() {
 
   const startCall = () => {
     setCallStarted(true);
-    socket.emit('call-started', roomID, userData);
-    socket.emit('join-call', roomID, userData);
+    socket.emit('call-started');
+    socket.emit('join-call');
 
     socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
       setAllUsers(newUsers);
@@ -86,7 +82,7 @@ function VideoCall() {
 
     setCallStarted(true)
 
-    socket.emit('join-call', roomID, userData);
+    socket.emit('join-call');
 
     socket.on('user-connected', ({ allUsers: newUsers }) => {
       setAllUsers(newUsers);
