@@ -16,7 +16,7 @@ function Homepage() {
     roomDetails,
   } = useContext(AuthenticationContext);
 
-  console.log(roomDetails);
+  //console.log(roomDetails);
 
   const [openDialog, setOpenDialog] = useState(false);
 

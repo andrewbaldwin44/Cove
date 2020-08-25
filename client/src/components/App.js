@@ -39,7 +39,8 @@ function App() {
 
       if (selectedTheme !== 'default') dispatch(changeTheme(themeColors));
     }
-  }, [userData, dispatch]);
+  // eslint-disable-next-line
+  }, [userData]);
 
   const handleMessageClose = () => {
     setMessage(null);

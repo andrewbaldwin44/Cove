@@ -7,8 +7,7 @@ export function sendUserData(userData) {
   return fetch('/users/login', {
     ...postRequestHeaders,
     body: JSON.stringify(userData),
-  })
-    .then(response => response.json())
+  });
 }
 
 export function validateRoomMember(idToken, roomID) {

@@ -15,10 +15,11 @@ import {
   getRoomDetails,
 } from '../utils/authenticationUtils';
 
-import { DATABASE_PATHS } from '../constants';
+import { DATABASE_PATHS, ERROR_MESSAGES } from '../constants';
 const {
   USERS_PATH,
 } = DATABASE_PATHS;
+const { unknownError } = ERROR_MESSAGES;
 
 export const AuthenticationContext = createContext(null);
 
@@ -87,78 +88,65 @@ function AuthenticationProvider({ children, signOut, user }) {
     updateUserDatabase(newUserData);
   }
 
-  const updateUserRooms = snapshot => {
+  const updateUserData = (userID, snapshot) => {
     const data = snapshot.data();
-    const { ownedRooms = {}, participatingRooms = {} } = data;
 
+    if (!data) return;
+
+    const {
+      displayName,
+      email,
+      deezerID = null,
+      ownedRooms = {},
+      participatingRooms = {},
+      photoURL,
+      selectedTheme = 'default',
+    } = data;
+
+    const newUserData = { userID, displayName, email, deezerID, photoURL, selectedTheme};
     const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
 
     getRoomDetails(allRooms).then(({ roomDetails }) => setRoomDetails(roomDetails));
     setUserRooms(allRooms);
+
+    setUserData(newUserData);
   }
 
-  const observeParticipatingRooms = () => {
-    let observer;
+  const observeUserData = (userID) => {
+    const roomReference = database.collection(USERS_PATH).doc(userID);
 
-    if (isContainingData(userData)) {
-      const { userID } = userData;
-
-      const roomReference = database.collection('users').doc(userID);
-
-      observer = roomReference.onSnapshot(updateUserRooms);
-    }
+    const observer = roomReference.onSnapshot(snapshot => updateUserData(userID, snapshot));
 
     return observer;
   }
 
-  const extractUserData = ({ userData }) => {
-    const {
-      userID,
-      email,
-      deezerID = null,
-      selectedTheme = 'default',
-      photoURL,
-      displayName
-    } = userData;
-
-    setUserData({
-      userID,
-      deezerID,
-      email,
-      displayName,
-      photoURL,
-      selectedTheme,
-    });
-  }
-
-  const processUserData = () => {
-    let { email, displayName, photoURL, uid: userID } = user;
+  const processUserData = userID => {
+    let { email, displayName, photoURL } = user;
 
     photoURL = photoURL || DefaultProfile;
 
     sendUserData({ email, displayName, photoURL, userID })
-    .then(extractUserData)
-    .catch(({ message }) => setMessage(`We're sorry! ${message}`));
+      .catch(({ message }) => setMessage(unknownError));
   }
 
   useEffect(() => {
+    let userDataObserver;
+
     if (user) {
-      processUserData();
+      const { uid: userID } = user;
+
+      userDataObserver = observeUserData(userID);
+      processUserData(userID);
     }
     else if (user === null) {
       setUserData({});
     }
-  // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    const participatingRoomsObserver = observeParticipatingRooms();
 
     return () => {
-      if (participatingRoomsObserver) participatingRoomsObserver();
+      if (userDataObserver) userDataObserver();
     }
   // eslint-disable-next-line
-  }, [userData]);
+  }, [user]);
 
   return (
     <AuthenticationContext.Provider

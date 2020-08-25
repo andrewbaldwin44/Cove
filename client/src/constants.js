@@ -15,6 +15,10 @@ export const AUTHENTICATION_ERROR_MESSAGES = {
   defaultMessage: 'Email or Password is invalid',
 }
 
+export const ERROR_MESSAGES = {
+  unknownError: 'We\'re sorry! Something has gone wrong, please try refreshing the page!'
+}
+
 export const DATABASE_PATHS = {
   ROOMS_PATH: 'rooms',
   ROOM_STATE_PATH: 'state',

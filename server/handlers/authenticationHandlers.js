@@ -49,13 +49,6 @@ admin.initializeApp({
 const database = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
-async function handleReturningUser(userID, acceptedData) {
-  const userData = await queryDatabase(USERS_PATH, userID, database);
-  const { deezerID, selectedTheme, photoURL, displayName } = userData.data();
-
-  return { ...acceptedData, deezerID, selectedTheme, photoURL, displayName };
-}
-
 async function handleNewUser(userID, acceptedData) {
   await writeDatabase(USERS_PATH, userID, acceptedData, database);
 }
@@ -71,21 +64,18 @@ async function handleLogin(req, res) {
     let message = '';
 
     if (await isReturningUser(userID, database)) {
-      acceptedData = await handleReturningUser(userID, acceptedData);
-
-      message = `Welcome ${displayName}!`;
+      message = `Welcome back ${displayName}!`;
     }
     else {
       await handleNewUser(userID, acceptedData);
 
-      message = `Welcome back ${displayName}!`;
+      message = `Welcome ${displayName}!`;
     }
 
     res.status(201).json({ status: 201, userData: acceptedData, message });
   }
-  catch (error) {
-    console.log(error)
-    res.status(401).json({ status: 401, ...error });
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
   }
 }
 
@@ -105,9 +95,8 @@ async function handleNewRoom(req, res)  {
 
     res.status(201).json({ status: 201, ...roomData });
   }
-  catch (error) {
-    console.log(error)
-    res.status(401).json({ status: 401, ...error });
+  catch ({ message }) {
+    res.status(401).json({ status: 401, message });
   }
 }
 
