@@ -26,6 +26,13 @@ function handleVideoCall(socket, io) {
     io.to(socket.id).emit('room-status', callStarted);
 
     socket.on('disconnect', () => {
+      delete allUsers[userID]
+
+      if (Object.keys(allUsers).length === 0) {
+        callStarted = false;
+        io.in(roomID).emit('room-status', callStarted);
+      }
+
       socket.to(roomID).broadcast.emit('user-disconnected', userID)
     });
   });

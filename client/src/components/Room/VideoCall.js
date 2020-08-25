@@ -9,9 +9,11 @@ import { IoIosCall } from 'react-icons/io';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
-import { isContainingData, toArray } from '../../utils/index';
+import { isContainingData } from '../../utils/index';
 
 const socket = io.connect('http://localhost:4000');
+
+const allConnections = {};
 
 function VideoCall() {
   const {
@@ -27,22 +29,28 @@ function VideoCall() {
 
   const [peerStreams, setPeerStreams] = useState([]);
 
-  const videoElementRefs = useRef([]);
+  const videoElementRefs = useRef([]); // holds a reference to every video stream
 
   useEffect(() => {
     if (isContainingData(userData)) {
       const { userID } = userData;
 
-      socket.emit('join-room', roomID, userData);
-      socket.on('room-status', callStarted => {
-        if (callStarted) setCallStarted('join');
-      });
-
-
       const newPeerConnection = new Peer(userID, {
         host: '/',
         port: '3001'
       });
+
+      socket.emit('join-room', roomID, userData);
+      socket.on('room-status', callStarted => {
+        if (callStarted) setCallStarted('join');
+        else setCallStarted(false)
+      });
+
+      socket.on('user-disconnected', userID => {
+        if (allConnections[userID]) {
+          allConnections[userID].close();
+        }
+      })
 
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
         setUserStream(userStream);
@@ -52,6 +60,8 @@ function VideoCall() {
     }
     // eslint-disable-next-line
   }, [userData]);
+  console.log(allUsers)
+
 
   const startCall = () => {
     setCallStarted(true);
@@ -60,7 +70,7 @@ function VideoCall() {
 
     socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
       setAllUsers(newUsers);
-      if (newUserID !== userData.userID) connectToPeer(newUserID)
+      if (newUserID !== userData.userID) connectToPeer(newUserID);
     });
 
     peerConnection.on('call', call => {
@@ -84,8 +94,9 @@ function VideoCall() {
 
     socket.emit('join-call');
 
-    socket.on('user-connected', ({ allUsers: newUsers }) => {
+    socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
       setAllUsers(newUsers);
+      if (newUserID !== userData.userID) connectToPeer(newUserID);
     });
 
     peerConnection.on('call', call => {
@@ -96,6 +107,27 @@ function VideoCall() {
       })
     });
   }
+
+  // connect to peer by calling THEIR peerID and sending USER stream
+  const connectToPeer = peerID => {
+    const call = peerConnection.call(peerID, userStream);
+
+    call.on('stream', peerStream => {
+      addPeerStream(peerStream)
+    });
+
+    call.on('close', () => {
+      console.log(peerStreams.find(stream => stream === userStream));
+    });
+
+    allConnections[peerID] = call;
+  }
+
+  const addPeerStream = peerStream => {
+    setPeerStreams([...peerStreams, peerStream]);
+  }
+
+  //console.log(allUsers);
 
   const createVideoElement = (stream, index, muted = false) => {
     const videoElement = (
@@ -112,23 +144,6 @@ function VideoCall() {
     }
 
     return videoElement;
-  }
-
-  // connect to peer by calling THEIR peerID and sending USER stream
-  const connectToPeer = peerID => {
-    const call = peerConnection.call(peerID, userStream);
-
-    call.on('stream', peerStream => {
-      addPeerStream(peerStream)
-    });
-
-    call.on('close', () => {
-
-    });
-  }
-
-  const addPeerStream = peerStream => {
-    setPeerStreams([...peerStreams, peerStream]);
   }
 
   if (callStarted === 'join') {
