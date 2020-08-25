@@ -86,6 +86,7 @@ const Header = styled.div`
 const BackArrow = styled(BsArrowLeftShort)`
   font-size: 4.5em;
   justify-self: flex-start;
+  color: var(--main-black);
 `;
 
 const SearchContainer = styled.div`

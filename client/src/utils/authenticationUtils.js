@@ -8,6 +8,7 @@ export function sendUserData(userData) {
     ...postRequestHeaders,
     body: JSON.stringify(userData),
   })
+    .then(response => response.json())
 }
 
 export function validateRoomMember(idToken, roomID) {

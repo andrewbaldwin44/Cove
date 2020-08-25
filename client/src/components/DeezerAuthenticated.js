@@ -9,7 +9,6 @@ import { isContainingData } from '../utils/index';
 function DeezerAuthenticated() {
   const {
     userData,
-    updateUserData,
   } = useContext(AuthenticationContext);
 
   const [status, setStatus] = useState('loading');
@@ -28,12 +27,11 @@ function DeezerAuthenticated() {
       })
         .then(response => response.json())
         .then(({ deezerID }) => {
-          updateUserData(deezerID);
           setStatus('idle');
         })
         .catch(() => setStatus('error'));
     }
-  }, [userData, code, updateUserData]);
+  }, [userData, code]);
 
   if (status === 'loading') {
     return (

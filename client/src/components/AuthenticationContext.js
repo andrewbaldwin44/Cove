@@ -66,10 +66,6 @@ function AuthenticationProvider({ children, signOut, user }) {
     }
   }
 
-  const updateUserData = newData => {
-    setUserData({ ...userData, newData });
-  }
-
   const updateUserDatabase = newData => {
     if (isContainingData(userData)) {
       const { userID } = userData;
@@ -91,40 +87,17 @@ function AuthenticationProvider({ children, signOut, user }) {
     updateUserDatabase(newUserData);
   }
 
-  useEffect(() => {
-    if (user) {
-      let { email, displayName, photoURL, uid: userID } = user;
+  const updateUserRooms = snapshot => {
+    const data = snapshot.data();
+    const { ownedRooms = {}, participatingRooms = {} } = data;
 
-      photoURL = photoURL || DefaultProfile;
+    const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
 
-      sendUserData({ email, displayName, photoURL, userID })
-        .then(response => response.json())
-        .then(({ userData:
-          {
-            deezerID = null,
-            selectedTheme = 'default',
-            photoURL,
-            displayName
-          }
-        }) => {
+    getRoomDetails(allRooms).then(({ roomDetails }) => setRoomDetails(roomDetails));
+    setUserRooms(allRooms);
+  }
 
-          setUserData({
-            userID,
-            deezerID,
-            email,
-            displayName,
-            photoURL,
-            selectedTheme,
-          })
-        })
-        .catch(({ message }) => setMessage(`We're sorry! ${message}`));
-    }
-    else if (user === null) {
-      setUserData({});
-    }
-  }, [user]);
-
-  useEffect(() => {
+  const observeParticipatingRooms = () => {
     let observer;
 
     if (isContainingData(userData)) {
@@ -132,27 +105,65 @@ function AuthenticationProvider({ children, signOut, user }) {
 
       const roomReference = database.collection('users').doc(userID);
 
-      observer = roomReference.onSnapshot(snapshot => {
-        const data = snapshot.data();
-        const { ownedRooms = {}, participatingRooms = {} } = data;
-
-        const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
-
-        getRoomDetails(allRooms).then(({ roomDetails }) => setRoomDetails(roomDetails));
-        setUserRooms(allRooms);
-      });
+      observer = roomReference.onSnapshot(updateUserRooms);
     }
+
+    return observer;
+  }
+
+  const extractUserData = ({ userData }) => {
+    const {
+      userID,
+      email,
+      deezerID = null,
+      selectedTheme = 'default',
+      photoURL,
+      displayName
+    } = userData;
+
+    setUserData({
+      userID,
+      deezerID,
+      email,
+      displayName,
+      photoURL,
+      selectedTheme,
+    });
+  }
+
+  const processUserData = () => {
+    let { email, displayName, photoURL, uid: userID } = user;
+
+    photoURL = photoURL || DefaultProfile;
+
+    sendUserData({ email, displayName, photoURL, userID })
+    .then(extractUserData)
+    .catch(({ message }) => setMessage(`We're sorry! ${message}`));
+  }
+
+  useEffect(() => {
+    if (user) {
+      processUserData();
+    }
+    else if (user === null) {
+      setUserData({});
+    }
+  // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
+    const participatingRoomsObserver = observeParticipatingRooms();
 
     return () => {
-      if (observer) observer();
+      if (participatingRoomsObserver) participatingRoomsObserver();
     }
+  // eslint-disable-next-line
   }, [userData]);
 
   return (
     <AuthenticationContext.Provider
       value={{
         userData,
-        updateUserData,
         userRooms,
         roomDetails,
         createUserWithEmail,

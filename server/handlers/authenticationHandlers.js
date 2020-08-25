@@ -65,7 +65,7 @@ async function handleLogin(req, res) {
 
   displayName = displayName ? displayName : email;
 
-  let acceptedData = { email, displayName, photoURL };
+  let acceptedData = { userID, email, displayName, photoURL };
 
   try {
     let message = '';
