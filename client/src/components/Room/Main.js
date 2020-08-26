@@ -68,7 +68,11 @@ function Main({ isOwner }) {
         onClick={() => openWindow('activity')}
       />
       </AppBar>
-      <Menu toggle={menuToggle} position={menuPosition} />
+      <Menu
+        toggle={menuToggle}
+        position={menuPosition}
+        openWindow={openWindow}
+      />
     </Wrapper>
   )
 }

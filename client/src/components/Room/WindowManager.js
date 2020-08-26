@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import Windows from './Windows/index';
-import { apps } from './apps';
+import { APPS, DEFAULTS } from './appConstants';
 
 import { RoomContext } from './RoomContext';
+
+const { defaultWindowPosition, defaultWindowSize } = DEFAULTS;
 
 function WindowManager() {
   const {
@@ -18,8 +20,10 @@ function WindowManager() {
 
         const {
           name,
-          component
-        } = apps[app];
+          component,
+          size = defaultWindowSize,
+          position = defaultWindowPosition,
+        } = APPS[app];
 
         if (appState.isOpen) {
           return (
@@ -27,6 +31,8 @@ function WindowManager() {
               key={`window${index}`}
               title={name}
               containing={app}
+              size={size}
+              position={position}
             >
               {component({ innerWindow: innerWindow })}
             </Windows>

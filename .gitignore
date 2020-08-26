@@ -11,6 +11,7 @@
 # production
 /client/build
 /Heroku_Production
+/Heroku_Production2
 
 # misc
 .env.local
