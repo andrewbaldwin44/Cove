@@ -53,7 +53,6 @@ function signInWithGoogle() {
 function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
   const [userRooms, setUserRooms] = useState(null);
-  const [roomDetails, setRoomDetails] = useState(null);
   const [message, setMessage] = useState(null);
 
   const handleSignOut = () => {
@@ -88,7 +87,7 @@ function AuthenticationProvider({ children, signOut, user }) {
     updateUserDatabase(newUserData);
   }
 
-  const updateUserData = (userID, snapshot) => {
+  const updateUserData = async (userID, snapshot) => {
     const data = snapshot.data();
 
     if (!data) return;
@@ -106,9 +105,9 @@ function AuthenticationProvider({ children, signOut, user }) {
     const newUserData = { userID, displayName, email, deezerID, photoURL, selectedTheme};
     const allRooms = [...toArray(ownedRooms, 'keys'), ...toArray(participatingRooms, 'keys')];
 
-    getRoomDetails(allRooms).then(({ roomDetails }) => setRoomDetails(roomDetails));
-    setUserRooms(allRooms);
+    const { roomDetails } = await getRoomDetails(allRooms);
 
+    setUserRooms(roomDetails);
     setUserData(newUserData);
   }
 
@@ -153,7 +152,6 @@ function AuthenticationProvider({ children, signOut, user }) {
       value={{
         userData,
         userRooms,
-        roomDetails,
         createUserWithEmail,
         signInWithEmail,
         signInWithGoogle,

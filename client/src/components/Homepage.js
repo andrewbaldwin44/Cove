@@ -7,7 +7,7 @@ import NewRoomDialog from './NewRoomDialog/index';
 
 import { AuthenticationContext } from './AuthenticationContext';
 
-import { isContainingData } from '../utils/index';
+import { isContainingData, toArray } from '../utils/index';
 
 function Homepage() {
   const {
@@ -23,19 +23,19 @@ function Homepage() {
   return (
     <>
       <Header />
-      {isContainingData(userData) && roomDetails && (
+      {isContainingData(userData) && (
         <Wrapper>
           <Add
             onClick={configureNewRoom}
           >
             Add +
           </Add>
-          {userRooms && userRooms.map((roomID, index) => {
+          {userRooms && toArray(userRooms).map(([roomID, roomDetails]) => {
             return (
               <RoomPortal
                 key={roomID}
                 roomID={roomID}
-                roomDetails={roomDetails[index]}
+                roomDetails={roomDetails}
               />
             )
           })}

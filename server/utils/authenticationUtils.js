@@ -126,9 +126,9 @@ async function getRoomDetails(roomIDs, database) {
   const allRooms = toArray(response.data());
 
   return allRooms.reduce((roomDetails, [id, data]) => {
-    if (roomIDs.includes(id)) roomDetails.push(data);
+    if (roomIDs.includes(id)) roomDetails[id] = data;
     return roomDetails;
-  }, []);
+  }, {});
 }
 
 module.exports = {
