@@ -46,10 +46,11 @@ const NavLinks = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 10%;
+  width: 160px;
 
   > a {
     color: white;
+    font-size: 1.1em;
   }
 `;
 
