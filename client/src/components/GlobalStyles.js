@@ -20,8 +20,8 @@ const GlobalStyles = createGlobalStyle`
     --navbar-height: 80px;
     --authentication-form-width: 400px;
 
-    --portal-height: 150px;
-    --portal-width: 200px;
+    --portal-height: 210px;
+    --portal-width: 320px;
     --portal-gap: 30px;
     --portal-border-radius: 10px;
 
