@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import AppBar from './AppBar';
 import WindowManager from './WindowManager';
 import VideoCall from './VideoCall';
+import Menu from './Menu';
 
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { SiKatana } from 'react-icons/si';
@@ -22,13 +23,23 @@ function Main({ isOwner }) {
     changeWindowState,
   } = useContext(RoomContext);
 
+  const [menuToggle, setMenuToggle] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({});
+
   const openWindow = app => {
     const newState = ['isOpen', true];
     changeWindowState(app, newState);
   }
 
+  const openMenu = event => {
+    const { clientX, clientY } = event;
+
+    setMenuToggle(!menuToggle);
+    setMenuPosition({ x: clientX, y: clientY });
+  }
+
   return (
-    <Wrapper>
+    <Wrapper onClick={openMenu}>
       <Header>
         <Link to='/'><BackArrow /></Link>
       </Header>
@@ -57,6 +68,7 @@ function Main({ isOwner }) {
         onClick={() => openWindow('activity')}
       />
       </AppBar>
+      <Menu toggle={menuToggle} position={menuPosition} />
     </Wrapper>
   )
 }
