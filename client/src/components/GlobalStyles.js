@@ -15,6 +15,8 @@ const GlobalStyles = createGlobalStyle`
     --red-highlight: #f44336;
     --main-red: #f44336;
 
+    --heading-text-shadow: 1px 1px 12px var(--main-black);
+
     --main-width-padding: 100px;
     --main-height-padding: 50px;
     --navbar-height: 80px;
@@ -56,10 +58,9 @@ const GlobalStyles = createGlobalStyle`
   	margin: 0;
   	padding: 0;
   	border: 0;
-  	font-size: 100%;
-  	font: inherit;
+  	font-size: 18px;
   	vertical-align: baseline;
-  	font-family: 'Quicksand', sans-serif;
+  	font-family: 'Roboto', sans-serif;
   }
 
   /* HTML5 display-role reset for older browsers */
