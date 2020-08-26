@@ -1,24 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MdWidgets } from 'react-icons/md';
 import { BiCustomize, BiCog, BiCubeAlt } from 'react-icons/bi';
 
-function Main({ position, toggle }) {
+function Main({ position, toggle, openWindow }) {
   return (
     <Wrapper
       position={position}
       toggle={toggle}
     >
-      <MenuItem>
+      <MenuItem
+        onClick={() => openWindow('widgets')}
+      >
         <BiCubeAlt />
         <span>Widgets</span>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => openWindow('preferences')}
+      >
         <BiCustomize />
         <span>Preferences</span>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => openWindow('settings')}
+      >
         <BiCog />
         <span>Settings</span>
       </MenuItem>
