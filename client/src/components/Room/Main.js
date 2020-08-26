@@ -10,7 +10,6 @@ import Menu from './Menu';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { SiKatana } from 'react-icons/si';
 
-import DefaultBackground from '../../assets/images/default-background.jpeg';
 import GameIcon from '../../assets/images/game.png';
 import YoutubeIcon from '../../assets/images/youtube.png';
 import DeezerIcon from '../../assets/images/deezer.png';
@@ -20,8 +19,11 @@ import { RoomContext } from './RoomContext';
 
 function Main({ isOwner }) {
   const {
+    roomDetails,
     changeWindowState,
   } = useContext(RoomContext);
+
+  const { background } = roomDetails;
 
   const [menuToggle, setMenuToggle] = useState(false);
   const [menuPosition, setMenuPosition] = useState({});
@@ -49,7 +51,11 @@ function Main({ isOwner }) {
   }
 
   return (
-    <Wrapper onClick={openMenu} className='desktop'>
+    <Wrapper
+      onClick={openMenu}
+      className='desktop'
+      background={background}
+    >
       <Header>
         <Link to='/'><BackArrow /></Link>
       </Header>
@@ -91,7 +97,7 @@ function Main({ isOwner }) {
 
 const Wrapper = styled.div`
   display: flex;
-  background-image: url(${DefaultBackground});
+  background-image: url(${({ background }) => background});
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;

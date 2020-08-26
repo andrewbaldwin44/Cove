@@ -30,7 +30,7 @@ function writeWindowState(app, newState, reference) {
   });
 }
 
-export function RoomProvider({ children, roomID, database }) {
+export function RoomProvider({ children, roomID, roomDetails, database }) {
   const [openWindows, setOpenWindows] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
@@ -78,6 +78,7 @@ export function RoomProvider({ children, roomID, database }) {
   return (
     <RoomContext.Provider
       value={{
+        roomDetails,
         openWindows,
         changeWindowState,
         navigateInnerWindow,

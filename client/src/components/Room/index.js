@@ -8,6 +8,7 @@ import { RoomProvider } from './RoomContext';
 
 function Room() {
   const {
+    userRooms,
     retrieveClientID,
     validateRoomMember,
     database,
@@ -27,16 +28,19 @@ function Room() {
     }
   }, [retrieveClientID, roomID, validateRoomMember]);
 
-  if (!memberData) {
+  if (!memberData || !userRooms) {
     return (
       <div>loading...</div>
     )
   }
   else if (memberData.isOwner || memberData.isMember) {
+    const roomDetails = userRooms[roomID];
+
     return (
       <RoomProvider
         database={database}
         roomID={roomID}
+        roomDetails={roomDetails}
       >
         <Main
           isOwner={memberData.isOwner}
