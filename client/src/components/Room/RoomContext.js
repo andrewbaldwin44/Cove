@@ -31,12 +31,18 @@ function writeWindowState(app, newState, reference) {
   });
 }
 
-export function RoomProvider({ children, roomID, roomDetails, database }) {
+export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails, database }) {
   const [openWindows, setOpenWindows] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
   });
+
+  const [roomDetails, setRoomDetails] = useState(initialRoomDetails);
+
+  const updateRoomDetails = (newData) => {
+    setRoomDetails({ ...roomDetails, ...newData });
+  }
 
   const updateRoomDatabase = (path, newData) => {
     const roomReference = database.collection(ROOMS_PATH).doc(ROOM_DETAILS_PATH);
@@ -64,10 +70,10 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
   }
 
   const observeWindowState = () => {
-    const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+    const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                                          .collection(roomID).doc(WINDOW_STATE_PATH);
 
-    const observer = windowStateReference.onSnapshot(snapshot => {
+    const observer = reference.onSnapshot(snapshot => {
       const data = snapshot.data() || [];
       const openWindows = data;
 
@@ -100,6 +106,7 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
         windowProperties,
         setWindowProperties,
         updateRoomDatabase,
+        updateRoomDetails,
       }}
     >
       {children}

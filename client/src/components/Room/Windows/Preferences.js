@@ -10,14 +10,14 @@ function Preferences() {
     roomDetails: {
       background
     },
+    roomDetails,
     updateRoomDatabase,
+    updateRoomDetails
   } = useContext(RoomContext);
 
   const {
     uploadFile,
   } = useContext(AuthenticationContext);
-
-  const [backgroundPreview, setBackgroundPreview] = useState(background);
 
   const { register, handleSubmit } = useForm();
 
@@ -27,7 +27,8 @@ function Preferences() {
 
     if (file) {
       const fileURL = await uploadFile(file);
-      await updateRoomDatabase('background', fileURL)
+      await updateRoomDatabase('background', fileURL);
+      updateRoomDetails({ background: fileURL });
     }
   }
 
