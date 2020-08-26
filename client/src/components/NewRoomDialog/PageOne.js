@@ -27,6 +27,7 @@ function PageOne({ roomNameInput, pageSwitch, setPageSwitch }) {
         ref={roomNameInput}
         required
         autoFocus
+        autoComplete='off'
       />
       <NextButton
         type='submit'

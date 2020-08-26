@@ -33,19 +33,22 @@ function PageTwo({ pageSwitch, createNewRoom, addMember }) {
         name='user-select'
         type='text'
         onInput={handleUserSearch}
+        autoComplete='off'
       />
       <SelectUsers
         users={users}
         hasSearched={hasSearched}
         addMember={addMember}
       />
-      <SubmitButton
-        type='submit'
-        pageSwitch={pageSwitch}
-      >
-        <StyledDoorIcon />
-        Open
-      </SubmitButton>
+    <SubmitContainer>
+        <SubmitButton
+          type='submit'
+          pageSwitch={pageSwitch}
+          >
+          <StyledDoorIcon />
+          Open
+        </SubmitButton>
+      </SubmitContainer>
     </Wrapper>
   )
 }
@@ -74,15 +77,19 @@ const Wrapper = styled.form`
   animation-duration: 1s;
 `;
 
+const SubmitContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 400px;
+`;
+
 const SubmitButton = styled.button`
-  //position: absolute;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  right: 0;
   padding: 10px 15px;
   margin-top: 15px;
-  width: 400px;
+  width: 160px;
 `;
 
 const StyledDoorIcon = styled(DoorIcon)`
