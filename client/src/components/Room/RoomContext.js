@@ -46,25 +46,9 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
     roomReference.update({ [roomPath]: newData });
   }
 
-  useEffect(() => {
-    const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
-                                         .collection(roomID).doc(WINDOW_STATE_PATH);
-
-    const observer = windowStateReference.onSnapshot(snapshot => {
-      const data = snapshot.data() || [];
-      const openWindows = data;
-
-      setOpenWindows(toArray(openWindows));
-    });
-
-    return () => observer();
-    // eslint-disable-next-line
-  }, []);
-
   const changeWindowState = (app, newState) => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                               .collection(roomID).doc(WINDOW_STATE_PATH);
-
     reference
       .get()
       .then(snapshot => {
@@ -78,6 +62,28 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
         }
       });
   }
+
+  const observeWindowState = () => {
+    const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+                                         .collection(roomID).doc(WINDOW_STATE_PATH);
+
+    const observer = windowStateReference.onSnapshot(snapshot => {
+      const data = snapshot.data() || [];
+      const openWindows = data;
+
+      setOpenWindows(toArray(openWindows));
+    });
+
+    return observer;
+  }
+
+  useEffect(() => {
+    let windowStateObserver = observeWindowState();
+
+    return () => windowStateObserver();
+    // eslint-disable-next-line
+  }, []);
+
 
   const navigateInnerWindow = app => {
     const newState = ['innerWindow', null];
