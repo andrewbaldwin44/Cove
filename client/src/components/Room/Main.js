@@ -23,7 +23,10 @@ function Main({ isOwner }) {
     changeWindowState,
   } = useContext(RoomContext);
 
-  const { background } = roomDetails;
+  let background;
+  if (roomDetails) {
+    background = roomDetails.background;
+  }
 
   const [menuToggle, setMenuToggle] = useState(false);
   const [menuPosition, setMenuPosition] = useState({});
