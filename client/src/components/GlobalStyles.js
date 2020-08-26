@@ -27,6 +27,9 @@ const GlobalStyles = createGlobalStyle`
 
     --window-header-height: 50px;
     --default-appbar-height: 60px;
+
+    --room-menu-width: 150px;
+    --room-menu-height: 150px;
   }
 
   *,

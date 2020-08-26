@@ -32,13 +32,14 @@ function Main({ position, toggle, openWindow }) {
 }
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   display: ${({ toggle }) => toggle ? 'flex' : 'none'};
   flex-direction: column;
   left: ${({ position }) => position.x + 10}px;
   top: ${({ position }) => position.y}px;
   background-color: var(--main-headers);
-  height: 150px;
+  height: var(--room-menu-height);
+  width: var(--room-menu-width);
   width: 150px;
   color: white;
   box-shadow: -2px -2px 8px var(--dark-shadow),

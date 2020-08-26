@@ -32,14 +32,26 @@ function Main({ isOwner }) {
   }
 
   const openMenu = event => {
-    const { clientX, clientY } = event;
+    event.preventDefault();
+    event.stopPropagation();
 
-    setMenuToggle(!menuToggle);
-    setMenuPosition({ x: clientX, y: clientY });
+    const { target } = event;
+
+    console.log(target)
+
+    if (target.classList.contains('desktop')) {
+      const { clientX, clientY } = event;
+
+      setMenuToggle(!menuToggle);
+      setMenuPosition({ x: clientX, y: clientY });
+    }
+    else {
+      setMenuToggle(false);
+    }
   }
 
   return (
-    <Wrapper onClick={openMenu}>
+    <Wrapper onClick={openMenu} className='desktop'>
       <Header>
         <Link to='/'><BackArrow /></Link>
       </Header>
@@ -85,6 +97,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const Header = styled.div`

@@ -105,8 +105,6 @@ function Windows({ children, title, containing, size, position }) {
     // eslint-disable-next-line
   }, [windowProperties]);
 
-  console.log(size, position)
-
   return (
     <Draggable
       handle='.anchor'
