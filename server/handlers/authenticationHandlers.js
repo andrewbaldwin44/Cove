@@ -80,13 +80,14 @@ async function handleLogin(req, res) {
 }
 
 async function handleNewRoom(req, res)  {
-  const { roomName, userID, selectedMembers } = req.body;
+  const { roomName, roomBackground, userID, selectedMembers } = req.body;
 
   try {
     const memberIDs = await getMemberIDs(selectedMembers, admin);
 
     const roomData = await createNewRoom(
       roomName,
+      roomBackground,
       userID,
       memberIDs,
       database,

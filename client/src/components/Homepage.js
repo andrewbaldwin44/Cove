@@ -13,9 +13,8 @@ function Homepage() {
   const {
     userData,
     userRooms,
+    roomDetails,
   } = useContext(AuthenticationContext);
-
-  //console.log(roomDetails);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -24,18 +23,19 @@ function Homepage() {
   return (
     <>
       <Header />
-      {isContainingData(userData) && (
+      {isContainingData(userData) && roomDetails && (
         <Wrapper>
           <Add
             onClick={configureNewRoom}
           >
             Add +
           </Add>
-          {userRooms && userRooms.map(roomID => {
+          {userRooms && userRooms.map((roomID, index) => {
             return (
               <RoomPortal
                 key={roomID}
                 roomID={roomID}
+                roomDetails={roomDetails[index]}
               />
             )
           })}

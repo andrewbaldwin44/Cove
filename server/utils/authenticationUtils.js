@@ -66,11 +66,12 @@ function createRoomMembersData(memberIDs, roomID) {
   }, {});
 }
 
-function createRoomDetailsData(roomID, roomName, FieldValue) {
+function createRoomDetailsData(roomID, roomBackground, roomName, FieldValue) {
   return {
     [roomID]: {
       name: roomName,
-      dateCreated: FieldValue.serverTimestamp()
+      dateCreated: FieldValue.serverTimestamp(),
+      background: roomBackground,
     }
   };
 }
@@ -85,12 +86,12 @@ async function updateParticipantsData(memberIDs, roomID, database) {
   return Promise.all(participantsUpdate);
 }
 
-async function createNewRoom(roomName, userID, memberIDs, database, FieldValue) {
+async function createNewRoom(roomName, roomBackground, userID, memberIDs, database, FieldValue) {
   const roomID = uuidv4();
 
   const newRoomMemberIDs = [...memberIDs, userID];
   const newRoomMembers = createRoomMembersData(newRoomMemberIDs, roomID);
-  const newRoomDetails = createRoomDetailsData(roomID, roomName, FieldValue);
+  const newRoomDetails = createRoomDetailsData(roomID, roomBackground, roomName, FieldValue);
   const newOwnedRooms = { [getRoomPath(OWNED_ROOMS_PATH, roomID)]: true };
 
   await updateDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, newRoomMembers, database);

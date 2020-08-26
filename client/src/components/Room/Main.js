@@ -37,8 +37,6 @@ function Main({ isOwner }) {
 
     const { target } = event;
 
-    console.log(target)
-
     if (target.classList.contains('desktop')) {
       const { clientX, clientY } = event;
 

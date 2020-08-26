@@ -9,6 +9,8 @@ import PageTwo from './PageTwo';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
+import DefaultBackground from '../../assets/images/default-background.jpeg';
+
 function NewRoomDialog({ openDialog, setOpenDialog }) {
   const {
     userData,
@@ -56,9 +58,10 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     event.preventDefault();
 
     const roomName = roomNameInput.current.value;
+    const roomBackground = DefaultBackground;
     const { userID } = userData;
 
-    const roomData = { roomName, userID, selectedMembers };
+    const roomData = { roomName, roomBackground, userID, selectedMembers };
 
     requestNewRoom(roomData);
   }

@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import DefaultBackground from '../assets/images/default-background.jpeg';
+function RoomPortal({ roomID, roomDetails }) {
+  const { background } = roomDetails;
 
-function RoomPortal({ roomID }) {
   return (
     <Wrapper to={`/rooms/room/${roomID}`}>
       <HoverZoom>
-        <RoomPreview src={DefaultBackground} alt='Room Preview' />
+        <RoomPreview src={background} alt='Room Preview' />
       </HoverZoom>
     </Wrapper>
   )
