@@ -1,10 +1,10 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Cove",
+  "name": "Cove,
   "icons": [
     {
-      "src": "favicon.ico",
-      "type": "image/x-icon"
+      "src": "pelican.svg",
+      "type": "image/x-svg"
     }
   ],
   "start_url": ".",

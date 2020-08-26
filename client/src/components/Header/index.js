@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Logo from './Logo';
 import Dropdown from './Dropdown';
 
 import { AuthenticationContext } from '../AuthenticationContext';
@@ -15,7 +16,7 @@ function Header() {
 
   return (
     <Wrapper>
-      <Logo to='/'>Home</Logo>
+      <Link to='/'><Logo /></Link>
       <NavLinks>
         {isContainingData(userData) && (
             <Dropdown />
@@ -39,12 +40,6 @@ const Wrapper = styled.nav`
   width: 100vw;
   height: var(--navbar-height);
   background-color: var(--main-headers);
-`;
-
-const Logo = styled(Link)`
-  color: white;
-  font-weight; bold;
-  font-size: 2.8em;
 `;
 
 const NavLinks = styled.div`
