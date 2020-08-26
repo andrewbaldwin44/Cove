@@ -75,7 +75,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
         bounds='body'
       >
         <Wrapper>
-          <h2>New Room</h2>
+          <h3>New Room</h3>
           <FormPages>
             <PageOne
               roomNameInput={roomNameInput}

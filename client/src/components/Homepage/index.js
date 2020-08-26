@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
-import Header from './Header/index';
-import RoomPortal from './RoomPortal';
-import NewRoomDialog from './NewRoomDialog/index';
+import Landing from './Landing';
+import Header from '../Header/index';
+import RoomPortal from '../RoomPortal';
+import NewRoomDialog from '../NewRoomDialog/index';
 
-import { AuthenticationContext } from './AuthenticationContext';
+import { AuthenticationContext } from '../AuthenticationContext';
 
-import { isContainingData, toArray } from '../utils/index';
+import { isContainingData, toArray } from '../../utils/index';
 
 function Homepage() {
   const {
@@ -22,7 +23,7 @@ function Homepage() {
   return (
     <>
       <Header />
-      {isContainingData(userData) && (
+      {isContainingData(userData) ? (
         <Wrapper>
           <Add
             onClick={configureNewRoom}
@@ -43,7 +44,9 @@ function Homepage() {
             setOpenDialog={setOpenDialog}
           />
         </Wrapper>
-    )}
+      ) : (
+        <Landing />
+      )}
     </>
   )
 }

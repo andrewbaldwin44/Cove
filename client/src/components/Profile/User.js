@@ -56,7 +56,7 @@ function User({ userData, updateUserDatabase, uploadFile }) {
     <Wrapper onSubmit={handleSubmit(onSubmit)}>
       <Left>
         <ProfilePicture src={photoURL} alt='Profile' />
-        <h2>{displayName}</h2>
+        <h3>{displayName}</h3>
         <span className='email'>{email}</span>
       </Left>
       <Right>

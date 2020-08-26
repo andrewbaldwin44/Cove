@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 import GlobalStyles from "./GlobalStyles";
 
-import Homepage from './Homepage';
+import Homepage from './Homepage/index';
 import Login from './Login/index';
 import Profile from './Profile/index';
 import Room from './Room/index';
