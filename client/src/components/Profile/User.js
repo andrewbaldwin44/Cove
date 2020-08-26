@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import ThemeSelector from './ThemeSelector';
 import Form from './Form';
 
+import Spinner from '../Spinner';
+
 function User({ userData, updateUserDatabase, uploadFile }) {
   const {
     displayName,
@@ -16,6 +18,7 @@ function User({ userData, updateUserDatabase, uploadFile }) {
   const { register, handleSubmit } = useForm();
 
   const [selectedTheme, setSelectedTheme] = useState(currentTheme);
+  const [status, setStatus] = useState('idle')
   const [message, setMessage] = useState(null);
 
   const onSubmit = async data => {
@@ -27,6 +30,9 @@ function User({ userData, updateUserDatabase, uploadFile }) {
     const [file] = profile;
 
     if (file) {
+      setMessage(null);
+      setStatus('loading');
+
       const fileURL = await uploadFile(file);
 
       const newUserData = { photoURL: fileURL };
@@ -42,6 +48,7 @@ function User({ userData, updateUserDatabase, uploadFile }) {
 
     if (file || selectedTheme !== currentTheme || name !== displayName) {
       setMessage('Profile Updated!');
+      setStatus('idle');
     }
   }
 
@@ -64,9 +71,15 @@ function User({ userData, updateUserDatabase, uploadFile }) {
           register={register}
         />
         <Footer>
+          {status === 'loading' && (
+            <SpinnerContainer>
+              <Spinner />
+            </SpinnerContainer>
+          )}
           <Message message={message}>{message}</Message>
           <SaveButton
             type='submit'
+            disabled={status === 'loading'}
           >
             Save
           </SaveButton>
@@ -153,7 +166,15 @@ const SaveButton = styled.button`
   font-weight: bold;
   color: black;
   height: 50px;
-  width: 150px;
+  min-width: 150px;
+`;
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 `;
 
 export default User;

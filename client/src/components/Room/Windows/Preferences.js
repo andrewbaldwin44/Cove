@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
+import Spinner from '../../Spinner';
+
 import { RoomContext } from '../RoomContext';
 import { AuthenticationContext } from '../../AuthenticationContext';
 
@@ -19,6 +21,8 @@ function Preferences() {
     uploadFile,
   } = useContext(AuthenticationContext);
 
+  const [backgroundStatus, setBackgroundStatus] = useState('idle');
+
   const { register, handleSubmit } = useForm();
 
   const handleNewBackground = async data => {
@@ -26,9 +30,13 @@ function Preferences() {
     const [file] = background;
 
     if (file) {
+      setBackgroundStatus('loading');
+
       const fileURL = await uploadFile(file);
       await updateRoomDatabase('background', fileURL);
       updateRoomDetails({ background: fileURL });
+
+      setBackgroundStatus('idle');
     }
   }
 
@@ -47,6 +55,9 @@ function Preferences() {
           ref={register}
           onChange={handleSubmit(handleNewBackground)}
         />
+        <Overlay backgroundStatus={backgroundStatus}>
+            <Spinner />
+        </Overlay>
       </BackgroundSelect>
     </Wrapper>
   )
@@ -65,16 +76,17 @@ const Wrapper = styled.div`
 `;
 
 const BackgroundSelect = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  width: 50%;
+  margin: 20px auto;
 
   &[type="file"], label {
     background: var(--main-red);
     color: white;
     font-weight: normal;
     padding: 20px;
-    width: 50%;
     height: 50px;
     margin-top: -50px;
     cursor: pointer;
@@ -84,14 +96,22 @@ const BackgroundSelect = styled.div`
     display: none;
   }
 
-  img, label {
-    align-self: center;
-  }
+
 `;
 
 const BackgroundPreview = styled.img`
+  width: 100%;
   height: auto;
-  width: 50%;
+`;
+
+const Overlay = styled.div`
+  display: ${({ backgroundStatus }) => backgroundStatus === 'idle' ? 'none' : 'flex'};
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 export default Preferences;
