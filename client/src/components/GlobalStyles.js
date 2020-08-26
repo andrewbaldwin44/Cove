@@ -92,11 +92,14 @@ const GlobalStyles = createGlobalStyle`
   	border-spacing: 0;
   }
 
-  button {
+  button, a {
     font-weight: inherit;
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+  }
+
+  button {
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -106,10 +109,6 @@ const GlobalStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
-    font-weight: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
   }
 `;
 
