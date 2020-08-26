@@ -6,7 +6,13 @@ import ThemeSelector from './ThemeSelector';
 import Form from './Form';
 
 function User({ userData, updateUserDatabase, uploadFile }) {
-  const { displayName, email, photoURL, selectedTheme: currentTheme } = userData;
+  const {
+    displayName,
+    email,
+    photoURL,
+    selectedTheme: currentTheme
+  } = userData;
+
   const { register, handleSubmit } = useForm();
 
   const [selectedTheme, setSelectedTheme] = useState(currentTheme);
@@ -21,7 +27,11 @@ function User({ userData, updateUserDatabase, uploadFile }) {
     const [file] = profile;
 
     if (file) {
-      await uploadFile(file);
+      const fileURL = await uploadFile(file);
+
+      const newUserData = { photoURL: fileURL };
+
+      await updateUserDatabase(newUserData);
     }
 
     if (selectedTheme !== currentTheme || name !== displayName) {

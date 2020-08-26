@@ -34,9 +34,6 @@ function Main({ isOwner }) {
   }
 
   const openMenu = event => {
-    event.preventDefault();
-    event.stopPropagation();
-
     const { target } = event;
 
     if (target.classList.contains('desktop')) {

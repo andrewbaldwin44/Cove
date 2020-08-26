@@ -81,10 +81,7 @@ function AuthenticationProvider({ children, signOut, user }) {
     const fileRef = storageRef.child(file.name);
 
     await fileRef.put(file);
-    const fileUrl = await fileRef.getDownloadURL();
-    const newUserData = { photoURL: fileUrl };
-
-    updateUserDatabase(newUserData);
+    return fileRef.getDownloadURL();
   }
 
   const updateUserData = async (userID, snapshot) => {

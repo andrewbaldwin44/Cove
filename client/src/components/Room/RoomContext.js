@@ -5,6 +5,7 @@ import { DATABASE_PATHS } from '../../constants';
 const {
   ROOMS_PATH,
   ROOM_STATE_PATH,
+  ROOM_DETAILS_PATH,
   WINDOW_STATE_PATH,
 } = DATABASE_PATHS;
 
@@ -36,6 +37,14 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
     isMinimized: false,
     position: null,
   });
+
+  const updateRoomDatabase = (path, newData) => {
+    const roomReference = database.collection(ROOMS_PATH).doc(ROOM_DETAILS_PATH);
+
+    const roomPath = `${roomID}.${path}`;
+
+    roomReference.update({ [roomPath]: newData });
+  }
 
   useEffect(() => {
     const windowStateReference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
@@ -84,6 +93,7 @@ export function RoomProvider({ children, roomID, roomDetails, database }) {
         navigateInnerWindow,
         windowProperties,
         setWindowProperties,
+        updateRoomDatabase,
       }}
     >
       {children}
