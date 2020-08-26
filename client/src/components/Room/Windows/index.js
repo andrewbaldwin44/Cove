@@ -9,7 +9,7 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 
 import { RoomContext } from '../RoomContext';
 
-function Windows({ children, title, containing }) {
+function Windows({ children, title, containing, size, position }) {
   const {
     changeWindowState,
     navigateInnerWindow,
@@ -21,7 +21,7 @@ function Windows({ children, title, containing }) {
 
   const [windowY, setWindowY] = useState(0);
   const [mouseX, setMouseX] = useState(0);
-  const [windowPosition, setWindowPosition] = useState(null);
+  const [windowPosition, setWindowPosition] = useState(position);
 
   const handleMouseMove = event => {
     const { clientX } = event;
@@ -105,6 +105,8 @@ function Windows({ children, title, containing }) {
     // eslint-disable-next-line
   }, [windowProperties]);
 
+  console.log(size, position)
+
   return (
     <Draggable
       handle='.anchor'
@@ -114,7 +116,10 @@ function Windows({ children, title, containing }) {
       onStop={handleMouseRelease}
       position={windowPosition}
     >
-    <Wrapper ref={appWindow}>
+    <Wrapper
+      ref={appWindow}
+      size={size}
+    >
       <Header
         className='anchor'
       >
@@ -143,8 +148,12 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   background-color: white;
-  height: calc(100vh - var(--default-appbar-height));
-  width: 100vw;
+  height: ${({ size }) => {
+    return `calc((100vh - var(--default-appbar-height)) * ${size.height / 100} )`;
+  }};
+  width: ${({ size }) => {
+    return `calc(100vw * (${size.width / 100}))`;
+  }};
 `;
 
 const Header = styled.div`
