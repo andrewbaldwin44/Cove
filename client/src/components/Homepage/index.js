@@ -8,7 +8,7 @@ import NewRoomDialog from '../NewRoomDialog/index';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
-import { isContainingData, toArray } from '../../utils/index';
+import { isContainingData, isEmptyData, toArray } from '../../utils/index';
 
 function Homepage() {
   const {
@@ -23,7 +23,7 @@ function Homepage() {
   return (
     <>
       <Header />
-      {isContainingData(userData) ? (
+      {isContainingData(userData) && (
         <Wrapper>
           <Add
             onClick={configureNewRoom}
@@ -44,7 +44,8 @@ function Homepage() {
             setOpenDialog={setOpenDialog}
           />
         </Wrapper>
-      ) : (
+      )}
+      {isEmptyData(userData) && (
         <Landing />
       )}
     </>

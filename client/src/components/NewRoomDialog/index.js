@@ -103,7 +103,8 @@ const Overlay = styled.div`
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0,0,0,0.5)
+  background-color: rgba(0,0,0,0.5);
+  z-index: 101;
 `;
 
 const Wrapper = styled.div`
@@ -115,6 +116,7 @@ const Wrapper = styled.div`
   width: 450px;
   padding: 30px;
   overflow: hidden;
+  z-index: 102;
 
   &:active {
     cursor: grab;
