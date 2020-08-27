@@ -4,10 +4,7 @@ const GlobalStyles = createGlobalStyle`
   :root {
     //theme colors
     --main-headers: ${({ colors }) => colors.mainHeaders};
-    --secondary-headers: ${({ colors }) => {
-      console.log(colors)
-      return colors.secondaryHeaders
-    }};
+    --secondary-headers: ${({ colors }) => colors.secondaryHeaders};
     --main-background: ${({ colors }) => colors.mainBackground};
     --main-font: ${({ colors }) => colors.fontColor || colors.mainHeaders};
 

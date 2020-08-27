@@ -6,7 +6,7 @@ import Youtube from './Windows/Youtube/index';
 import Deezer from './Windows/Deezer/index';
 import Activities from './Windows/Activities/index';
 import Widgets from './Windows/Widgets';
-import Preferences from './Windows/Preferences';
+import Preferences from './Windows/Preferences/index';
 import Settings from './Windows/Settings';
 
 const windowCenter = { x: window.innerWidth / 4, y: window.innerHeight / 4 };
@@ -47,8 +47,8 @@ export const APPS = {
   preferences: {
     name: 'Preferences',
     component: props => (<Preferences {...props} />),
-    position: windowCenter,
-    size: miniWindow,
+    position: { ...windowCenter, y: window.innerHeight / 6 },
+    size: { ...miniWindow, height: 70 },
   },
   settings: {
     name: 'Settings',

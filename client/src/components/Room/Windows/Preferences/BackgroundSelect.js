@@ -2,17 +2,16 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
-import Spinner from '../../Spinner';
+import Spinner from '../../../Spinner';
 
-import { RoomContext } from '../RoomContext';
-import { AuthenticationContext } from '../../AuthenticationContext';
+import { RoomContext } from '../../RoomContext';
+import { AuthenticationContext } from '../../../AuthenticationContext';
 
-function Preferences() {
+function BackgroundSelect() {
   const {
     roomDetails: {
       background
     },
-    roomDetails,
     updateRoomDatabase,
     updateRoomDetails
   } = useContext(RoomContext);
@@ -22,7 +21,6 @@ function Preferences() {
   } = useContext(AuthenticationContext);
 
   const [backgroundStatus, setBackgroundStatus] = useState('idle');
-
   const { register, handleSubmit } = useForm();
 
   const handleNewBackground = async data => {
@@ -42,45 +40,29 @@ function Preferences() {
 
   return (
     <Wrapper>
-      <h3>Theme</h3>
-      <BackgroundSelect>
-        <BackgroundPreview src={background} alt='Background Preview' />
-        <label htmlFor='background'>
-          Change Desktop Background
-        </label>
-        <input
-          type='file'
-          name='background'
-          id='background'
-          ref={register}
-          onChange={handleSubmit(handleNewBackground)}
-        />
-        <Overlay backgroundStatus={backgroundStatus}>
-            <Spinner />
-        </Overlay>
-      </BackgroundSelect>
+      <BackgroundPreview src={background} alt='Background Preview' />
+      <label htmlFor='background'>
+        Change Desktop Background
+      </label>
+      <input
+        type='file'
+        name='background'
+        id='background'
+        ref={register}
+        onChange={handleSubmit(handleNewBackground)}
+      />
+      <Overlay backgroundStatus={backgroundStatus}>
+          <Spinner />
+      </Overlay>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100%;
-  width: 100%;
-  padding: 20px 40px;
-
-  h3 {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-`;
-
-const BackgroundSelect = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   width: 50%;
-  margin: 20px auto;
 
   &[type="file"], label {
     background: var(--main-red);
@@ -95,8 +77,6 @@ const BackgroundSelect = styled.div`
   & input {
     display: none;
   }
-
-
 `;
 
 const BackgroundPreview = styled.img`
@@ -105,13 +85,13 @@ const BackgroundPreview = styled.img`
 `;
 
 const Overlay = styled.div`
+  position: absolute;
   display: ${({ backgroundStatus }) => backgroundStatus === 'idle' ? 'none' : 'flex'};
   align-items: center;
   justify-content: center;
-  position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-export default Preferences;
+export default BackgroundSelect;
