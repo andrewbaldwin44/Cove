@@ -62,7 +62,7 @@ function App() {
         <Route exact path='/users/profile'>
           <Profile />
         </Route>
-        <Route exact path='/rooms/room/:roomID'>
+        <Route exact path='/cove/:roomID'>
           <Room />
         </Route>
         <Route exact path='/api/deezer_authenticated'>

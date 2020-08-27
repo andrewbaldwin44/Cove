@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import AppBar from './AppBar';
+import ActionBar from './ActionBar';
 import WindowManager from './WindowManager';
 import VideoCall from './VideoCall';
 import Menu from './Menu';
@@ -61,7 +61,7 @@ function Main({ isOwner }) {
       </Header>
       <WindowManager />
       <VideoCall />
-      <AppBar length={'80%'} position={'bottom'}>
+      <ActionBar length={'80%'} position={'bottom'}>
         <WebIcon onClick={() => openWindow('web')} />
         <StyledGameIcon
           src={GameIcon}
@@ -83,7 +83,7 @@ function Main({ isOwner }) {
         alt='Activities'
         onClick={() => openWindow('activity')}
       />
-      </AppBar>
+      </ActionBar>
       <Menu
         toggle={menuToggle}
         position={menuPosition}

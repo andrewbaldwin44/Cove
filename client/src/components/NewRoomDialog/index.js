@@ -49,7 +49,7 @@ function NewRoomDialog({ openDialog, setOpenDialog }) {
     .then(data => {
       const { roomID } = data;
 
-      history.push(`rooms/room/${roomID}`);
+      history.push(`/cove/${roomID}`);
     })
     .catch(error => console.log(error));
   }

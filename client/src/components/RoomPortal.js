@@ -7,7 +7,7 @@ function RoomPortal({ roomID, roomDetails }) {
   console.log(roomDetails);
 
   return (
-    <Wrapper to={`/rooms/room/${roomID}`}>
+    <Wrapper to={`/cove/${roomID}`}>
       <HoverZoom>
         <RoomPreview src={background} alt='Room Preview' />
       </HoverZoom>
