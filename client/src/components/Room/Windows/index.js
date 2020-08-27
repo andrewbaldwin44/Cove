@@ -46,6 +46,8 @@ function Windows({ children, title, containing, size, position }) {
   };
 
   const handleMouseRelease = () => {
+    if (position.x !== 0 && position.y !== 0) return;
+
     const windowWidth = window.innerWidth - 1;
 
     if (windowY === 0) {
