@@ -12,7 +12,7 @@ const {
   },
 } = require('../constants');
 
-const { APPS } = require('../constants');
+const { APPS, DEFAULT_BOTTOM_ACTION_BAR_LENGTH } = require('../constants');
 
 const {
   toArray,
@@ -94,7 +94,14 @@ async function setDefaultRoomState(roomID, database) {
   const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                             .collection(roomID).doc(ACTION_BAR_STATE_PATH);
 
-  reference.set({ bottom: { apps: APPS }});
+  const defaultSettings = {
+    bottom: {
+      apps: APPS,
+      length: DEFAULT_BOTTOM_ACTION_BAR_LENGTH,
+    }
+  }
+
+  reference.set(defaultSettings);
 }
 
 async function createNewRoom(roomName, roomBackground, userID, memberIDs, database, FieldValue) {

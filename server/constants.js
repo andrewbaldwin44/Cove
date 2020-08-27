@@ -10,5 +10,10 @@ const DATABASE_PATHS = {
 }
 
 const APPS = ['web', 'games', 'youtube', 'deezer', 'activity'];
+const DEFAULT_BOTTOM_ACTION_BAR_LENGTH = '80%';
 
-module.exports = { DATABASE_PATHS, APPS };
+module.exports = {
+  DATABASE_PATHS,
+  APPS,
+  DEFAULT_BOTTOM_ACTION_BAR_LENGTH,
+};

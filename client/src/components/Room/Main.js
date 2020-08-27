@@ -57,10 +57,10 @@ function Main({ isOwner }) {
       <WindowManager />
       <VideoCall />
       {actionBars && toArray(actionBars).map(([position, details], index) => {
-        const { apps } = details;
+        const { apps, length } = details;
 
         return (
-          <ActionBar key={`actionbar${index}`} length={'80%'} position={position}>
+          <ActionBar key={`actionbar${index}`} length={length} position={position}>
             {apps.map((appID, index) => {
               const { icon, name } = APPS[appID];
 
