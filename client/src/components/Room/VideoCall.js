@@ -53,15 +53,14 @@ function VideoCall() {
         }
       })
 
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
-        setUserStream(userStream);
-      });
+      // navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
+      //   setUserStream(userStream);
+      // });
 
       setPeerConnection(newPeerConnection);
     }
     // eslint-disable-next-line
   }, [userData]);
-  console.log(allUsers)
 
 
   const startCall = () => {

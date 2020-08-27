@@ -56,7 +56,6 @@ function Room() {
       >
         <Main
           isOwner={memberData.isOwner}
-          roomDetails={roomDetails}
           actionBars={actionBars}
         />
       </RoomProvider>

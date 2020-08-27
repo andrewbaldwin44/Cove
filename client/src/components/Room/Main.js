@@ -14,9 +14,10 @@ import { toArray } from '../../utils/index';
 
 import { RoomContext } from './RoomContext';
 
-function Main({ isOwner, roomDetails, actionBars }) {
+function Main({ isOwner, actionBars }) {
   const {
     changeWindowState,
+    roomDetails,
   } = useContext(RoomContext);
 
   const { background } = roomDetails;
