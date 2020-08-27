@@ -7,6 +7,7 @@ import Spinner from '../Spinner';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 import { RoomProvider } from './RoomContext';
+import { getActionBars } from '../../utils/roomUtils';
 
 function Room() {
   const {
@@ -19,6 +20,11 @@ function Room() {
   const { roomID } = useParams();
 
   const [memberData, setMemberData] = useState(null);
+  const [actionBars, setActionBars] = useState(null);
+
+  useEffect(() => {
+    getActionBars(roomID, setActionBars, database);
+  }, []);
 
   useEffect(() => {
     const clientID = retrieveClientID()
@@ -30,7 +36,7 @@ function Room() {
     }
   }, [retrieveClientID, roomID, validateRoomMember]);
 
-  if (!memberData || !userRooms || !userRooms[roomID]) {
+  if (!memberData || !userRooms || !userRooms[roomID] || !actionBars) {
     return (
       <SpinnerContainer>
         <Spinner />
@@ -49,6 +55,7 @@ function Room() {
         <Main
           isOwner={memberData.isOwner}
           roomDetails={roomDetails}
+          actionBars={actionBars}
         />
       </RoomProvider>
     )

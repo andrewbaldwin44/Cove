@@ -8,16 +8,13 @@ import VideoCall from './VideoCall';
 import Menu from './Menu';
 
 import { BsArrowLeftShort } from 'react-icons/bs';
-import { SiKatana } from 'react-icons/si';
 
-import GameIcon from '../../assets/images/game.png';
-import YoutubeIcon from '../../assets/images/youtube.png';
-import DeezerIcon from '../../assets/images/deezer.png';
-import ActivityIcon from '../../assets/images/activity.png';
+import { APPS } from './appConstants';
+import { toArray } from '../../utils/index';
 
 import { RoomContext } from './RoomContext';
 
-function Main({ isOwner, roomDetails }) {
+function Main({ isOwner, roomDetails, actionBars }) {
   const {
     changeWindowState,
   } = useContext(RoomContext);
@@ -57,29 +54,24 @@ function Main({ isOwner, roomDetails }) {
       </Header>
       <WindowManager />
       <VideoCall />
-      <ActionBar length={'80%'} position={'bottom'}>
-        <WebIcon onClick={() => openWindow('web')} />
-        <StyledGameIcon
-          src={GameIcon}
-          alt='Games'
-          onClick={() => openWindow('games')}
-        />
-      <StyledYoutubeIcon
-        src={YoutubeIcon}
-        alt='Youtube'
-        onClick={() => openWindow('youtube')}
-      />
-      <StyledDeezerIcon
-        src={DeezerIcon}
-        alt='Deezer'
-        onClick={() => openWindow('deezer')}
-      />
-      <StyledActivityIcon
-        src={ActivityIcon}
-        alt='Activities'
-        onClick={() => openWindow('activity')}
-      />
-      </ActionBar>
+      {actionBars && toArray(actionBars).map(([position, contents], index) => {
+        return (
+          <ActionBar key={`actionbar${index}`} length={'80%'} position={position}>
+            {contents.map((appID, index) => {
+              const { icon, name } = APPS[appID];
+
+              return (
+                <StyledIcon
+                  key={`${appID}${index}`}
+                  src={icon}
+                  alt={name}
+                  onClick={() => openWindow(appID)}
+                />
+              )
+            })}
+          </ActionBar>
+        )
+      })}
       <Menu
         toggle={menuToggle}
         position={menuPosition}
@@ -88,8 +80,6 @@ function Main({ isOwner, roomDetails }) {
     </Wrapper>
   )
 }
-
-//<AppBar length={'40%'} position={'left'} />
 
 const Wrapper = styled.div`
   display: flex;
@@ -114,27 +104,7 @@ const BackArrow = styled(BsArrowLeftShort)`
   color: var(--main-black);
 `;
 
-const WebIcon = styled(SiKatana)`
-  font-size: 2.5em;
-  color: white;
-`;
-
-const StyledGameIcon = styled.img`
-  height: 40px;
-  width: 40px;
-`;
-
-const StyledYoutubeIcon = styled.img`
-  height: 50px;
-  width: 50px;
-`;
-
-const StyledDeezerIcon = styled.img`
-  height: 50px;
-  width: 50px;
-`;
-
-const StyledActivityIcon = styled.img`
+const StyledIcon = styled.img`
   height: 50px;
   width: 50px;
 `;

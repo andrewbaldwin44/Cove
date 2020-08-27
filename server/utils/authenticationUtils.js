@@ -94,12 +94,7 @@ async function setDefaultRoomState(roomID, database) {
   const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                             .collection(roomID).doc(ACTION_BAR_STATE_PATH);
 
-  const defaultAppSettings = APPS.reduce((appSettings, app) => {
-    appSettings[app] = true;
-    return appSettings;
-  }, {});
-
-  reference.set({ bottom: defaultAppSettings });
+  reference.set({ bottom: APPS });
 }
 
 async function createNewRoom(roomName, roomBackground, userID, memberIDs, database, FieldValue) {

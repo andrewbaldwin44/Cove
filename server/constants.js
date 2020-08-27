@@ -6,7 +6,7 @@ const DATABASE_PATHS = {
   ROOMS_MEMBERS_PATH: 'members',
   ROOMS_DETAILS_PATH: 'details',
   ROOM_STATE_PATH: 'state',
-  ACTION_BAR_STATE_PATH: 'actions_bars'
+  ACTION_BAR_STATE_PATH: 'action_bars'
 }
 
 const APPS = ['web', 'games', 'deezer', 'activity'];

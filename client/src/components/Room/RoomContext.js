@@ -7,6 +7,7 @@ const {
   ROOM_STATE_PATH,
   ROOM_DETAILS_PATH,
   WINDOW_STATE_PATH,
+  ACTION_BAR_STATE_PATH,
 } = DATABASE_PATHS;
 
 export const RoomContext = createContext(null);
@@ -71,7 +72,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   const observeWindowState = () => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
-                                         .collection(roomID).doc(WINDOW_STATE_PATH);
+                              .collection(roomID).doc(WINDOW_STATE_PATH);
 
     const observer = reference.onSnapshot(snapshot => {
       const data = snapshot.data() || [];
@@ -83,18 +84,17 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     return observer;
   }
 
+  const navigateInnerWindow = app => {
+    const newState = ['innerWindow', null];
+    changeWindowState(app, newState);
+  }
+
   useEffect(() => {
     let windowStateObserver = observeWindowState();
 
     return () => windowStateObserver();
     // eslint-disable-next-line
   }, []);
-
-
-  const navigateInnerWindow = app => {
-    const newState = ['innerWindow', null];
-    changeWindowState(app, newState);
-  }
 
   return (
     <RoomContext.Provider
