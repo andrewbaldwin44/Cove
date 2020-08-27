@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -17,16 +17,12 @@ import ActivityIcon from '../../assets/images/activity.png';
 
 import { RoomContext } from './RoomContext';
 
-function Main({ isOwner }) {
+function Main({ isOwner, roomDetails }) {
   const {
-    roomDetails,
     changeWindowState,
   } = useContext(RoomContext);
 
-  let background;
-  if (roomDetails) {
-    background = roomDetails.background;
-  }
+  const { background } = roomDetails;
 
   const [menuToggle, setMenuToggle] = useState(false);
   const [menuPosition, setMenuPosition] = useState({});

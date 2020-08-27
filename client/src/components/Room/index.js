@@ -28,7 +28,7 @@ function Room() {
     }
   }, [retrieveClientID, roomID, validateRoomMember]);
 
-  if (!memberData || !userRooms) {
+  if (!memberData || !userRooms || !userRooms[roomID]) {
     return (
       <div>loading...</div>
     )
@@ -44,6 +44,7 @@ function Room() {
       >
         <Main
           isOwner={memberData.isOwner}
+          roomDetails={roomDetails}
         />
       </RoomProvider>
     )
