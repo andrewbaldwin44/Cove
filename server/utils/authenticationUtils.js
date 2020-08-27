@@ -7,8 +7,12 @@ const {
     ROOM_NUMBER_PATH,
     ROOMS_MEMBERS_PATH,
     ROOMS_DETAILS_PATH,
+    ROOM_STATE_PATH,
+    ACTION_BAR_STATE_PATH
   },
 } = require('../constants');
+
+const { APPS } = require('../constants');
 
 const {
   toArray,
@@ -86,6 +90,18 @@ async function updateParticipantsData(memberIDs, roomID, database) {
   return Promise.all(participantsUpdate);
 }
 
+async function setDefaultRoomState(roomID, database) {
+  const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+                            .collection(roomID).doc(ACTION_BAR_STATE_PATH);
+
+  const defaultAppSettings = APPS.reduce((appSettings, app) => {
+    appSettings[app] = true;
+    return appSettings;
+  }, {});
+
+  reference.set({ bottom: defaultAppSettings });
+}
+
 async function createNewRoom(roomName, roomBackground, userID, memberIDs, database, FieldValue) {
   const roomID = uuidv4();
 
@@ -98,6 +114,7 @@ async function createNewRoom(roomName, roomBackground, userID, memberIDs, databa
   await updateDatabase(ROOMS_PATH, ROOMS_DETAILS_PATH, newRoomDetails, database);
   await updateDatabase(USERS_PATH, userID, newOwnedRooms, database);
   await updateParticipantsData(memberIDs, roomID, database);
+  await setDefaultRoomState(roomID, database);
 
   return {
     name: roomName,

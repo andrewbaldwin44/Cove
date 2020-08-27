@@ -5,6 +5,10 @@ const DATABASE_PATHS = {
   ROOMS_PATH: 'rooms',
   ROOMS_MEMBERS_PATH: 'members',
   ROOMS_DETAILS_PATH: 'details',
+  ROOM_STATE_PATH: 'state',
+  ACTION_BAR_STATE_PATH: 'actions_bars'
 }
 
-module.exports = { DATABASE_PATHS };
+const APPS = ['web', 'games', 'deezer', 'activity'];
+
+module.exports = { DATABASE_PATHS, APPS };
