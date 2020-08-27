@@ -16,6 +16,7 @@ const GlobalStyles = createGlobalStyle`
     --light-blue: #40c4ff;
     --dark-shadow: rgba(0,0,0,0.2);
     --light-green: ${({ colors }) => colors.overwrite || '#00e676'};
+    --secondary-green: ${({ colors }) => colors.secondaryOverwrite || '#69f0ae'};
     --red-highlight: #f44336;
     --main-red: ${({ colors }) => colors.overwrite || '#f44336'};
 

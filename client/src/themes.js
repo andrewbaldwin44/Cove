@@ -43,6 +43,7 @@ export const themes = {
       secondaryHeaders: '#00838f',
       mainBackground: '#80deea',
       overwrite: '#A18276',
+      secondaryOverwrite: '#b69e95',
     }
   },
   lavendar: {

@@ -111,6 +111,11 @@ const Left = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 100px;
+  line-height: 1.2;
+
+  h3 {
+    font-size: 2em;
+  }
 `;
 
 const ProfilePicture = styled.img`
@@ -154,7 +159,7 @@ const Message = styled.div`
   align-items: center;
   color: black;
   justify-content: center;
-  background-image:linear-gradient(to bottom right, var(--light-green), lightgreen);
+  background-image:linear-gradient(to bottom right, var(--light-green), var(--secondary-green));
   border-radius: 5px;
   height: 50px;
   width: 70%;
