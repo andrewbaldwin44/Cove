@@ -24,9 +24,9 @@ const GlobalStyles = createGlobalStyle`
     --navbar-height: 80px;
     --authentication-form-width: 400px;
 
-    --portal-height: 210px;
-    --portal-width: 320px;
     --portal-gap: 30px;
+    --portal-height: 230px;
+    --portal-width: calc((100vw / 4) - 80px);
     --portal-border-radius: 10px;
 
     --window-header-height: 50px;

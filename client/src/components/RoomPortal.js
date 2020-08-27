@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 function RoomPortal({ roomID, roomDetails }) {
   const { background, name } = roomDetails;
-  console.log(roomDetails);
 
   return (
     <Wrapper to={`/cove/${roomID}`}>
