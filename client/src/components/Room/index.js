@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import Main from './Main';
+import Spinner from '../Spinner';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 import { RoomProvider } from './RoomContext';
@@ -30,7 +32,9 @@ function Room() {
 
   if (!memberData || !userRooms || !userRooms[roomID]) {
     return (
-      <div>loading...</div>
+      <SpinnerContainer>
+        <Spinner />
+      </SpinnerContainer>
     )
   }
   else if (memberData.isOwner || memberData.isMember) {
@@ -57,5 +61,12 @@ function Room() {
     )
   }
 }
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 export default Room;
