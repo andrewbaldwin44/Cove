@@ -18,12 +18,12 @@ import ActivitiesIcon from '../../assets/images/activity.png';
 const windowCenter = { x: window.innerWidth / 4, y: window.innerHeight / 4 };
 const miniWindow = { width: 50, height: 50 };
 
+export const UTILITY_APPS = ['widgets', 'preferences', 'settings'];
+
 export const DEFAULTS = {
   defaultWindowPosition: { x: 0, y: 0 },
   defaultWindowSize: { width: 100, height: 100 },
 }
-
-export const UTILITY_APPS = ['widgets', 'preferences', 'settings'];
 
 export const APPS = {
   web: {

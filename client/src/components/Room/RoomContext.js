@@ -7,7 +7,6 @@ const {
   ROOM_STATE_PATH,
   ROOM_DETAILS_PATH,
   WINDOW_STATE_PATH,
-  ACTION_BAR_STATE_PATH,
 } = DATABASE_PATHS;
 
 export const RoomContext = createContext(null);
@@ -32,7 +31,7 @@ function writeWindowState(app, newState, reference) {
   });
 }
 
-export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails, database }) {
+export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails, actionBars, database }) {
   const [openWindows, setOpenWindows] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
@@ -107,6 +106,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         setWindowProperties,
         updateRoomDatabase,
         updateRoomDetails,
+        actionBars
       }}
     >
       {children}

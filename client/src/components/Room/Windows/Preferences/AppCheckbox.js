@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function AppCheckbox({ id, app, addApp }) {
+import { APPS } from '../../appConstants';
+
+function AppCheckbox({ id, app, addApp, selectedActionBar }) {
   const { name, icon } = app;
 
-  const [isSelected, setIsSelected] = useState(false);
+  const initalSelected = selectedActionBar.includes(id);
+  const [isSelected, setIsSelected] = useState(initalSelected);
+
+  useEffect(() => {
+    setIsSelected(initalSelected);
+  }, [selectedActionBar]);
+
+  console.log('initial: ', initalSelected, 'isSelected:', isSelected)
 
   const handleSelection = () => {
     const newIsSelected = !isSelected

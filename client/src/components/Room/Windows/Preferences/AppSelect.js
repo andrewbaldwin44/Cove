@@ -1,26 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import AppCheckbox from './AppCheckbox';
 
 import { APPS, UTILITY_APPS } from '../../appConstants';
-import { toArray } from '../../../../utils';
+import { toArray, capitalizeFirstLetter } from '../../../../utils';
+
+import { RoomContext } from '../../RoomContext';
 
 function AppSelect() {
+  const {
+    actionBars
+  } = useContext(RoomContext);
+
   const [selectedApps, setSelectedApps] = useState({});
+  const [selectedActionBar, setSelectedActionBar] = useState(actionBars['bottom']);
 
   const addApp = (app, isSelected) => {
-    const newSelectedApp = { [app]: isSelected };
+    const selectedApp = { [app]: isSelected };
+    const newSelectedApps = { ...selectedApps, ...selectedApp };
 
-    setSelectedApps({ ...selectedApps, ...newSelectedApp });
+    setSelectedApps(newSelectedApps);
+  }
+
+  const handleSelectedOption = event => {
+    const { target: { value } } = event;
+    const actionBar = actionBars[value];
+
+    setSelectedActionBar(actionBar);
   }
 
   return (
     <Wrapper>
       <BarSelect>
-        <select name='action-bars' id='action-bars'>
-          <option value='bottom'>Bottom</option>
-          <option value='Left'>Left</option>
+        <select
+          name='action-bars'
+          id='action-bars'
+          onChange={handleSelectedOption}
+          defaultValue='bottom'
+        >
+          {toArray(actionBars, 'keys').map((position, index) => {
+            return (
+              <option key={`actionbaroption${index}`} value={position}>
+                {capitalizeFirstLetter(position)}
+              </option>
+            )
+          })}
         </select>
         <label htmlFor='action-bars'>Action Bar</label>
       </BarSelect>
@@ -36,6 +61,7 @@ function AppSelect() {
                 id={id}
                 app={app}
                 addApp={addApp}
+                selectedActionBar={selectedActionBar}
               />
             )
           })}

@@ -9,6 +9,6 @@ const DATABASE_PATHS = {
   ACTION_BAR_STATE_PATH: 'action_bars'
 }
 
-const APPS = ['web', 'games', 'deezer', 'activity'];
+const APPS = ['web', 'games', 'youtube', 'deezer', 'activity'];
 
 module.exports = { DATABASE_PATHS, APPS };

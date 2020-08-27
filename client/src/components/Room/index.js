@@ -24,6 +24,7 @@ function Room() {
 
   useEffect(() => {
     getActionBars(roomID, setActionBars, database);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function Room() {
         database={database}
         roomID={roomID}
         roomDetails={roomDetails}
+        actionBars={actionBars}
       >
         <Main
           isOwner={memberData.isOwner}
