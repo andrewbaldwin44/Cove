@@ -11,6 +11,7 @@ export const themes = {
     name: 'Default',
     colors: {
       mainHeaders: '#444146',
+      secondaryHeaders: '#4B515D',
       mainBackground: 'white',
     }
   },
@@ -19,6 +20,7 @@ export const themes = {
     name: 'Dark',
     colors: {
       mainHeaders: '#444146',
+      secondaryHeaders: '#2E2E2E',
       mainBackground: '#4B515D',
       fontColor: '#212121',
     }
@@ -27,7 +29,8 @@ export const themes = {
     img: Vampire,
     name: 'Vampire',
     colors: {
-      mainHeaders: '#b71c1c',
+      mainHeaders: '#C33C54',
+      secondaryHeaders: '#2E2E2E',
       mainBackground: '#4B515D',
       fontColor: '#f44336',
     }
@@ -37,14 +40,17 @@ export const themes = {
     name: 'Glacial',
     colors: {
       mainHeaders: '#006064',
-      mainBackground: '#4dd0e1',
+      secondaryHeaders: '#00838f',
+      mainBackground: '#80deea',
+      overwrite: '#A18276',
     }
   },
   lavendar: {
     img: Lavendar,
     name: 'Lavendar',
     colors: {
-      mainHeaders: '#8e24aa',
+      mainHeaders: '#6a1b9a',
+      secondaryHeaders: '#8e24aa',
       mainBackground: '#9575cd',
     }
   },
@@ -53,6 +59,7 @@ export const themes = {
     name: 'Hot Pink',
     colors: {
       mainHeaders: '#c51162',
+      secondaryHeaders: '#f50057',
       mainBackground: '#f8bbd0',
     }
   },

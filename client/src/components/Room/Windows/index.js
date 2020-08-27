@@ -145,7 +145,7 @@ const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: white;
+  background-color: var(--main-background);
   height: ${({ size }) => {
     return `calc((100vh - var(--default-appbar-height)) * ${size.height / 100} )`;
   }};

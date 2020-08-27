@@ -4,6 +4,10 @@ const GlobalStyles = createGlobalStyle`
   :root {
     //theme colors
     --main-headers: ${({ colors }) => colors.mainHeaders};
+    --secondary-headers: ${({ colors }) => {
+      console.log(colors)
+      return colors.secondaryHeaders
+    }};
     --main-background: ${({ colors }) => colors.mainBackground};
     --main-font: ${({ colors }) => colors.fontColor || colors.mainHeaders};
 
@@ -11,9 +15,9 @@ const GlobalStyles = createGlobalStyle`
     --light-gray: #9e9e9e;
     --light-blue: #40c4ff;
     --dark-shadow: rgba(0,0,0,0.2);
-    --light-green: #00e676;
+    --light-green: ${({ colors }) => colors.overwrite || '#00e676'};
     --red-highlight: #f44336;
-    --main-red: #f44336;
+    --main-red: ${({ colors }) => colors.overwrite || '#f44336'};
 
     --heading-text-shadow: 1px 1px 12px var(--main-black);
 

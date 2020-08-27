@@ -90,7 +90,7 @@ const Header = styled.div`
   justify-content: center;
   width: 100vw;
   height: 70px;
-  background-color: var(--main-headers);
+  background-color: var(--secondary-headers);
 `;
 
 const YoutubeSearch = styled.input`
