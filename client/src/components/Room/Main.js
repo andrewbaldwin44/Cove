@@ -14,10 +14,11 @@ import { toArray } from '../../utils/index';
 
 import { RoomContext } from './RoomContext';
 
-function Main({ isOwner, actionBars }) {
+function Main({ isOwner }) {
   const {
     changeWindowState,
     roomDetails,
+    actionBars
   } = useContext(RoomContext);
 
   const { background } = roomDetails;
@@ -55,10 +56,12 @@ function Main({ isOwner, actionBars }) {
       </Header>
       <WindowManager />
       <VideoCall />
-      {actionBars && toArray(actionBars).map(([position, contents], index) => {
+      {actionBars && toArray(actionBars).map(([position, details], index) => {
+        const { apps } = details;
+
         return (
           <ActionBar key={`actionbar${index}`} length={'80%'} position={position}>
-            {contents.map((appID, index) => {
+            {apps.map((appID, index) => {
               const { icon, name } = APPS[appID];
 
               return (

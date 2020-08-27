@@ -10,24 +10,38 @@ import { RoomContext } from '../../RoomContext';
 
 function AppSelect() {
   const {
-    actionBars
+    actionBars,
+    updateActionBars,
+    updateActionBarDatabase,
   } = useContext(RoomContext);
 
-  const [selectedApps, setSelectedApps] = useState({});
-  const [selectedActionBar, setSelectedActionBar] = useState(actionBars['bottom']);
+  const [actionBar, setActionBar] = useState(actionBars['bottom']);
+  const [selection, setSelection] = useState('bottom');
 
-  const addApp = (app, isSelected) => {
-    const selectedApp = { [app]: isSelected };
-    const newSelectedApps = { ...selectedApps, ...selectedApp };
+  const toggleApp = (app, isSelected) => {
+    const newActionBars = { ...actionBars };
+    const newSelectedApps = [...actionBar.apps];
 
-    setSelectedApps(newSelectedApps);
+    if (isSelected) {
+      newSelectedApps.push(app);
+    }
+    else {
+      const index = newSelectedApps.indexOf(app);
+      newSelectedApps.splice(index, 1);
+    }
+
+    newActionBars[selection].apps = newSelectedApps;
+
+    updateActionBars(newActionBars);
+    updateActionBarDatabase(newActionBars);
+    setActionBar(newActionBars[selection]);
   }
 
   const handleSelectedOption = event => {
     const { target: { value } } = event;
-    const actionBar = actionBars[value];
 
-    setSelectedActionBar(actionBar);
+    setActionBar(actionBars[value]);
+    setSelection(value);
   }
 
   return (
@@ -60,8 +74,8 @@ function AppSelect() {
                 key={`appCheckbox${index}`}
                 id={id}
                 app={app}
-                addApp={addApp}
-                selectedActionBar={selectedActionBar}
+                toggleApp={toggleApp}
+                actionBar={actionBar}
               />
             )
           })}

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function AppCheckbox({ id, app, addApp, selectedActionBar }) {
+function AppCheckbox({ id, app, toggleApp, actionBar }) {
   const { name, icon } = app;
 
-  const initalSelected = selectedActionBar.includes(id);
-  const [isSelected, setIsSelected] = useState(initalSelected);
+  const initalSelected = actionBar.apps.includes(id);
+  const [isSelected, setIsSelected] = useState(null);
 
   useEffect(() => {
     setIsSelected(initalSelected);
     // eslint-disable-next-line
-  }, [selectedActionBar]);
+  }, [actionBar]);
 
   const handleSelection = () => {
     const newIsSelected = !isSelected
 
     setIsSelected(newIsSelected);
-    addApp(id, newIsSelected);
+    toggleApp(id, newIsSelected);
   }
 
   return (

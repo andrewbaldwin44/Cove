@@ -7,6 +7,7 @@ const {
   ROOM_STATE_PATH,
   ROOM_DETAILS_PATH,
   WINDOW_STATE_PATH,
+  ACTION_BAR_STATE_PATH,
 } = DATABASE_PATHS;
 
 export const RoomContext = createContext(null);
@@ -31,17 +32,21 @@ function writeWindowState(app, newState, reference) {
   });
 }
 
-export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails, actionBars, database }) {
+export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails, actionBars: initialActionBars, database }) {
+  const [roomDetails, setRoomDetails] = useState(initialRoomDetails);
+  const [actionBars, setActionBars] = useState(initialActionBars);
   const [openWindows, setOpenWindows] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
   });
 
-  const [roomDetails, setRoomDetails] = useState(initialRoomDetails);
-
   const updateRoomDetails = (newData) => {
     setRoomDetails({ ...roomDetails, ...newData });
+  }
+
+  const updateActionBars = (newData) => {
+    setActionBars(newData);
   }
 
   const updateRoomDatabase = (path, newData) => {
@@ -67,6 +72,13 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
           writeWindowState(app, newState, reference);
         }
       });
+  }
+
+  const updateActionBarDatabase = newState => {
+    const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+                              .collection(roomID).doc(ACTION_BAR_STATE_PATH);
+
+    reference.update(newState)
   }
 
   const observeWindowState = () => {
@@ -106,7 +118,9 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         setWindowProperties,
         updateRoomDatabase,
         updateRoomDetails,
-        actionBars
+        actionBars,
+        updateActionBars,
+        updateActionBarDatabase,
       }}
     >
       {children}
