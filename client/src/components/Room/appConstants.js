@@ -9,6 +9,12 @@ import Widgets from './Windows/Widgets';
 import Preferences from './Windows/Preferences/index';
 import Settings from './Windows/Settings';
 
+import BrowserIcon from '../../assets/images/browser.png';
+import GamesIcon from '../../assets/images/game.png';
+import YoutubeIcon from '../../assets/images/youtube.png';
+import DeezerIcon from '../../assets/images/deezer.png';
+import ActivitiesIcon from '../../assets/images/activity.png';
+
 const windowCenter = { x: window.innerWidth / 4, y: window.innerHeight / 4 };
 const miniWindow = { width: 50, height: 50 };
 
@@ -17,26 +23,33 @@ export const DEFAULTS = {
   defaultWindowSize: { width: 100, height: 100 },
 }
 
+export const UTILITY_APPS = ['widgets', 'preferences', 'settings'];
+
 export const APPS = {
   web: {
     name: 'Web',
-    component: props => (<Browser {...props} />)
+    component: props => (<Browser {...props} />),
+    icon: BrowserIcon,
   },
   games: {
     name: 'Games',
-    component: props => (<Games {...props} />)
+    component: props => (<Games {...props} />),
+    icon: GamesIcon,
   },
   youtube: {
     name: 'YouTube',
-    component: props => (<Youtube {...props} />)
+    component: props => (<Youtube {...props} />),
+    icon: YoutubeIcon,
   },
   deezer: {
     name: 'Deezer',
-    component: props => (<Deezer {...props} />)
+    component: props => (<Deezer {...props} />),
+    icon: DeezerIcon,
   },
   activity: {
     name: 'Timed Activities',
-    component: props => (<Activities {...props} />)
+    component: props => (<Activities {...props} />),
+    icon: ActivitiesIcon,
   },
   widgets: {
     name: 'Widgets',

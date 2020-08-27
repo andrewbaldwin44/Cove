@@ -63,6 +63,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+  margin: 80px auto;
 
   &[type="file"], label {
     background: var(--main-red);

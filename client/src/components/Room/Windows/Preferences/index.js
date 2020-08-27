@@ -31,19 +31,17 @@ function Preferences({ innerWindow }) {
           Theme
         </h3>
         <h3
-          onClick={() => handleNavigation('app-bars')}
+          onClick={() => handleNavigation('action-bars')}
         >
-          App Bars
+          Action Bars
         </h3>
         <Underline navigate={navigate} />
       </Navbar>
-      <Body>
-        {!innerWindow || innerWindow === 'theme' ? (
-          <BackgroundSelect />
-        ) : (
-          <AppSelect />
-        )}
-      </Body>
+      {!innerWindow || innerWindow === 'theme' ? (
+        <BackgroundSelect />
+      ) : (
+        <AppSelect />
+      )}
     </Wrapper>
   )
 }
@@ -71,7 +69,7 @@ const Navbar = styled.div`
 const Underline = styled.div`
   position: absolute;
   bottom: 10px;
-  width: ${({ navigate }) => navigate === 'right' ? '100px' : '70px'};
+  width: ${({ navigate }) => navigate === 'right' ? '120px' : '70px'};
   height: 3px;
   background-color: var(--main-red);
   transition: transform 0.4s, width 0.4s;
@@ -80,13 +78,6 @@ const Underline = styled.div`
     else if (navigate === 'left') return 'translateX(0)';
     else return '';
   }};
-`;
-
-const Body = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 90%;
 `;
 
 export default Preferences;

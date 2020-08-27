@@ -94,7 +94,7 @@ const GlobalStyles = createGlobalStyle`
   	border-spacing: 0;
   }
 
-  button, a {
+  button, a, select, input {
     font-weight: inherit;
     font-family: inherit;
     font-size: inherit;
