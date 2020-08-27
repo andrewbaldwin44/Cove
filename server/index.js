@@ -27,7 +27,7 @@ const {
 } = require('./handlers/authenticationHandlers');
 
 const {
-  handleVideoCall,
+  handleSockets,
 } = require('./handlers/socketHandlers');
 
 const {
@@ -40,7 +40,7 @@ const {
   handleDeezerSearch,
 } = require('./handlers/deezerApiHandlers');
 
-io.on('connection', socket => handleVideoCall(socket, io));
+io.on('connection', socket => handleSockets(socket, io));
 
 app
 .use(function(req, res, next) {

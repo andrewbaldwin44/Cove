@@ -36,8 +36,10 @@ function handleVideoCall(socket, io) {
       socket.to(roomID).broadcast.emit('user-disconnected', userID)
     });
   });
-
-
 }
 
-module.exports = { handleVideoCall };
+function handleSockets(socket, io) {
+  handleVideoCall(socket, io);
+}
+
+module.exports = { handleSockets };
