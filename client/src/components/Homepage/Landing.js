@@ -33,6 +33,7 @@ const TextContent = styled.div`
   text-align: center;
   color: white;
   font-family: 'Oswald', sans-serif;
+  line-height: 1.4;
   left: 50%;
   top: calc(220px / 2);
   transform: translate(-50%, -50%);
@@ -47,8 +48,8 @@ const TextContent = styled.div`
 
   h3 {
     font-style: italic;
-    font-size: 1.7em;
-    margin-top: 20px;
+    font-size: 1.5em;
+    color: #f5f5f5;
   }
 `;
 

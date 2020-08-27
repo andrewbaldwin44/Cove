@@ -38,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-family: 'Roboto', Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
