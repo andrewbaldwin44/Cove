@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { BsSearch } from 'react-icons/bs';
 
+import AppHeader from  '../AppHeader';
 import SearchedSongs from './SearchedSongs';
 
 function Home({ deezerID }) {
@@ -15,10 +16,7 @@ function Home({ deezerID }) {
   const requestDeezerResults = searchValue => {
     fetch(`/api/deezer_search?search=${searchValue}&code=${deezerID}`)
       .then(response => response.json())
-      .then(({ searchResults }) => {
-        console.log(searchResults)
-        setSearchResults(searchResults)
-      })
+      .then(({ searchResults }) => setSearchResults(searchResults))
   }
 
   const getSearchResults = event => {
@@ -37,7 +35,7 @@ function Home({ deezerID }) {
 
   return(
     <Wrapper>
-      <Header>
+      <AppHeader>
         <form onSubmit={getSearchResults}>
           <DeezerSearch
             type='text'
@@ -50,7 +48,7 @@ function Home({ deezerID }) {
               <BsSearch />
           </SearchButton>
         </form>
-      </Header>
+      </AppHeader>
       <SearchedSongs
         searchResults={searchResults}
         setCurrentlyPlaying={setCurrentlyPlaying}

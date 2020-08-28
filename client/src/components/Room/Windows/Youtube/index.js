@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { BsSearch } from 'react-icons/bs';
 
+import AppHeader from '../AppHeader'
 import SearchedVideos from './SearchedVideos';
 import Video from './Video';
 
@@ -47,7 +48,7 @@ function Youtube({ innerWindow }) {
 
   return (
     <Wrapper>
-      <Header>
+      <AppHeader>
         <form onSubmit={getSearchResults}>
           <YoutubeSearch
             type='text'
@@ -60,7 +61,7 @@ function Youtube({ innerWindow }) {
               <BsSearch />
           </SearchButton>
         </form>
-      </Header>
+      </AppHeader>
       {message.length > 0 && (
         <Error>{message}</Error>
       )}
@@ -81,16 +82,6 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
-`;
-
-const Header = styled.div`
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 70px;
-  background-color: var(--secondary-headers);
 `;
 
 const YoutubeSearch = styled.input`
