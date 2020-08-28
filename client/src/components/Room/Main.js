@@ -12,14 +12,19 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 import { APPS } from './appConstants';
 import { toArray } from '../../utils/index';
 
+import useSockets from './hooks/useSockets' ;
+
 import { RoomContext } from './RoomContext';
 
 function Main({ isOwner }) {
   const {
+    roomID,
     changeWindowState,
     roomDetails,
     actionBars
   } = useContext(RoomContext);
+
+  useSockets(roomID);
 
   const { background } = roomDetails;
 

@@ -1,12 +1,8 @@
 const allUsers = {};
 let callStarted = false;
 
-function handleVideoCall(socket, io) {
-  socket.on('join-room', (roomID, userData) => {
+function handleVideoCall(socket, io, roomID, userData) {
     const { userID } = userData;
-
-    // bundle socket id with room id
-    socket.join(roomID);
 
     socket.on('join-call', () => {
       if (!allUsers[userID]) allUsers[userID] = userData;
@@ -35,11 +31,22 @@ function handleVideoCall(socket, io) {
 
       socket.to(roomID).broadcast.emit('user-disconnected', userID)
     });
+}
+
+function handleRoomState(socket, io, roomID) {
+  socket.on('state-change', newData => {
+    socket.to(roomID).broadcast.emit('room-change', newData);
   });
 }
 
 function handleSockets(socket, io) {
-  handleVideoCall(socket, io);
+  socket.on('join-room', (roomID, userData) => {
+    // bundle socket id with room id
+    socket.join(roomID);
+
+    handleVideoCall(socket, io, roomID, userData);
+    handleRoomState(socket, io, roomID);
+  });
 }
 
 module.exports = { handleSockets };

@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import AppCheckbox from './AppCheckbox';
 
 import { APPS, UTILITY_APPS } from '../../appConstants';
 import { toArray, capitalizeFirstLetter } from '../../../../utils';
+import { sendChanges } from '../../hooks/useSockets';
 
 import { RoomContext } from '../../RoomContext';
 
@@ -17,6 +18,10 @@ function AppSelect() {
 
   const [actionBar, setActionBar] = useState(actionBars['bottom']);
   const [selection, setSelection] = useState('bottom');
+
+  useEffect(() => {
+    setActionBar(actionBars[selection]);
+  }, [actionBars]);
 
   const toggleApp = (app, isSelected) => {
     const newActionBars = { ...actionBars };
@@ -34,7 +39,7 @@ function AppSelect() {
 
     updateActionBars(newActionBars);
     updateActionBarDatabase(newActionBars);
-    setActionBar(newActionBars[selection]);
+    sendChanges(newActionBars, updateActionBarDatabase);
   }
 
   const handleSelectedOption = event => {

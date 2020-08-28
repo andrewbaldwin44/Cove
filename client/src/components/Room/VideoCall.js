@@ -41,7 +41,6 @@ function VideoCall() {
         port: '4000',
       });
 
-      socket.emit('join-room', roomID, userData);
       socket.on('room-status', callStarted => {
         if (callStarted) setCallStarted('join');
         else setCallStarted(false)
