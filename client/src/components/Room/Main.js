@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import ActionBar from './ActionBar';
 import WindowManager from './WindowManager';
-import VideoCall from './VideoCall';
+import VideoCall from './VideoCall/VideoCall';
 import Menu from './Menu';
 
 import { BsArrowLeftShort } from 'react-icons/bs';

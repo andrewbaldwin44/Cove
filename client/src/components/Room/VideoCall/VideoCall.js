@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import Peer from 'peerjs';
 import io from 'socket.io-client';
 
-import { IoIosCall } from 'react-icons/io';
+import { VscCallOutgoing, VscCallIncoming } from 'react-icons/vsc';
 
-import { AuthenticationContext } from '../AuthenticationContext';
+import Call from './Call';
+import CallButton from './CallButton';
 
-import { isContainingData } from '../../utils/index';
+import { AuthenticationContext } from '../../AuthenticationContext';
+
+import { isContainingData } from '../../../utils/index';
 
 const socket = io.connect('http://localhost:4000');
 
@@ -35,6 +38,8 @@ function VideoCall() {
     if (isContainingData(userData)) {
       const { userID } = userData;
 
+      socket.emit('join-room', roomID, userData);
+
       const newPeerConnection = new Peer(userID, {
         path: '/peerjs',
         host: '/',
@@ -52,9 +57,9 @@ function VideoCall() {
         }
       })
 
-      // navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
-      //   setUserStream(userStream);
-      // });
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
+        setUserStream(userStream);
+      });
 
       setPeerConnection(newPeerConnection);
     }
@@ -85,13 +90,14 @@ function VideoCall() {
   }
 
   const joinCall = () => {
+    const { photoURL } = userData;
+    setCallStarted(true);
+
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
       setUserStream(userStream);
+
+      socket.emit('join-call');
     });
-
-    setCallStarted(true)
-
-    socket.emit('join-call');
 
     socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
       setAllUsers(newUsers);
@@ -109,6 +115,7 @@ function VideoCall() {
 
   // connect to peer by calling THEIR peerID and sending USER stream
   const connectToPeer = peerID => {
+    console.log(userStream)
     const call = peerConnection.call(peerID, userStream);
 
     call.on('stream', peerStream => {
@@ -126,15 +133,14 @@ function VideoCall() {
     setPeerStreams([...peerStreams, peerStream]);
   }
 
-  //console.log(allUsers);
-
-  const createVideoElement = (stream, index, muted = false) => {
+  const createVideoElement = (stream, index, muted = false, height) => {
     const videoElement = (
       <Video
         key={`peerStream${index}`}
         playsInline ref={element => videoElementRefs.current[index] = element}
         autoPlay
         muted={muted}
+        height={height}
       />
     )
 
@@ -147,83 +153,45 @@ function VideoCall() {
 
   if (callStarted === 'join') {
     return (
-      <CallButton onClick={joinCall}>
-          Join Call
-      </CallButton>
+      <CallButton
+        icon={<VscCallIncoming />}
+        text={'Join Call'}
+        callBack={joinCall}
+      />
     )
   }
   else if (callStarted) {
     return (
-      <Wrapper>
-        {createVideoElement(userStream, 0, true)}
-        {peerStreams.map((peerStream, index) => {
-          return (
-            createVideoElement(peerStream, index + 1) // user video is index 0
-          )
-        })}
-      </Wrapper>
+      <Call
+        createVideoElement={createVideoElement}
+        userStream={userStream}
+        peerStreams={peerStreams}
+      />
     )
   }
   else if (peerConnection) {
     return (
-      <CallButton onClick={startCall}>
-        <IoIosCall />
-        Start Call
-      </CallButton>
+      <CallButton
+        icon={<VscCallOutgoing />}
+        text={'Start Call'}
+        callBack={startCall}
+      />
     )
   }
   else {
-    return (
-      <div></div>
-    )
+    return null;
   }
 }
 
-const Wrapper = styled.div`
-  position: absolute;
-  right: 0px;
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  height: 300px;
-  margin: 30px 30px;
-`;
-
-const StyledButton = styled.button`
-  height: 500px;
-  width: 500px;
-  background-color: purple;
-  border: 1px solid black;
-`;
-
 const Video = styled.video`
-  height: 100%;
+  height: ${({ height }) => height || '180px'};
   width: 100%;
+
+  border: 1px solid lightblue;
   object-fit: cover;
-`;
 
-const CallButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: white;
-  height: 60px;
-  min-width: 250px;
-  padding: 30px 15px;
-  background-color: #00C851;
-  font-size: 1.3em;
-  border-radius: 15px;
-
-  svg {
-    font-size: 1.5em;
-    margin-right: 10px;
-  }
-`;
-
-const IncomingCall = styled.div`
-  height: 50px;
-  min-width: 250px;
-  background-color: blue;
+  box-shadow: -2px -2px 8px var(--dark-shadow),
+              4px 4px 5px var(--dark-shadow);
 `;
 
 export default VideoCall;
