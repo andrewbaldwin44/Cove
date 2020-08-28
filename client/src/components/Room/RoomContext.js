@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-import { toArray } from '../../utils/index';
 import { DATABASE_PATHS } from '../../constants';
 const {
   ROOMS_PATH,
@@ -49,6 +48,22 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     setActionBars(newData);
   }
 
+  const updateOpenWindows = (app, newData) => {
+    const [stateType, newState] = newData;
+
+    const newAppState = {
+      ...openWindows[app],
+      [stateType]: newState,
+    }
+
+    const newOpenWindows = {
+      ...openWindows,
+      [app]: newAppState,
+    }
+
+    setOpenWindows(newOpenWindows);
+  }
+
   const updateRoomDatabase = (path, newData) => {
     const roomReference = database.collection(ROOMS_PATH).doc(ROOM_DETAILS_PATH);
 
@@ -78,32 +93,35 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                               .collection(roomID).doc(ACTION_BAR_STATE_PATH);
 
-    reference.update(newState)
+    reference.update(newState);
   }
 
-  const observeWindowState = () => {
+  const setInitialWindowState = () => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                               .collection(roomID).doc(WINDOW_STATE_PATH);
 
-    const observer = reference.onSnapshot(snapshot => {
+    reference.get().then(snapshot => {
       const data = snapshot.data() || [];
-      const openWindows = data;
 
-      setOpenWindows(toArray(openWindows));
+      setOpenWindows(data);
     });
-
-    return observer;
   }
 
-  const navigateInnerWindow = app => {
+  const navigateToInnerWindow = (innerWindow, app) => {
+    const newState = ['innerWindow', innerWindow];
+    changeWindowState(app, newState);
+    updateOpenWindows(app, newState);
+  }
+
+  // clicking the arrows in window navbar
+  const navigateFromInnerWindow = app => {
     const newState = ['innerWindow', null];
     changeWindowState(app, newState);
+    updateOpenWindows(app, newState);
   }
 
   useEffect(() => {
-    let windowStateObserver = observeWindowState();
-
-    return () => windowStateObserver();
+    setInitialWindowState();
     // eslint-disable-next-line
   }, []);
 
@@ -113,7 +131,8 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         roomDetails,
         openWindows,
         changeWindowState,
-        navigateInnerWindow,
+        navigateToInnerWindow,
+        navigateFromInnerWindow,
         windowProperties,
         setWindowProperties,
         updateRoomDatabase,
@@ -121,6 +140,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         actionBars,
         updateActionBars,
         updateActionBarDatabase,
+        updateOpenWindows,
       }}
     >
       {children}

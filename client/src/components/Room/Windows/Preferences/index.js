@@ -8,17 +8,12 @@ import { RoomContext } from '../../RoomContext';
 
 function Preferences({ innerWindow }) {
   const {
-    changeWindowState,
+    navigateToInnerWindow,
   } = useContext(RoomContext);
 
   const direction = menuItem => menuItem === 'theme' ? 'left' : 'right';
 
   const [navigate, setNavigate] = useState(direction(innerWindow));
-
-  const handleNavigation = menuItem => {
-    const newState = ['innerWindow', menuItem];
-    changeWindowState('preferences', newState);
-  }
 
   useEffect(() => {
     setNavigate(direction(innerWindow));
@@ -28,12 +23,12 @@ function Preferences({ innerWindow }) {
     <Wrapper>
       <Navbar>
         <h3
-          onClick={() => handleNavigation('theme')}
+          onClick={() => navigateToInnerWindow('theme', 'preferences')}
         >
           Theme
         </h3>
         <h3
-          onClick={() => handleNavigation('action-bars')}
+          onClick={() => navigateToInnerWindow('action-bars', 'preferences')}
         >
           Action Bars
         </h3>

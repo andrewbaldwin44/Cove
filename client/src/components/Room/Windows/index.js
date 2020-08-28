@@ -12,9 +12,10 @@ import { RoomContext } from '../RoomContext';
 function Windows({ children, title, containing, size, position }) {
   const {
     changeWindowState,
-    navigateInnerWindow,
+    navigateFromInnerWindow,
     windowProperties,
     setWindowProperties,
+    updateOpenWindows,
   } = useContext(RoomContext);
 
   const appWindow = createRef();
@@ -32,6 +33,7 @@ function Windows({ children, title, containing, size, position }) {
   const closeWindow = app => {
     const newState = ['isOpen', false];
     changeWindowState(app, newState);
+    updateOpenWindows(app, newState);
   }
 
   const handleDrag = (event, ui) => {
@@ -125,7 +127,7 @@ function Windows({ children, title, containing, size, position }) {
       >
         <HeaderNav>
           <BsArrowLeftShort
-            onClick={() => navigateInnerWindow(containing)}
+            onClick={() => navigateFromInnerWindow(containing)}
           />
           {title}
         </HeaderNav>

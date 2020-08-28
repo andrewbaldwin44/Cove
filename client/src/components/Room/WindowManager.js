@@ -6,6 +6,8 @@ import { APPS, DEFAULTS } from './appConstants';
 
 import { RoomContext } from './RoomContext';
 
+import { toArray } from '../../utils/index';
+
 const { defaultWindowPosition, defaultWindowSize } = DEFAULTS;
 
 function WindowManager() {
@@ -13,9 +15,11 @@ function WindowManager() {
     openWindows,
   } = useContext(RoomContext);
 
+  console.log(openWindows);
+
   return (
     <Wrapper>
-      {openWindows.map(([app, appState], index) => {
+      {toArray(openWindows).map(([app, appState], index) => {
         const { innerWindow } = appState;
 
         const {

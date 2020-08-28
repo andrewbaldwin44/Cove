@@ -5,13 +5,8 @@ import { RoomContext } from '../../RoomContext';
 
 function SearchedVideos({ searchResults }) {
   const {
-    changeWindowState,
+    navigateToInnerWindow,
   } = useContext(RoomContext);
-
-  const openVideo = videoId => {
-    const newState = ['innerWindow', videoId];
-    changeWindowState('youtube', newState);
-  }
 
   return (
     <Body>
@@ -37,7 +32,7 @@ function SearchedVideos({ searchResults }) {
           <Result
             key={`${index}${videoId}`}
             style={{ height, width, minWidth: width }}
-            onClick={() => openVideo(videoId)}
+            onClick={() => navigateToInnerWindow(videoId, 'youtube')}
           >
             <img
               src={url}

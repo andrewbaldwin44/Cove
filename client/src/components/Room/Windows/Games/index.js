@@ -7,19 +7,14 @@ import { RoomContext } from '../../RoomContext';
 
 function Games({ innerWindow }) {
   const {
-    changeWindowState,
+    navigateToInnerWindow,
   } = useContext(RoomContext);
-
-  const openGame = game => {
-    const newState = ['innerWindow', game];
-    changeWindowState('games', newState);
-  }
 
   if (!innerWindow) {
     return (
       <Wrapper>
         <GameTile
-          onClick={() => openGame('board')}
+          onClick={() => navigateToInnerWindow('board', 'games')}
         >
           Play Board Games
         </GameTile>

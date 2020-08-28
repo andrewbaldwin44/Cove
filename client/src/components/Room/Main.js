@@ -21,7 +21,8 @@ function Main({ isOwner }) {
     roomID,
     changeWindowState,
     roomDetails,
-    actionBars
+    actionBars,
+    updateOpenWindows,
   } = useContext(RoomContext);
 
   useSockets(roomID);
@@ -34,6 +35,7 @@ function Main({ isOwner }) {
   const openWindow = app => {
     const newState = ['isOpen', true];
     changeWindowState(app, newState);
+    updateOpenWindows(app, newState);
   }
 
   const openMenu = event => {
