@@ -65,7 +65,7 @@ function Main({ isOwner }) {
     >
       <Header>
         <Link to='/'><BackArrow /></Link>
-        <button type='button' onClick={() => requestInvite(roomID, 'public')}>Invite</button>
+        <button type='button' onClick={() => requestInvite(roomID, 'private')}>Invite</button>
       </Header>
       <WindowManager />
       <VideoCall />

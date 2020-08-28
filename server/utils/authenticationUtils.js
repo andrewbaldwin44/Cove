@@ -36,8 +36,9 @@ function updateDatabase(path, doc, newData, database) {
   return reference.update(newData);
 }
 
-function destroyDatabase(path, doc, database) {
-
+function destroyDatabase(path, doc, destroyData, database, FieldValue) {
+  const reference = database.collection(path).doc(doc);
+  return reference.update({ [destroyData]: FieldValue.delete() });
 }
 
 async function getUidFromEmail(email, admin) {
@@ -86,7 +87,6 @@ function createRoomDetailsData(roomID, roomBackground, roomName, FieldValue) {
 }
 
 async function updateParticipantsData(memberIDs, roomID, database) {
-  console.log('hi')
   const participantsUpdate = memberIDs.map(async memberID => {
     const newParticipatingRooms = { [getRoomPath(PARTICIPATING_ROOMS_PATH, roomID)]: true };
 
@@ -181,17 +181,22 @@ function registerInvite(roomID, registrationID, type, database) {
   updateDatabase(ROOMS_PATH, ROOM_INVITES_PATH, newInviteData, database)
 }
 
-async function isValidInvite(roomID, id, database) {
+async function isValidInvite(roomID, inviteID, database, FieldValue) {
   const allInviteData = await queryDatabase(ROOMS_PATH, ROOM_INVITES_PATH, database);
+  const allInvites = allInviteData.data();
 
-  const roomInvites = allInviteData.data()[roomID];
-  console.log(roomInvites);
+  if (!allInvites) return false;
 
-  if (roomInvites.public[id]) {
+  const roomInvites = allInvites[roomID];
+  const { public: publicInvites, private: privateInvites } = roomInvites
+
+  if (publicInvites && publicInvites[inviteID]) {
     return true;
   }
-  else if (roomInvies.private[id]) {
-    //destroy
+  else if (privateInvites && privateInvites[inviteID]) {
+    const invitePath = `${roomID}.private.${inviteID}`;
+
+    await destroyDatabase(ROOMS_PATH, ROOM_INVITES_PATH, invitePath, database, FieldValue);
     return true;
   }
   else {

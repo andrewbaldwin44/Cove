@@ -174,13 +174,18 @@ async function handleInviteCreation(req, res) {
 async function handleInviteValidation(req, res) {
   const { email, roomID, inviteID } = req.body;
 
-  if (isValidInvite(roomID, inviteID, database)) {
-    const userID = await getUidFromEmail(email, admin);
-    await registerNewRoomMember(userID, roomID, database);
+  try {
+    if (isValidInvite(roomID, inviteID, database, FieldValue)) {
+      const userID = await getUidFromEmail(email, admin);
+      await registerNewRoomMember(userID, roomID, database);
 
-    res.status(201).json({ status: 201 });
+      res.status(201).json({ status: 201 });
+    }
+    else {
+      throw new Error('Invalid invite');
+    }
   }
-  else {
+  catch (error) {
     res.status(401).json({ status: 401, message: 'Invalid invite' });
   }
 }
