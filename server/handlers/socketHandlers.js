@@ -3,8 +3,12 @@ let callStarted = false;
 
 const {
   SOCKET_PATHS: {
-    ACTION_BAR_CHANGE,
-    ROOM_DETAILS_CHANGE,
+    SEND_ACTION_BAR,
+    SEND_ROOM_DETAILS,
+    SEND_WINDOW_STATE,
+    RECEIVE_ACTION_BAR,
+    RECEIVE_ROOM_DETAILS,
+    RECEIVE_WINDOW_STATE,
   }
 } = require('../constants');
 
@@ -41,13 +45,17 @@ function handleVideoCall(socket, io, roomID, userData) {
 }
 
 function handleRoomState(socket, io, roomID) {
-  socket.on(ACTION_BAR_CHANGE, newData => {
-    socket.to(roomID).broadcast.emit(ACTION_BAR_CHANGE, newData);
+  socket.on(SEND_ACTION_BAR, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_ACTION_BAR, newData);
   });
 
-  socket.on(ROOM_DETAILS_CHANGE, newData => {
-    socket.to(roomID).broadcast.emit(ROOM_DETAILS_CHANGE, newData);
-  })
+  socket.on(SEND_ROOM_DETAILS, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_ROOM_DETAILS, newData);
+  });
+
+  socket.on(SEND_WINDOW_STATE, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_WINDOW_STATE, newData);
+  });
 }
 
 function handleSockets(socket, io) {

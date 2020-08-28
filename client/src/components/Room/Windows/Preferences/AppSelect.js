@@ -10,7 +10,7 @@ import { SOCKET_PATHS } from '../../../../constants';
 
 import { RoomContext } from '../../RoomContext';
 
-const { ACTION_BAR_CHANGE } = SOCKET_PATHS;
+const { SEND_ACTION_BAR } = SOCKET_PATHS;
 
 function AppSelect() {
   const {
@@ -43,7 +43,7 @@ function AppSelect() {
 
     updateActionBars(newActionBars);
     updateActionBarDatabase(newActionBars);
-    sendChanges(ACTION_BAR_CHANGE, newActionBars);
+    sendChanges(SEND_ACTION_BAR, newActionBars);
   }
 
   const handleSelectedOption = event => {

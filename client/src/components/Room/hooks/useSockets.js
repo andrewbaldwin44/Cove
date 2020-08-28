@@ -9,8 +9,9 @@ import io from 'socket.io-client';
 const socket = io.connect('http://localhost:4000');
 
 const {
-  ACTION_BAR_CHANGE,
-  ROOM_DETAILS_CHANGE,
+  RECEIVE_ACTION_BAR,
+  RECEIVE_ROOM_DETAILS,
+  RECEIVE_WINDOW_STATE,
 } = SOCKET_PATHS;
 
 function useSockets(roomID) {
@@ -21,6 +22,7 @@ function useSockets(roomID) {
   const {
     updateActionBars,
     updateRoomDetails,
+    updateOpenWindows,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -31,15 +33,19 @@ function useSockets(roomID) {
   }, [userData]);
 
   useEffect(() => {
-    socket.on(ACTION_BAR_CHANGE, newActionBarData => {
+    socket.on(RECEIVE_ACTION_BAR, newActionBarData => {
       updateActionBars(newActionBarData);
     });
 
-    socket.on(ROOM_DETAILS_CHANGE, newRoomDetails => {
+    socket.on(RECEIVE_ROOM_DETAILS, newRoomDetails => {
       updateRoomDetails(newRoomDetails);
     });
     // eslint-disable-next-line
   }, []);
+
+  socket.on(RECEIVE_WINDOW_STATE, ({ app, newState }) => {
+    updateOpenWindows(app, newState);
+  });
 }
 
 export function sendChanges(path, newData) {

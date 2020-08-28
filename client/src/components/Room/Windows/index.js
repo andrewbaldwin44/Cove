@@ -9,6 +9,10 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 
 import { RoomContext } from '../RoomContext';
 
+import { sendChanges } from '../hooks/useSockets' ;
+import { SOCKET_PATHS } from '../../../constants';
+const { SEND_WINDOW_STATE } = SOCKET_PATHS;
+
 function Windows({ children, title, containing, size, position }) {
   const {
     changeWindowState,
@@ -34,6 +38,7 @@ function Windows({ children, title, containing, size, position }) {
     const newState = ['isOpen', false];
     changeWindowState(app, newState);
     updateOpenWindows(app, newState);
+    sendChanges(SEND_WINDOW_STATE, { app, newState });
   }
 
   const handleDrag = (event, ui) => {

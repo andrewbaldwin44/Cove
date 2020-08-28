@@ -29,6 +29,10 @@ export const DATABASE_PATHS = {
 }
 
 export const SOCKET_PATHS = {
-  ACTION_BAR_CHANGE: 'action-bar-change',
-  ROOM_DETAILS_CHANGE: 'room-details-change',
+  SEND_ACTION_BAR: 'send-action-bar',
+  SEND_ROOM_DETAILS: 'send-room-details',
+  SEND_WINDOW_STATE: 'send-window-state',
+  RECEIVE_ACTION_BAR: 'receive-action-bar',
+  RECEIVE_ROOM_DETAILS: 'receive-room-details',
+  RECEIVE_WINDOW_STATE: 'receive-window-state',
 }

@@ -15,8 +15,6 @@ function WindowManager() {
     openWindows,
   } = useContext(RoomContext);
 
-  console.log(openWindows);
-
   return (
     <Wrapper>
       {toArray(openWindows).map(([app, appState], index) => {

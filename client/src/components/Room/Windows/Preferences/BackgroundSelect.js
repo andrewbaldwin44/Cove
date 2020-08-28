@@ -9,7 +9,7 @@ import { AuthenticationContext } from '../../../AuthenticationContext';
 import { sendChanges } from '../../hooks/useSockets';
 import { SOCKET_PATHS } from '../../../../constants';
 
-const { ROOM_DETAILS_CHANGE } = SOCKET_PATHS;
+const { SEND_ROOM_DETAILS } = SOCKET_PATHS;
 
 function BackgroundSelect() {
   const {
@@ -41,7 +41,7 @@ function BackgroundSelect() {
 
       updateRoomDetails(newRoomDetails);
       setBackgroundStatus('idle');
-      sendChanges(ROOM_DETAILS_CHANGE, newRoomDetails);
+      sendChanges(SEND_ROOM_DETAILS, newRoomDetails);
     }
   }
 

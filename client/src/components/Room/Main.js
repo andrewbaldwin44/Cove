@@ -12,9 +12,12 @@ import { BsArrowLeftShort } from 'react-icons/bs';
 import { APPS } from './appConstants';
 import { toArray } from '../../utils/index';
 
-import useSockets from './hooks/useSockets' ;
+import useSockets, { sendChanges } from './hooks/useSockets' ;
 
 import { RoomContext } from './RoomContext';
+
+import { SOCKET_PATHS } from '../../constants';
+const { SEND_WINDOW_STATE } = SOCKET_PATHS;
 
 function Main({ isOwner }) {
   const {
@@ -36,6 +39,7 @@ function Main({ isOwner }) {
     const newState = ['isOpen', true];
     changeWindowState(app, newState);
     updateOpenWindows(app, newState);
+    sendChanges(SEND_WINDOW_STATE, { app, newState });
   }
 
   const openMenu = event => {

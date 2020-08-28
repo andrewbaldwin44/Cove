@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-import { DATABASE_PATHS } from '../../constants';
+import { sendChanges } from './hooks/useSockets';
+import { DATABASE_PATHS, SOCKET_PATHS } from '../../constants';
 const {
   ROOMS_PATH,
   ROOM_STATE_PATH,
@@ -8,6 +9,10 @@ const {
   WINDOW_STATE_PATH,
   ACTION_BAR_STATE_PATH,
 } = DATABASE_PATHS;
+
+const {
+  SEND_WINDOW_STATE
+} = SOCKET_PATHS ;
 
 export const RoomContext = createContext(null);
 
@@ -75,6 +80,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const changeWindowState = (app, newState) => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
                               .collection(roomID).doc(WINDOW_STATE_PATH);
+
     reference
       .get()
       .then(snapshot => {
@@ -109,15 +115,19 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   const navigateToInnerWindow = (innerWindow, app) => {
     const newState = ['innerWindow', innerWindow];
+
     changeWindowState(app, newState);
     updateOpenWindows(app, newState);
+    sendChanges(SEND_WINDOW_STATE, { app, newState });
   }
 
   // clicking the arrows in window navbar
   const navigateFromInnerWindow = app => {
     const newState = ['innerWindow', null];
+
     changeWindowState(app, newState);
     updateOpenWindows(app, newState);
+    sendChanges(SEND_WINDOW_STATE, { app, newState });
   }
 
   useEffect(() => {
