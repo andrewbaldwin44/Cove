@@ -36,6 +36,10 @@ function updateDatabase(path, doc, newData, database) {
   return reference.update(newData);
 }
 
+function destroyDatabase(path, doc, database) {
+
+}
+
 async function getUidFromEmail(email, admin) {
   const response = await admin.auth().getUserByEmail(email);
   const { uid } = response;
@@ -82,6 +86,7 @@ function createRoomDetailsData(roomID, roomBackground, roomName, FieldValue) {
 }
 
 async function updateParticipantsData(memberIDs, roomID, database) {
+  console.log('hi')
   const participantsUpdate = memberIDs.map(async memberID => {
     const newParticipatingRooms = { [getRoomPath(PARTICIPATING_ROOMS_PATH, roomID)]: true };
 
@@ -103,6 +108,13 @@ async function setDefaultRoomState(roomID, database) {
   }
 
   reference.set(defaultSettings);
+}
+
+async function updateRoomMembers(userID, roomID, database) {
+  const newMemberPath = `${roomID}.${userID}`;
+  const newMemberData = { [newMemberPath]: true };
+
+  updateDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, newMemberData, database);
 }
 
 async function createNewRoom(roomName, roomBackground, userID, memberIDs, database, FieldValue) {
@@ -156,10 +168,10 @@ function getRegistrationID() {
 }
 
 function createRegistrationLink(roomID, linkID) {
-  return `/log_in?redirect=${roomID}&id=${linkID}`;
+  return `/users/log_in?redirect=${roomID}&id=${linkID}`;
 }
 
-async function registerInvite(roomID, registrationID, type, database) {
+function registerInvite(roomID, registrationID, type, database) {
   const invitePath = `${roomID}.${type}.${registrationID}`;
 
   const newInviteData = {
@@ -167,6 +179,29 @@ async function registerInvite(roomID, registrationID, type, database) {
   }
 
   updateDatabase(ROOMS_PATH, ROOM_INVITES_PATH, newInviteData, database)
+}
+
+async function isValidInvite(roomID, id, database) {
+  const allInviteData = await queryDatabase(ROOMS_PATH, ROOM_INVITES_PATH, database);
+
+  const roomInvites = allInviteData.data()[roomID];
+  console.log(roomInvites);
+
+  if (roomInvites.public[id]) {
+    return true;
+  }
+  else if (roomInvies.private[id]) {
+    //destroy
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+async function registerNewRoomMember(userID, roomID, database) {
+  await updateParticipantsData([userID], roomID, database);
+  return updateRoomMembers(userID, roomID, database);
 }
 
 module.exports = {
@@ -183,4 +218,7 @@ module.exports = {
   getRegistrationID,
   createRegistrationLink,
   registerInvite,
+  isValidInvite,
+  registerNewRoomMember,
+  getUidFromEmail
 }

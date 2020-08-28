@@ -34,3 +34,20 @@ export function requestInvite(roomID, type) {
     .then(response => response.json())
     .then(data => console.log(data));
 }
+
+export function validateInvitation(email, inviteID, roomID) {
+  return fetch('/users/rooms/validate_invite', {
+    ...postRequestHeaders,
+    body: JSON.stringify({ email, inviteID, roomID })
+  })
+    .then(response => response.json());
+}
+
+export function createLoginLink(redirect, inviteID, type) {
+  let query = '?'
+
+  if (redirect) query += `redirect=${redirect}&`;
+  if (inviteID) query += `id=${inviteID}`;
+
+  return `/users/${type}/${query}`;
+}

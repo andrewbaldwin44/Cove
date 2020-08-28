@@ -6,14 +6,15 @@ import { ReactComponent as GoogleIcon } from  '../../assets/images/google-icon.s
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
-function Footer({ accountCreated, redirectHome, sendErrorCode }) {
+function Footer({ accountCreated, handleRedirect, sendErrorCode, signUpLink, loginLink }) {
   const {
     signInWithGoogle,
   } = useContext(AuthenticationContext);
 
   const googleLogin = () => {
     signInWithGoogle()
-      .then(redirectHome)
+      .then(({ user: { email } }) => email)
+      .then(handleRedirect)
       .catch(sendErrorCode);
   }
 
@@ -30,12 +31,12 @@ function Footer({ accountCreated, redirectHome, sendErrorCode }) {
       {accountCreated ? (
           <NavigateContainer>
             <span>{'New here? '}</span>
-            <StyledLink to='/users/sign_up'>Create an Account</StyledLink>
+            <StyledLink to={signUpLink}>Create an Account</StyledLink>
           </NavigateContainer>
         ) : (
           <NavigateContainer>
             <span>Already Have an Account?</span>
-            <StyledLink to='/users/log_in'>Log In</StyledLink>
+            <StyledLink to={loginLink}>Log In</StyledLink>
           </NavigateContainer>
         )
       }

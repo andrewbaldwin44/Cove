@@ -15,6 +15,9 @@ const {
   getRegistrationID,
   createRegistrationLink,
   registerInvite,
+  isValidInvite,
+  getUidFromEmail,
+  registerNewRoomMember,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -168,6 +171,20 @@ async function handleInviteCreation(req, res) {
   res.status(201).json({ status: 201, registrationLink });
 }
 
+async function handleInviteValidation(req, res) {
+  const { email, roomID, inviteID } = req.body;
+
+  if (isValidInvite(roomID, inviteID, database)) {
+    const userID = await getUidFromEmail(email, admin);
+    await registerNewRoomMember(userID, roomID, database);
+
+    res.status(201).json({ status: 201 });
+  }
+  else {
+    res.status(401).json({ status: 401, message: 'Invalid invite' });
+  }
+}
+
 module.exports = {
   handleLogin,
   handleNewRoom,
@@ -175,4 +192,5 @@ module.exports = {
   handleRoomDetails,
   handleUserSearch,
   handleInviteCreation,
+  handleInviteValidation,
 };

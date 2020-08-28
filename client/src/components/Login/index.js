@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,7 @@ import Header from '../Header/index';
 import Footer from './Footer';
 
 import { AuthenticationContext } from '../AuthenticationContext';
+import { validateInvitation, createLoginLink } from '../../utils/authenticationUtils';
 
 import { PASSWORD_REQUIREMENTS, AUTHENTICATION_ERROR_MESSAGES } from '../../constants';
 const { minimumPasswordRequirements, minimumPasswordLength } = PASSWORD_REQUIREMENTS;
@@ -31,6 +32,13 @@ function Login({ accountCreated }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const history = useHistory();
+  const location = useLocation();
+
+  const query = new URLSearchParams(location.search);
+  const redirect = query.get('redirect');
+  const inviteID = query.get('id');
+  const signUpLink = createLoginLink(redirect, inviteID, 'sign_up');
+  const loginLink = createLoginLink(redirect, inviteID, 'log_in');
 
   const createUserErrorMessage = (code) => {
     let newErrorMessage = '';
@@ -55,14 +63,29 @@ function Login({ accountCreated }) {
     setErrorMessage(newErrorMessage);
   }
 
-  const redirectHome = () => history.push('/');
+  const redirectTo = path => history.push(path);
   const sendErrorCode = ({ code }) => createUserErrorMessage(code);
   const isStrongPassword = () => minimumPasswordRequirements.test(password);
+
+  const handleRedirect = (userEmail = email) => {
+    if (redirect && inviteID) {
+      validateInvitation(userEmail, inviteID, redirect)
+        .then(() => redirectTo(`/cove/${redirect}`))
+        .catch(error => redirectTo('/'));
+    }
+    else if (redirect) {
+      redirectTo(`/cove/${redirect}`);
+    }
+    else {
+      redirectTo('/');
+    }
+  }
 
   const userSignup = () => {
     if (isStrongPassword(password)) {
       createUserWithEmail(email, password)
-        .then(redirectHome)
+        .then(({ user: { email } }) => email)
+        .then(handleRedirect)
         .catch(sendErrorCode);
     }
     else if (password.length < minimumPasswordLength) {
@@ -75,7 +98,8 @@ function Login({ accountCreated }) {
 
   const userLogin = () => {
     signInWithEmail(email, password)
-      .then(redirectHome)
+      .then(({ user: { email } }) => email)
+      .then(handleRedirect)
       .catch(sendErrorCode);
   }
 
@@ -113,8 +137,10 @@ function Login({ accountCreated }) {
         </StyledForm>
         <Footer
           accountCreated={accountCreated}
-          redirectHome={redirectHome}
+          handleRedirect={handleRedirect}
           sendErrorCode={sendErrorCode}
+          signUpLink={signUpLink}
+          loginLink={loginLink}
         />
       </Wrapper>
     </>

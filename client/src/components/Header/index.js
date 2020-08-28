@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Logo from './Logo';
 import Dropdown from './Dropdown';
 
 import { AuthenticationContext } from '../AuthenticationContext';
+import { createLoginLink } from '../../utils/authenticationUtils';
 
 import { isContainingData, isEmptyData } from '../../utils/index';
 
@@ -13,6 +14,13 @@ function Header() {
   const {
     userData,
   } = useContext(AuthenticationContext);
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const redirect = query.get('redirect');
+  const inviteID = query.get('id');
+  const signUpLink = createLoginLink(redirect, inviteID, 'sign_up');
+  const loginLink = createLoginLink(redirect, inviteID, 'log_in');
 
   return (
     <Wrapper>
@@ -23,8 +31,8 @@ function Header() {
         )}
         {isEmptyData(userData) && (
           <>
-            <Link to='/users/sign_up'>Sign Up</Link>
-            <Link to='/users/log_in'>Log In</Link>
+            <Link to={signUpLink}>Sign Up</Link>
+            <Link to={loginLink}>Log In</Link>
           </>
         )}
       </NavLinks>
