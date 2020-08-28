@@ -12,6 +12,9 @@ const {
   getUserData,
   getRoomMembersData,
   getRoomDetails,
+  getRegistrationID,
+  createRegistrationLink,
+  registerInvite,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -155,10 +158,21 @@ async function handleUserSearch(req, res) {
   }
 }
 
+async function handleInviteCreation(req, res) {
+  const { roomID, type } = req.body;
+
+  const registrationID = getRegistrationID();
+  const registrationLink = createRegistrationLink(roomID, registrationID);
+  await registerInvite(roomID, registrationID, type, database);
+
+  res.status(201).json({ status: 201, registrationLink });
+}
+
 module.exports = {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
   handleRoomDetails,
   handleUserSearch,
+  handleInviteCreation,
 };

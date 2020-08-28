@@ -6,7 +6,8 @@ const DATABASE_PATHS = {
   ROOMS_MEMBERS_PATH: 'members',
   ROOMS_DETAILS_PATH: 'details',
   ROOM_STATE_PATH: 'state',
-  ACTION_BAR_STATE_PATH: 'action_bars'
+  ROOM_INVITES_PATH: 'invites',
+  ACTION_BAR_STATE_PATH: 'action_bars',
 }
 
 const SOCKET_PATHS = {

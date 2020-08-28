@@ -24,6 +24,7 @@ const {
   validateRoomMember,
   handleRoomDetails,
   handleUserSearch,
+  handleInviteCreation,
 } = require('./handlers/authenticationHandlers');
 
 const {
@@ -64,6 +65,7 @@ app
 .post('/users/login', handleLogin)
 .post('/users/rooms/validate_member', validateRoomMember)
 .post('/users/rooms/details', handleRoomDetails)
+.post('/users/rooms/invite_members', handleInviteCreation)
 .post('/rooms/newroom', handleNewRoom)
 
 .get('/search_users', handleUserSearch)

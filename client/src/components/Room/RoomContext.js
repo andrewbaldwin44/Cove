@@ -138,6 +138,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   return (
     <RoomContext.Provider
       value={{
+        roomID,
         roomDetails,
         openWindows,
         changeWindowState,

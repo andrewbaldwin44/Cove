@@ -8,7 +8,8 @@ const {
     ROOMS_MEMBERS_PATH,
     ROOMS_DETAILS_PATH,
     ROOM_STATE_PATH,
-    ACTION_BAR_STATE_PATH
+    ROOM_INVITES_PATH,
+    ACTION_BAR_STATE_PATH,
   },
 } = require('../constants');
 
@@ -150,6 +151,24 @@ async function getRoomDetails(roomIDs, database) {
   }, {});
 }
 
+function getRegistrationID() {
+  return uuidv4();
+}
+
+function createRegistrationLink(roomID, linkID) {
+  return `/log_in?redirect=${roomID}&id=${linkID}`;
+}
+
+async function registerInvite(roomID, registrationID, type, database) {
+  const invitePath = `${roomID}.${type}.${registrationID}`;
+
+  const newInviteData = {
+    [invitePath]: true
+  }
+
+  updateDatabase(ROOMS_PATH, ROOM_INVITES_PATH, newInviteData, database)
+}
+
 module.exports = {
   queryDatabase,
   writeDatabase,
@@ -161,4 +180,7 @@ module.exports = {
   getUserData,
   getRoomMembersData,
   getRoomDetails,
+  getRegistrationID,
+  createRegistrationLink,
+  registerInvite,
 }

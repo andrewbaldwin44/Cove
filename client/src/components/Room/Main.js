@@ -15,6 +15,7 @@ import { toArray } from '../../utils/index';
 import useSockets, { sendChanges } from './hooks/useSockets' ;
 
 import { RoomContext } from './RoomContext';
+import { requestInvite } from '../../utils/authenticationUtils';
 
 import { SOCKET_PATHS } from '../../constants';
 const { SEND_WINDOW_STATE } = SOCKET_PATHS;
@@ -64,6 +65,7 @@ function Main({ isOwner }) {
     >
       <Header>
         <Link to='/'><BackArrow /></Link>
+        <button type='button' onClick={() => requestInvite(roomID, 'public')}>Invite</button>
       </Header>
       <WindowManager />
       <VideoCall />
@@ -111,6 +113,11 @@ const Header = styled.div`
   height: 100px;
   width: 100%;
   padding: 0 10px;
+
+  button {
+    border: 1px solid black;
+    padding: 10px 15px;
+  }
 `;
 
 const BackArrow = styled(BsArrowLeftShort)`
