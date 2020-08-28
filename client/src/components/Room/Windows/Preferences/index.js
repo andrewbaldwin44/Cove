@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import BackgroundSelect from './BackgroundSelect';
@@ -16,11 +16,13 @@ function Preferences({ innerWindow }) {
   const [navigate, setNavigate] = useState(direction(innerWindow));
 
   const handleNavigation = menuItem => {
-    setNavigate(direction(menuItem));
-
     const newState = ['innerWindow', menuItem];
     changeWindowState('preferences', newState);
   }
+
+  useEffect(() => {
+    setNavigate(direction(innerWindow));
+  }, [innerWindow]);
 
   return (
     <Wrapper>
