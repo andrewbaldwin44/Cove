@@ -3,9 +3,15 @@ import { RoomContext } from '../RoomContext';
 import { AuthenticationContext } from '../../AuthenticationContext';
 
 import { isContainingData } from '../../../utils/index';
+import { SOCKET_PATHS } from '../../../constants';
 
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:4000');
+
+const {
+  ACTION_BAR_CHANGE,
+  ROOM_DETAILS_CHANGE,
+} = SOCKET_PATHS;
 
 function useSockets(roomID) {
   const {
@@ -13,7 +19,8 @@ function useSockets(roomID) {
   } = useContext(AuthenticationContext);
 
   const {
-    updateActionBars
+    updateActionBars,
+    updateRoomDetails,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -24,15 +31,19 @@ function useSockets(roomID) {
   }, [userData]);
 
   useEffect(() => {
-    socket.on('room-change', (newData) => {
-      updateActionBars(newData);
+    socket.on(ACTION_BAR_CHANGE, newActionBarData => {
+      updateActionBars(newActionBarData);
+    });
+
+    socket.on(ROOM_DETAILS_CHANGE, newRoomDetails => {
+      updateRoomDetails(newRoomDetails);
     });
     // eslint-disable-next-line
   }, []);
 }
 
-export function sendChanges(newData) {
-  socket.emit('state-change', newData);
+export function sendChanges(path, newData) {
+  socket.emit(path, newData);
 }
 
 export default useSockets;

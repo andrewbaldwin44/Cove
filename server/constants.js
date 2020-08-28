@@ -9,6 +9,11 @@ const DATABASE_PATHS = {
   ACTION_BAR_STATE_PATH: 'action_bars'
 }
 
+const SOCKET_PATHS = {
+  ACTION_BAR_CHANGE: 'action-bar-change',
+  ROOM_DETAILS_CHANGE: 'room-details-change',
+}
+
 const APPS = ['web', 'games', 'youtube', 'deezer', 'activity'];
 const DEFAULT_BOTTOM_ACTION_BAR_LENGTH = '80%';
 
@@ -16,4 +21,5 @@ module.exports = {
   DATABASE_PATHS,
   APPS,
   DEFAULT_BOTTOM_ACTION_BAR_LENGTH,
+  SOCKET_PATHS
 };

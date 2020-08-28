@@ -1,6 +1,13 @@
 const allUsers = {};
 let callStarted = false;
 
+const {
+  SOCKET_PATHS: {
+    ACTION_BAR_CHANGE,
+    ROOM_DETAILS_CHANGE,
+  }
+} = require('../constants');
+
 function handleVideoCall(socket, io, roomID, userData) {
     const { userID } = userData;
 
@@ -34,9 +41,13 @@ function handleVideoCall(socket, io, roomID, userData) {
 }
 
 function handleRoomState(socket, io, roomID) {
-  socket.on('state-change', newData => {
-    socket.to(roomID).broadcast.emit('room-change', newData);
+  socket.on(ACTION_BAR_CHANGE, newData => {
+    socket.to(roomID).broadcast.emit(ACTION_BAR_CHANGE, newData);
   });
+
+  socket.on(ROOM_DETAILS_CHANGE, newData => {
+    socket.to(roomID).broadcast.emit(ROOM_DETAILS_CHANGE, newData);
+  })
 }
 
 function handleSockets(socket, io) {

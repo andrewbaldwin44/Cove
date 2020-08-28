@@ -6,6 +6,10 @@ import Spinner from '../../../Spinner';
 
 import { RoomContext } from '../../RoomContext';
 import { AuthenticationContext } from '../../../AuthenticationContext';
+import { sendChanges } from '../../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../../constants';
+
+const { ROOM_DETAILS_CHANGE } = SOCKET_PATHS;
 
 function BackgroundSelect() {
   const {
@@ -32,9 +36,12 @@ function BackgroundSelect() {
 
       const fileURL = await uploadFile(file);
       await updateRoomDatabase('background', fileURL);
-      updateRoomDetails({ background: fileURL });
 
+      const newRoomDetails = { background: fileURL };
+
+      updateRoomDetails(newRoomDetails);
       setBackgroundStatus('idle');
+      sendChanges(ROOM_DETAILS_CHANGE, newRoomDetails);
     }
   }
 

@@ -6,8 +6,11 @@ import AppCheckbox from './AppCheckbox';
 import { APPS, UTILITY_APPS } from '../../appConstants';
 import { toArray, capitalizeFirstLetter } from '../../../../utils';
 import { sendChanges } from '../../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../../constants';
 
 import { RoomContext } from '../../RoomContext';
+
+const { ACTION_BAR_CHANGE } = SOCKET_PATHS;
 
 function AppSelect() {
   const {
@@ -21,6 +24,7 @@ function AppSelect() {
 
   useEffect(() => {
     setActionBar(actionBars[selection]);
+    // eslint-disable-next-line
   }, [actionBars]);
 
   const toggleApp = (app, isSelected) => {
@@ -39,7 +43,7 @@ function AppSelect() {
 
     updateActionBars(newActionBars);
     updateActionBarDatabase(newActionBars);
-    sendChanges(newActionBars, updateActionBarDatabase);
+    sendChanges(ACTION_BAR_CHANGE, newActionBars);
   }
 
   const handleSelectedOption = event => {

@@ -27,3 +27,8 @@ export const DATABASE_PATHS = {
   ACTION_BAR_STATE_PATH: 'action_bars',
   USERS_PATH: 'users',
 }
+
+export const SOCKET_PATHS = {
+  ACTION_BAR_CHANGE: 'action-bar-change',
+  ROOM_DETAILS_CHANGE: 'room-details-change',
+}
