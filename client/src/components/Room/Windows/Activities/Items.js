@@ -57,14 +57,24 @@ function Items({ isStarted }) {
     ]
   );
 
+  const deleteCard = (id) => {
+    const newActivityCards = [...activityCards];
+    const cardIndex = newActivityCards.findIndex(card => card.id === id);
+
+    newActivityCards.splice(cardIndex, 1);
+    setActivityCards(newActivityCards);
+  }
+
   console.log(activityCards);
 
   const SortableItem = SortableElement(({ value, index }) => {
-    const { title, description } = value;
+    const { id, title, description } = value;
     return (
       <Card
+        id={id}
         title={title}
         description={description}
+        deleteCard={deleteCard}
       />
     )
   });
@@ -96,7 +106,17 @@ function Items({ isStarted }) {
   const addCard = () => {
     const cardsLength = activityCards.length - 1;
     const previousActivity = activityCards[cardsLength];
-    const { position: previousPosition, id: previousID } = previousActivity;
+
+    let previousPosition;
+    let previousID;
+    if (previousActivity) {
+      previousPosition = previousActivity.position;
+      previousID = previousActivity.id;
+    }
+    else {
+      previousPosition = -1;
+      previousID = -1;
+    }
 
     const newActivityCard = {
       title: 'Title',

@@ -5,22 +5,33 @@ import { GrClose } from 'react-icons/gr';
 
 import CircularProgress from './CircularProgress';
 
-function Card({ title, description }) {
+function Card({ id, title, description, deleteCard }) {
+  const handleClick = event => {
+    event.stopPropagation();
+
+    const { target } = event;
+
+    if (target.classList.contains('close-button')) {
+      deleteCard(id);
+    }
+  }
+
   return (
-    <Wrapper>
+    <Wrapper onMouseDown={handleClick}>
       <Header>
         <StyledInput
           type='text'
-          className='title'
           defaultValue={title}
         />
-        <button type='button'>
-          <GrClose />
+        <button
+          className='close-button'
+          type='button'
+        >
+          <GrClose className='close-button' />
         </button>
       </Header>
       <StyledInput
         type='text'
-        className='description'
         defaultValue={description}
       />
       <ProgressContainer>
@@ -69,6 +80,9 @@ const Header = styled.div`
     position: absolute;
     right: 0;
     top: 0;
+    width: 30px;
+    height: 30px;
+    z-index; 10;
   }
 `;
 
