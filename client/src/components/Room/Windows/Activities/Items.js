@@ -88,6 +88,7 @@ function Items({ isStarted }) {
                 key={value.id}
                 value={value}
                 index={index}
+                disabled={isStarted}
               />
             )
           })}
