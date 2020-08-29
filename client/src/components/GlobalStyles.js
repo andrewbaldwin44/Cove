@@ -30,7 +30,7 @@ const GlobalStyles = createGlobalStyle`
     --portal-border-radius: 10px;
 
     --window-header-height: 50px;
-    --default-appbar-height: 60px;
+    --default-action-bar-height: 60px;
 
     --room-menu-width: 150px;
     --room-menu-height: 150px;

@@ -156,7 +156,7 @@ const Wrapper = styled.div`
   left: 0;
   background-color: var(--main-background);
   height: ${({ size }) => {
-    return `calc((100vh - var(--default-appbar-height)) * ${size.height / 100} )`;
+    return `calc((100vh - var(--default-action-bar-height)) * ${size.height / 100} )`;
   }};
   width: ${({ size }) => {
     return `calc(100vw * (${size.width / 100}))`;

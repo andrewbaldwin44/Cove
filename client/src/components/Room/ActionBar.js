@@ -1,28 +1,32 @@
 import React, { createRef, useEffect } from 'react';
 import styled from 'styled-components';
 
-const defaultAppBarHeight = '60px';
+const defaultActionBarHeight = '60px';
 
-function AppBar({ children, length, position }) {
+function ActionBar({ children, length, position }) {
   const container = createRef();
 
   useEffect(() => {
-    const appBarElement = container.current;
+    const actionBarElement = container.current;
 
     const setElementStyle = (width, height, centeringPosition, transform) => {
-      appBarElement.style.width = width;
-      appBarElement.style.height = height;
-      appBarElement.style[position] = 0;
-      appBarElement.style[centeringPosition] = '50%';
-      appBarElement.style.transform = `${transform}(-50%)`;
+      actionBarElement.style.width = width;
+      actionBarElement.style.height = height;
+      actionBarElement.style[position] = 0;
+      actionBarElement.style[centeringPosition] = '50%';
+      actionBarElement.style.transform = `${transform}(-50%)`;
     }
 
-    if (appBarElement) {
+    if (actionBarElement) {
       if (position === 'left' || position === 'right') {
-        setElementStyle(defaultAppBarHeight, length, 'top', 'translateY');
+        setElementStyle(defaultActionBarHeight, length, 'top', 'translateY');
+        actionBarElement.style.flexDirection = 'column';
+        actionBarElement.style.alignItems = 'center';
+        actionBarElement.style.justifyContent = 'flex-start';
+        actionBarElement.style.padding = '30px 0';
       }
       else {
-        setElementStyle(length, defaultAppBarHeight, 'left', 'translateX');
+        setElementStyle(length, defaultActionBarHeight, 'left', 'translateX');
       }
     }
   }, [container, length, position]);
@@ -30,6 +34,7 @@ function AppBar({ children, length, position }) {
   return (
     <Wrapper
       ref={container}
+      position={position}
     >
       {children}
     </Wrapper>
@@ -48,13 +53,16 @@ const Wrapper = styled.div`
 
   z-index: 1;
 
-  img, svg {
+  img {
     cursor: pointer;
   }
 
-  img, svg:not(:first-child) {
-    margin-left: 30px;
+  img:not(:first-child) {
+    ${({ position }) => {
+      if (position === 'top' || position === 'bottom') return 'margin-left: 30px;';
+      else return 'margin-top: 30px;';
+    }}
   }
 `;
 
-export default AppBar
+export default ActionBar
