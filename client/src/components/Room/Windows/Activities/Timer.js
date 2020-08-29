@@ -3,7 +3,11 @@ import styled from 'styled-components';
 
 import CircularProgress from './CircularProgress';
 
-function Timer({ isStarted }) {
+function Timer({ isStarted, activityCards }) {
+  const totalTime = activityCards.reduce((total, card) => {
+    return total += card.time;
+  }, 0);
+
   return (
     <Wrapper>
       <CircularProgress
@@ -14,6 +18,7 @@ function Timer({ isStarted }) {
         shadowColor='gray'
         isStarted={isStarted}
         clockSize='1.2em'
+        timeLimit={totalTime}
       />
     </Wrapper>
   )

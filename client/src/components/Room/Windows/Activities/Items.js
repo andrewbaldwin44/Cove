@@ -8,55 +8,9 @@ import { IoIosAdd } from 'react-icons/io';
 
 import Card from './Card';
 
-function Items({ isStarted, setStartTimer }) {
+function Items({ isStarted, setStartTimer, activityCards, setActivityCards }) {
   const [activityPlaying, setActivityPlaying] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
-  const [activityCards, setActivityCards] = useState(
-    [
-      {
-        title: 'Push Ups',
-        description: 'None',
-        position: 0,
-        id: 0,
-      },
-      {
-        title: 'Sit Ups',
-        description: 'None',
-        position: 1,
-        id: 1,
-      },
-      {
-        title: 'Squats',
-        description: 'None',
-        position: 2,
-        id: 2,
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 3,
-        id: 3,
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 4,
-        id: 4,
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 5,
-        id: 5,
-      },
-      {
-        title: 'I am',
-        description: 'None',
-        position: 6,
-        id: 6,
-      }
-    ]
-  );
 
   const deleteCard = (id) => {
     const newActivityCards = [...activityCards];
@@ -65,8 +19,6 @@ function Items({ isStarted, setStartTimer }) {
     newActivityCards.splice(cardIndex, 1);
     setActivityCards(newActivityCards);
   }
-
-  console.log(activityCards);
 
   const SortableItem = SortableElement(({ value, index }) => {
     const { id, position, title, description } = value;

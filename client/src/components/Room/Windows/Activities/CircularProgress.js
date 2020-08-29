@@ -16,7 +16,8 @@ function formatTimeLeft(time) {
 }
 
 function CircularProgress({
-  progress, size, strokeWidth, elapsedColor, shadowColor, isStarted, clockSize, endCallBack
+  timeLimit = 20, progress, size, strokeWidth, elapsedColor, shadowColor, isStarted,
+  clockSize, endCallBack
 }) {
   const [offset, setOffset] = useState(0);
 
@@ -24,16 +25,15 @@ function CircularProgress({
   const radius = size / 2 - strokeWidth / 2;
   const circumference = radius * 2 * Math.PI;
 
-  const TIME_LIMIT = 20;
-  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
+  const [timeLeft, setTimeLeft] = useState(timeLimit);
 
   useEffect(() => {
     if (isStarted) {
-      const progressOffset = ((TIME_LIMIT - timeLeft) / TIME_LIMIT) * circumference;
+      const progressOffset = ((timeLimit - timeLeft) / timeLimit) * circumference;
 
       setOffset(progressOffset);
     }
-  }, [setOffset, circumference, timeLeft, offset, isStarted]);
+  }, [setOffset, circumference, timeLeft, offset, isStarted, timeLimit]);
 
   useInterval(() => {
     if (timeLeft > 0 && isStarted) {

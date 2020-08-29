@@ -10,6 +10,59 @@ import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
 function Activities() {
   const [startTimer, setStartTimer] = useState(false); // handle delay
   const [isStarted, setIsStarted] = useState(false);
+  const [activityCards, setActivityCards] = useState(
+    [
+      {
+        title: 'Push Ups',
+        description: 'None',
+        position: 0,
+        id: 0,
+        time: 20
+      },
+      {
+        title: 'Sit Ups',
+        description: 'None',
+        position: 1,
+        id: 1,
+        time: 20
+      },
+      {
+        title: 'Squats',
+        description: 'None',
+        position: 2,
+        id: 2,
+        time: 20
+      },
+      {
+        title: 'Kick Ups',
+        description: 'None',
+        position: 3,
+        id: 3,
+        time: 20
+      },
+      {
+        title: 'Kick Ups',
+        description: 'None',
+        position: 4,
+        id: 4,
+        time: 20
+      },
+      {
+        title: 'Kick Ups',
+        description: 'None',
+        position: 5,
+        id: 5,
+        time: 20
+      },
+      {
+        title: 'I am',
+        description: 'None',
+        position: 6,
+        id: 6,
+        time: 20
+      }
+    ]
+  );
 
   return (
     <Wrapper>
@@ -33,8 +86,16 @@ function Activities() {
         </div>
       </Header>
       <Body>
-        <Items isStarted={isStarted} setStartTimer={setStartTimer} />
-        <Timer isStarted={startTimer} />
+        <Items
+          isStarted={isStarted}
+          setStartTimer={setStartTimer}
+          activityCards={activityCards}
+          setActivityCards={setActivityCards}
+        />
+        <Timer
+          isStarted={startTimer}
+          activityCards={activityCards}
+        />
       </Body>
     </Wrapper>
   )

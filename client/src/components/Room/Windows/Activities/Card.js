@@ -27,14 +27,15 @@ function Card({
   }
 
   useEffect(() => {
-    setStartTimer(isStarted);
-  }, [isStarted]);
-
-  useEffect(() => {
     if (isStarted && activityPlaying === position) {
       setPlayCard(true);
     }
   }, [isStarted, activityPlaying, position]);
+
+  useEffect(() => {
+    setStartTimer(isStarted);
+    // eslint-disable-next-line
+  }, [isStarted]);
 
   return (
     <Wrapper onMouseDown={handleClick}>
