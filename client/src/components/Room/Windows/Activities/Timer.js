@@ -1,12 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Timer() {
+import CircularProgress from './CircularProgress';
+
+function Timer({ isStarted }) {
   return (
     <Wrapper>
-      <Circle>
-        <span>10:00:00</span>
-      </Circle>
+      <CircularProgress
+        progress={50}
+        size={350}
+        strokeWidth={15}
+        elapsedColor='red'
+        shadowColor='gray'
+        isStarted={isStarted}
+        clockSize='1.2em'
+      />
     </Wrapper>
   )
 }
@@ -16,18 +24,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 100%;
-`;
-
-const Circle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4em;
-  height: 200px;
-  width: 200px;
-  border: 8px solid lightblue;
-  border-radius: 50%;
+  width: 30%;
 `;
 
 export default Timer;

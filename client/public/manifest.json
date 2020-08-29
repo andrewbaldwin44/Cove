@@ -3,8 +3,8 @@
   "name": "Cove,
   "icons": [
     {
-      "src": "favicon-96px.svg",
-      "type": "image/x-svg"
+      "src": "favicon-96px.png",
+      "type": "image/x-png"
     }
   ],
   "start_url": ".",

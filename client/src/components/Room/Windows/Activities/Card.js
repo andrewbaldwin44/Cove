@@ -3,21 +3,41 @@ import styled from 'styled-components';
 
 import { GrClose } from 'react-icons/gr';
 
-function Card({ title, description, removeCard, dragging }) {
+import CircularProgress from './CircularProgress';
+
+function Card({ title, description }) {
   return (
-    <Wrapper dragging={dragging}>
+    <Wrapper>
       <Header>
-        <span className='title'>{title}</span>
-        <button type="button" onClick={removeCard}>
+        <StyledInput
+          type='text'
+          className='title'
+          defaultValue={title}
+        />
+        <button type='button'>
           <GrClose />
         </button>
       </Header>
-      <span className='description'>{description}</span>
+      <StyledInput
+        type='text'
+        className='description'
+        defaultValue={description}
+      />
+      <ProgressContainer>
+        <CircularProgress
+          progress={50}
+          size={70}
+          strokeWidth={4}
+          elapsedColor='red'
+          shadowColor='gray'
+        />
+      </ProgressContainer>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -28,11 +48,12 @@ const Wrapper = styled.div`
   margin-bottom: 10px;
   padding: 10px 20px;
   background-color: white;
+  cursor: grab;
+`;
 
-  .title {
-    font-weight: bold;
-    padding-bottom: 30px;
-  }
+const StyledInput = styled.input`
+  border: none;
+  text-align: center;
 `;
 
 const Header = styled.div`
@@ -41,12 +62,19 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px;
 
   button {
     position: absolute;
     right: 0;
     top: 0;
   }
+`;
+
+const ProgressContainer = styled.div`
+  position: absolute;
+  right: 100px;
 `;
 
 export default Card;
