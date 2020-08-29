@@ -8,7 +8,8 @@ import { IoIosAdd } from 'react-icons/io';
 
 import Card from './Card';
 
-function Items({ isStarted }) {
+function Items({ isStarted, setStartTimer }) {
+  const [activityPlaying, setActivityPlaying] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
   const [activityCards, setActivityCards] = useState(
     [
@@ -68,13 +69,18 @@ function Items({ isStarted }) {
   console.log(activityCards);
 
   const SortableItem = SortableElement(({ value, index }) => {
-    const { id, title, description } = value;
+    const { id, position, title, description } = value;
     return (
       <Card
         id={id}
+        position={position}
         title={title}
         description={description}
         deleteCard={deleteCard}
+        activityPlaying={activityPlaying}
+        setActivityPlaying={setActivityPlaying}
+        isStarted={isStarted}
+        setStartTimer={setStartTimer}
       />
     )
   });

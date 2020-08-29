@@ -8,6 +8,7 @@ import { ImPencil } from 'react-icons/im';
 import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
 
 function Activities() {
+  const [startTimer, setStartTimer] = useState(false); // handle delay
   const [isStarted, setIsStarted] = useState(false);
 
   return (
@@ -32,8 +33,8 @@ function Activities() {
         </div>
       </Header>
       <Body>
-        <Items isStarted={isStarted} />
-        <Timer isStarted={isStarted} />
+        <Items isStarted={isStarted} setStartTimer={setStartTimer} />
+        <Timer isStarted={startTimer} />
       </Body>
     </Wrapper>
   )

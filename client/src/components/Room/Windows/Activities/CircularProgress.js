@@ -16,7 +16,7 @@ function formatTimeLeft(time) {
 }
 
 function CircularProgress({
-  progress, size, strokeWidth, elapsedColor, shadowColor, isStarted, clockSize
+  progress, size, strokeWidth, elapsedColor, shadowColor, isStarted, clockSize, endCallBack
 }) {
   const [offset, setOffset] = useState(0);
 
@@ -38,6 +38,10 @@ function CircularProgress({
   useInterval(() => {
     if (timeLeft > 0 && isStarted) {
       setTimeLeft(timeLeft - 1);
+    }
+    if (timeLeft === 0) {
+      // turn off timer
+      if (endCallBack) endCallBack();
     }
   }, 1000);
 

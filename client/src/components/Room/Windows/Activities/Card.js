@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { GrClose } from 'react-icons/gr';
 
 import CircularProgress from './CircularProgress';
 
-function Card({ id, title, description, deleteCard }) {
+function Card({
+  id, position, title, description, deleteCard, activityPlaying,
+  setActivityPlaying, isStarted, setStartTimer
+}) {
+  const [playCard, setPlayCard] = useState(false);
+
   const handleClick = event => {
     event.stopPropagation();
 
@@ -15,6 +20,21 @@ function Card({ id, title, description, deleteCard }) {
       deleteCard(id);
     }
   }
+
+  const activityEnded = () => {
+    setPlayCard(false);
+    setActivityPlaying(activityPlaying + 1);
+  }
+
+  useEffect(() => {
+    setStartTimer(isStarted);
+  }, [isStarted]);
+
+  useEffect(() => {
+    if (isStarted && activityPlaying === position) {
+      setPlayCard(true);
+    }
+  }, [isStarted, activityPlaying, position]);
 
   return (
     <Wrapper onMouseDown={handleClick}>
@@ -41,6 +61,8 @@ function Card({ id, title, description, deleteCard }) {
           strokeWidth={4}
           elapsedColor='red'
           shadowColor='gray'
+          isStarted={playCard}
+          endCallBack={activityEnded}
         />
       </ProgressContainer>
     </Wrapper>
