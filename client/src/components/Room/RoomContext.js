@@ -71,6 +71,22 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     setOpenWindows(newOpenWindows);
   }
 
+  const updateOpenWidgets = (widget, newData) => {
+    const [stateType, newState] = newData;
+
+    const newWidgetState = {
+      ...openWidgets[widget],
+      [stateType]: newState,
+    }
+
+    const newOpenWidgets = {
+      ...openWidgets,
+      [widget]: newWidgetState,
+    }
+
+    setOpenWidgets(newOpenWidgets);
+  }
+
   const updateRoomDatabase = (path, newData) => {
     const roomReference = database.collection(ROOMS_PATH).doc(ROOM_DETAILS_PATH);
 
@@ -180,6 +196,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         updateActionBars,
         updateActionBarDatabase,
         updateOpenWindows,
+        updateOpenWidgets,
       }}
     >
       {children}

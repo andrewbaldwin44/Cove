@@ -14,10 +14,12 @@ const SOCKET_PATHS = {
   SEND_ACTION_BAR: 'send-action-bar',
   SEND_ROOM_DETAILS: 'send-room-details',
   SEND_WINDOW_STATE: 'send-window-state',
+  SEND_WIDGET_STATE: 'send-widget-state',
   SEND_ACTIVITY_CARDS: 'send-activity-cards',
   RECEIVE_ACTION_BAR: 'receive-action-bar',
   RECEIVE_ROOM_DETAILS: 'receive-room-details',
   RECEIVE_WINDOW_STATE: 'receive-window-state',
+  RECEIVE_WIDGET_STATE: 'receive-widget-state',
 }
 
 const APPS = ['web', 'games', 'youtube', 'deezer', 'activity'];

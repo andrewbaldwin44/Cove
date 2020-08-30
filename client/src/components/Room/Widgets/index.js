@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
 
+import { sendChanges } from '../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../constants';
+
 import { RoomContext } from '../RoomContext';
+
+const { SEND_WIDGET_STATE } = SOCKET_PATHS;
 
 function Widgets({ children, appWindow, containing, position }) {
   const {
@@ -17,6 +22,7 @@ function Widgets({ children, appWindow, containing, position }) {
     const newState = ['isOpen', true];
 
     changeWidgetState(containing, newState);
+    sendChanges(SEND_WIDGET_STATE, { widget: containing, newState });
   }
 
   const handleDragStop = (_, ui) => {
@@ -29,6 +35,7 @@ function Widgets({ children, appWindow, containing, position }) {
     const position = { x, y };
     const newState = ['position', position];
     changeWidgetState(containing, newState);
+    sendChanges(SEND_WIDGET_STATE, { widget: containing, newState });
   }
 
   return (

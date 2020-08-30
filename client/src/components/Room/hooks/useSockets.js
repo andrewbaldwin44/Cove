@@ -12,6 +12,7 @@ const {
   RECEIVE_ACTION_BAR,
   RECEIVE_ROOM_DETAILS,
   RECEIVE_WINDOW_STATE,
+  RECEIVE_WIDGET_STATE,
 } = SOCKET_PATHS;
 
 function useSockets(roomID) {
@@ -23,6 +24,7 @@ function useSockets(roomID) {
     updateActionBars,
     updateRoomDetails,
     updateOpenWindows,
+    updateOpenWidgets,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -45,6 +47,10 @@ function useSockets(roomID) {
 
   socket.on(RECEIVE_WINDOW_STATE, ({ app, newState }) => {
     updateOpenWindows(app, newState);
+  });
+
+  socket.on(RECEIVE_WIDGET_STATE, ({ widget, newState }) => {
+    updateOpenWidgets(widget, newState);
   });
 }
 
