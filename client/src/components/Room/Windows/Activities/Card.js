@@ -7,7 +7,7 @@ import CircularProgress from './CircularProgress';
 
 import { ActivitiesContext } from './ActivitiesContext';
 
-function Card({ id, position, title, description, deleteCard }) {
+function Card({ id, position, title, description, time, deleteCard }) {
   const {
     isStarted,
     setStartTimer,
@@ -70,6 +70,8 @@ function Card({ id, position, title, description, deleteCard }) {
           shadowColor='gray'
           isStarted={playCard}
           endCallBack={activityEnded}
+          id={id}
+          timeLimit={time}
         />
       </ProgressContainer>
     </Wrapper>

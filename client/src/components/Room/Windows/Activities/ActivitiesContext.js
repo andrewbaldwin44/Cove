@@ -61,6 +61,23 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
     ]
   );
 
+  const parseTime = timeString => {
+    const [minutes, seconds] = timeString.split(':');
+    const minutesInSeconds = Number(minutes) * 60;
+
+    return minutesInSeconds + Number(seconds);
+  }
+
+  const updateCardTime = (event, id) => {
+    const newTime = parseTime(event.target.value);
+
+    const newActivityCards = [...activityCards];
+    const cardIndex = newActivityCards.findIndex(card => card.id === id);
+
+    newActivityCards[cardIndex].time = newTime;
+    setActivityCards(newActivityCards);
+  }
+
   return (
     <ActivitiesContext.Provider
       value={{
@@ -74,6 +91,7 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
         setActivityPlaying,
         firstRender,
         setFirstRender,
+        updateCardTime
       }}
     >
       {children}

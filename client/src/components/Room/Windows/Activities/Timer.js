@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import CircularProgress from './CircularProgress';
@@ -11,9 +11,15 @@ function Timer() {
     activityCards
   } = useContext(ActivitiesContext);
 
-  const totalTime = activityCards.reduce((total, card) => {
-    return total += card.time;
-  }, 0);
+  const [totalTime, setTotalTime] = useState(0);
+
+  useEffect(() => {
+    const newTotalTime = activityCards.reduce((total, card) => {
+      return total + card.time;
+    }, 0);
+
+    setTotalTime(newTotalTime);
+  }, [activityCards]);
 
   return (
     <Wrapper>

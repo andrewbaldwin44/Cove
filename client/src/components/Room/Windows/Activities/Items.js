@@ -28,13 +28,14 @@ function Items() {
   }
 
   const SortableItem = SortableElement(({ value, index }) => {
-    const { id, position, title, description } = value;
+    const { id, position, title, description, time } = value;
     return (
       <Card
         id={id}
         position={position}
         title={title}
         description={description}
+        time={time}
         deleteCard={deleteCard}
       />
     )

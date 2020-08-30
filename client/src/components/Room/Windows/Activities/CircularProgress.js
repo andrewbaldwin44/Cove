@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import useInterval from '../../hooks/useInterval';
 
+import TimeSelect from './TimeSelect';
+
 function formatTimeLeft(time) {
   const minutes = Math.floor(time / 60);
 
@@ -17,7 +19,7 @@ function formatTimeLeft(time) {
 
 function CircularProgress({
   timeLimit = 20, progress, size, strokeWidth, elapsedColor, shadowColor, isStarted,
-  clockSize, endCallBack
+  clockSize, endCallBack, id
 }) {
   const [offset, setOffset] = useState(0);
 
@@ -26,6 +28,10 @@ function CircularProgress({
   const circumference = radius * 2 * Math.PI;
 
   const [timeLeft, setTimeLeft] = useState(timeLimit);
+
+  useEffect(() => {
+    setTimeLeft(timeLimit)
+  }, [timeLimit]);
 
   useEffect(() => {
     if (isStarted) {
@@ -67,9 +73,11 @@ function CircularProgress({
           strokeDashoffset={offset}
         />
       </svg>
-      <Time clockSize={clockSize}>
-          {formatTimeLeft(timeLeft)}
-      </Time>
+      <TimeSelect
+        clockSize={clockSize}
+        timeLeft={formatTimeLeft(timeLeft)}
+        id={id}
+      />
     </Wrapper>
   )
 }
@@ -79,11 +87,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Time = styled.span`
-  position: absolute;
-  font-size: ${({ clockSize }) => clockSize || '1em'};
 `;
 
 const ShadowCircle = styled.circle`

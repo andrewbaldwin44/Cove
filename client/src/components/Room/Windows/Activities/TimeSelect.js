@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import TimeField from 'react-simple-timefield';
 
-function TimeSelect({ timeLeft, clockSize, isStarted, updateCardTime, id }) {
+import { ActivitiesContext } from './ActivitiesContext';
+
+function TimeSelect({ timeLeft, clockSize, id }) {
+  const { isStarted, updateCardTime } = useContext(ActivitiesContext);
+
   return (
     <Wrapper clockSize={clockSize}>
-      <StyledTimeInput
+      <TimeField
         value={timeLeft}
-        onChange={(value) => updateCardTime(value, id)}
+        input={<StyledTimeInput type='text' />}
+        disabled={isStarted}
+        onBlur={(event) => updateCardTime(event, id)}
       />
     </Wrapper>
   )
@@ -18,7 +25,8 @@ const Wrapper = styled.div`
 `;
 
 const StyledTimeInput = styled.input`
-  width: 200px;
+  width: 55px;
+  text-align: center;
   border: none;
   background-color: white;
 `;
