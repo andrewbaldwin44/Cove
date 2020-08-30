@@ -12,7 +12,7 @@ function TimeSelect({ timeLeft, clockSize, id }) {
       <TimeField
         value={timeLeft}
         input={<StyledTimeInput type='text' />}
-        disabled={isStarted}
+        disabled={isStarted || typeof id === 'undefined'}
         onBlur={(event) => updateCardTime(event, id)}
       />
     </Wrapper>
