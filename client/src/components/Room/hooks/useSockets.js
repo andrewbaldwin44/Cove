@@ -13,6 +13,7 @@ const {
   RECEIVE_ROOM_DETAILS,
   RECEIVE_WINDOW_STATE,
   RECEIVE_WIDGET_STATE,
+  RECEIVE_NOTE,
 } = SOCKET_PATHS;
 
 function useSockets(roomID) {
@@ -25,6 +26,7 @@ function useSockets(roomID) {
     updateRoomDetails,
     updateOpenWindows,
     updateOpenWidgets,
+    setNote,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -51,6 +53,10 @@ function useSockets(roomID) {
 
   socket.on(RECEIVE_WIDGET_STATE, ({ widget, newState }) => {
     updateOpenWidgets(widget, newState);
+  });
+
+  socket.on(RECEIVE_NOTE, (newNote) => {
+    setNote(newNote);
   });
 }
 

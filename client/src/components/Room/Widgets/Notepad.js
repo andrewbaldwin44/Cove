@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
+import { sendChanges } from '../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../constants';
+
+import { RoomContext } from '../RoomContext';
+
+const {
+  SEND_NOTE,
+  RECEIVE_NOTE,
+} = SOCKET_PATHS;
+
 function Notepad({ position }) {
+  const { note, setNote } = useContext(RoomContext);
+
+  const updateNote = event => {
+    const newNote = event.target.value;
+    
+    setNote(newNote);
+    sendChanges(SEND_NOTE, newNote);
+  }
+
+  const saveNote = event => {
+
+  }
+
   return (
     <Wrapper>
       <Header />
-      <StyledTextArea />
+      <StyledTextArea
+        onInput={updateNote}
+        onChange={saveNote}
+        value={note}
+      />
     </Wrapper>
   )
 }

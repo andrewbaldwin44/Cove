@@ -8,10 +8,12 @@ const {
     SEND_WINDOW_STATE,
     SEND_WIDGET_STATE,
     SEND_ACTIVITY_CARDS,
+    SEND_NOTE,
     RECEIVE_ACTION_BAR,
     RECEIVE_ROOM_DETAILS,
     RECEIVE_WINDOW_STATE,
     RECEIVE_WIDGET_STATE,
+    RECEIVE_NOTE,
   }
 } = require('../constants');
 
@@ -66,6 +68,10 @@ function handleRoomState(socket, io, roomID) {
 
   socket.on(SEND_WIDGET_STATE, newData => {
     socket.to(roomID).broadcast.emit(RECEIVE_WIDGET_STATE, newData);
+  });
+
+  socket.on(SEND_NOTE, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_NOTE, newData);
   });
 }
 

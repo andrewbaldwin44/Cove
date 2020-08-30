@@ -42,6 +42,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const [actionBars, setActionBars] = useState(initialActionBars);
   const [openWindows, setOpenWindows] = useState([]);
   const [openWidgets, setOpenWidgets] = useState([]);
+  const [note, setNote] = useState('');
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
@@ -193,6 +194,8 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         updateActionBarDatabase,
         updateOpenWindows,
         updateOpenWidgets,
+        note,
+        setNote,
       }}
     >
       {children}
