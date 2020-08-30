@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import CircularProgress from './CircularProgress';
 
-function Timer({ isStarted, activityCards }) {
+import { ActivitiesContext } from './ActivitiesContext';
+
+function Timer() {
+  const {
+    isStarted,
+    activityCards
+  } = useContext(ActivitiesContext);
+
   const totalTime = activityCards.reduce((total, card) => {
     return total += card.time;
   }, 0);

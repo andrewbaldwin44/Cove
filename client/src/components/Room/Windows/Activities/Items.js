@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from 'react';
+import React, { createRef, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
@@ -8,9 +8,16 @@ import { IoIosAdd } from 'react-icons/io';
 
 import Card from './Card';
 
-function Items({ isStarted, setStartTimer, activityCards, setActivityCards }) {
-  const [activityPlaying, setActivityPlaying] = useState(0);
-  const [firstRender, setFirstRender] = useState(true);
+import { ActivitiesContext } from './ActivitiesContext';
+
+function Items() {
+  const {
+    activityCards,
+    setActivityCards,
+    isStarted,
+    firstRender,
+    setFirstRender,
+  } = useContext(ActivitiesContext);
 
   const deleteCard = (id) => {
     const newActivityCards = [...activityCards];
@@ -29,10 +36,6 @@ function Items({ isStarted, setStartTimer, activityCards, setActivityCards }) {
         title={title}
         description={description}
         deleteCard={deleteCard}
-        activityPlaying={activityPlaying}
-        setActivityPlaying={setActivityPlaying}
-        isStarted={isStarted}
-        setStartTimer={setStartTimer}
       />
     )
   });

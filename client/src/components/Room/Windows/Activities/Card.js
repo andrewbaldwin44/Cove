@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { GrClose } from 'react-icons/gr';
 
 import CircularProgress from './CircularProgress';
 
-function Card({
-  id, position, title, description, deleteCard, activityPlaying,
-  setActivityPlaying, isStarted, setStartTimer
-}) {
+import { ActivitiesContext } from './ActivitiesContext';
+
+function Card({ id, position, title, description, deleteCard }) {
+  const {
+    isStarted,
+    setStartTimer,
+    activityPlaying,
+    setActivityPlaying,
+  } = useContext(ActivitiesContext);
+
   const [playCard, setPlayCard] = useState(false);
 
   const handleClick = event => {
