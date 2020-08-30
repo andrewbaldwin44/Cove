@@ -25,7 +25,7 @@ const {
   handleRoomDetails,
   handleUserSearch,
   handleInviteCreation,
-  handleInviteValidation
+  handleInviteValidation,
 } = require('./handlers/authenticationHandlers');
 
 const {

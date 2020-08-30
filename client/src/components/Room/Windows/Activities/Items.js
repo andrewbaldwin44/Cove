@@ -17,6 +17,7 @@ function Items() {
     isStarted,
     firstRender,
     setFirstRender,
+    createActivityCard,
   } = useContext(ActivitiesContext);
 
   const deleteCard = (id) => {
@@ -71,28 +72,23 @@ function Items() {
     const previousActivity = activityCards[cardsLength];
 
     let previousPosition;
-    let previousID;
     if (previousActivity) {
       previousPosition = previousActivity.position;
-      previousID = previousActivity.id;
     }
     else {
       previousPosition = -1;
-      previousID = -1;
     }
 
-    const newActivityCard = {
-      title: 'Title',
-      description: 'Description',
-      position: previousPosition + 1,
-      id: previousID + 1,
-    }
+    const newActivityCard = createActivityCard(previousPosition);
 
     if (firstRender) setFirstRender(false);
+    if (!firstRender) scrollToBottom();
     setActivityCards([...activityCards, newActivityCard]);
   }
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
+    if (firstRender) setFirstRender(false);
+    
     const newActivityCards = arrayMove(activityCards, oldIndex, newIndex);
 
     for (let i = 0; i < newActivityCards.length; i++) {
@@ -101,11 +97,6 @@ function Items() {
 
     setActivityCards(newActivityCards);
   }
-
-  useEffect(() => {
-    if (!firstRender) scrollToBottom();
-    // eslint-disable-next-line
-  }, [activityCards, firstRender]);
 
   const activityContainer = createRef();
 

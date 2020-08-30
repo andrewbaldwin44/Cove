@@ -9,10 +9,13 @@ import { ActivitiesContext } from './ActivitiesContext';
 
 function Card({ id, position, title, description, time, deleteCard }) {
   const {
+    firstRender,
+    setFirstRender,
     isStarted,
     setStartTimer,
     activityPlaying,
     setActivityPlaying,
+    updateCardContent,
   } = useContext(ActivitiesContext);
 
   const [playCard, setPlayCard] = useState(false);
@@ -47,6 +50,7 @@ function Card({ id, position, title, description, time, deleteCard }) {
     <Wrapper onMouseDown={handleClick}>
       <Header>
         <StyledInput
+          onChange={(event) => updateCardContent(event, 'title', id)}
           type='text'
           defaultValue={title}
         />
@@ -58,6 +62,7 @@ function Card({ id, position, title, description, time, deleteCard }) {
         </button>
       </Header>
       <StyledInput
+        onChange={(event) => updateCardContent(event, 'description', id)}
         type='text'
         defaultValue={description}
       />

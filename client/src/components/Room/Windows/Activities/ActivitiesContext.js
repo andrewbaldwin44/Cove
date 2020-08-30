@@ -1,65 +1,45 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+
+import { RoomContext } from '../../RoomContext';
 
 export const ActivitiesContext = createContext(null);
 
 export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
+  const { changeWindowState, openWindows } = useContext(RoomContext);
+
   const [startTimer, setStartTimer] = useState(false); // handle delay
   const [activityPlaying, setActivityPlaying] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
 
-  const [activityCards, setActivityCards] = useState(
-    [
-      {
-        title: 'Push Ups',
-        description: 'None',
-        position: 0,
-        id: 0,
-        time: 20
-      },
-      {
-        title: 'Sit Ups',
-        description: 'None',
-        position: 1,
-        id: 1,
-        time: 20
-      },
-      {
-        title: 'Squats',
-        description: 'None',
-        position: 2,
-        id: 2,
-        time: 20
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 3,
-        id: 3,
-        time: 20
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 4,
-        id: 4,
-        time: 20
-      },
-      {
-        title: 'Kick Ups',
-        description: 'None',
-        position: 5,
-        id: 5,
-        time: 20
-      },
-      {
-        title: 'I am',
-        description: 'None',
-        position: 6,
-        id: 6,
-        time: 20
-      }
-    ]
-  );
+  const [activityCards, setActivityCards] = useState([]);
+
+  const createActivityCard = (position) => {
+    return {
+      title: 'Title',
+      description: 'Description',
+      position,
+      time: 20,
+      id: new Date().getTime()
+    }
+  }
+
+  useEffect(() => {
+    const savedActivityCards = openWindows.activity.activityCards;
+    if (savedActivityCards) {
+      setActivityCards(savedActivityCards);
+    }
+    else {
+      setActivityCards([createActivityCard(0)]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!firstRender) {
+      const newState = ['activityCards', activityCards];
+
+      changeWindowState('activity', newState);
+    }
+  }, [activityCards]);
 
   const parseTime = timeString => {
     const [minutes, seconds] = timeString.split(':');
@@ -74,7 +54,21 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
     const newActivityCards = [...activityCards];
     const cardIndex = newActivityCards.findIndex(card => card.id === id);
 
+    if (firstRender) setFirstRender(false);
+
     newActivityCards[cardIndex].time = newTime;
+    setActivityCards(newActivityCards);
+  }
+
+  const updateCardContent = (event, type, id) => {
+    const newContent = event.target.value;
+
+    const newActivityCards = [...activityCards];
+    const cardIndex = newActivityCards.findIndex(card => card.id === id);
+
+    if (firstRender) setFirstRender(false);
+
+    newActivityCards[cardIndex][type] = newContent;
     setActivityCards(newActivityCards);
   }
 
@@ -91,7 +85,9 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
         setActivityPlaying,
         firstRender,
         setFirstRender,
-        updateCardTime
+        updateCardTime,
+        createActivityCard,
+        updateCardContent,
       }}
     >
       {children}
