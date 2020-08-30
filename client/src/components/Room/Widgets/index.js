@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
 import Draggable from 'react-draggable';
 
 import { sendChanges } from '../hooks/useSockets';
@@ -45,17 +44,11 @@ function Widgets({ children, appWindow, containing, position }) {
       onStop={handleDragStop}
       defaultPosition={position}
     >
-      <Wrapper>
+      <div>
         {children}
-      </Wrapper>
+      </div>
     </Draggable>
   )
 }
-
-const Wrapper = styled.div`
-  height: 100px;
-  width: 100px;
-  border: 1px solid blue;
-`;
 
 export default Widgets;

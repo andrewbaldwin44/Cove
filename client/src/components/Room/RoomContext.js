@@ -55,34 +55,30 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     setActionBars(newData);
   }
 
-  const updateOpenWindows = (app, newData) => {
+  const createNewRoomState = (app, newData, originalState) => {
     const [stateType, newState] = newData;
 
     const newAppState = {
-      ...openWindows[app],
+      ...originalState[app],
       [stateType]: newState,
     }
 
-    const newOpenWindows = {
-      ...openWindows,
+    const newRoomState = {
+      ...originalState,
       [app]: newAppState,
     }
+
+    return newRoomState
+  }
+
+  const updateOpenWindows = (app, newData) => {
+    const newOpenWindows = createNewRoomState(app, newData, openWindows);
 
     setOpenWindows(newOpenWindows);
   }
 
   const updateOpenWidgets = (widget, newData) => {
-    const [stateType, newState] = newData;
-
-    const newWidgetState = {
-      ...openWidgets[widget],
-      [stateType]: newState,
-    }
-
-    const newOpenWidgets = {
-      ...openWidgets,
-      [widget]: newWidgetState,
-    }
+    const newOpenWidgets = createNewRoomState(widget, newData, openWidgets);
 
     setOpenWidgets(newOpenWidgets);
   }
