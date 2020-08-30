@@ -19,10 +19,16 @@ function Widgets({ children, appWindow, containing, position }) {
     changeWidgetState(containing, newState);
   }
 
-  const handleDragStop = () => {
+  const handleDragStop = (_, ui) => {
+    const { x, y } = ui;
+
     if (appWindow) {
       appWindow.current.style.opacity = 1;
     }
+
+    const position = { x, y };
+    const newState = ['position', position];
+    changeWidgetState(containing, newState);
   }
 
   return (

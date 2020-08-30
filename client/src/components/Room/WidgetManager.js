@@ -18,11 +18,13 @@ function WidgetManager() {
   return (
     <Wrapper>
       {toArray(openWidgets).map(([widget, widgetState], index) => {
+        const {
+          position = defaultWidgetPosition,
+        } = widgetState;
 
         const {
           component,
-          position = defaultWidgetPosition,
-        } = WIDGETS[widget]
+        } = WIDGETS[widget];
 
         if (widgetState.isOpen) {
           return (
