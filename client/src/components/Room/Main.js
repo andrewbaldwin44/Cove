@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ActionBar from './ActionBar';
+import WidgetManager from './WidgetManager';
 import WindowManager from './WindowManager';
 import VideoCall from './VideoCall/VideoCall';
 import Menu from './Menu';
@@ -67,6 +68,7 @@ function Main({ isOwner }) {
         <Link to='/'><BackArrow /></Link>
         <button type='button' onClick={() => requestInvite(roomID, 'private')}>Invite</button>
       </Header>
+      <WidgetManager />
       <WindowManager />
       <VideoCall />
       {actionBars && toArray(actionBars).map(([position, details], index) => {

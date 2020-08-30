@@ -24,6 +24,7 @@ export const DATABASE_PATHS = {
   ROOM_STATE_PATH: 'state',
   ROOM_DETAILS_PATH: 'details',
   WINDOW_STATE_PATH: 'windows',
+  WIDGET_STATE_PATH: 'widgets',
   ACTION_BAR_STATE_PATH: 'action_bars',
   USERS_PATH: 'users',
 }

@@ -7,6 +7,7 @@ const {
   ROOM_STATE_PATH,
   ROOM_DETAILS_PATH,
   WINDOW_STATE_PATH,
+  WIDGET_STATE_PATH,
   ACTION_BAR_STATE_PATH,
 } = DATABASE_PATHS;
 
@@ -40,6 +41,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const [roomDetails, setRoomDetails] = useState(initialRoomDetails);
   const [actionBars, setActionBars] = useState(initialActionBars);
   const [openWindows, setOpenWindows] = useState([]);
+  const [openWidgets, setOpenWidgets] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
@@ -77,10 +79,12 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     roomReference.update({ [roomPath]: newData });
   }
 
-  const changeWindowState = (app, newState) => {
-    const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
-                              .collection(roomID).doc(WINDOW_STATE_PATH);
+  const getRoomStateReference = path => {
+    return database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+                   .collection(roomID).doc(path);
+  }
 
+  const writeOrUpdateWindowState = (app, newState, reference) => {
     reference
       .get()
       .then(snapshot => {
@@ -93,6 +97,16 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
           writeWindowState(app, newState, reference);
         }
       });
+  }
+
+  const changeWindowState = (app, newState) => {
+    const reference = getRoomStateReference(WINDOW_STATE_PATH);
+    writeOrUpdateWindowState(app, newState, reference);
+  }
+
+  const changeWidgetState = (widget, newState) => {
+    const reference = getRoomStateReference(WIDGET_STATE_PATH);
+    writeOrUpdateWindowState(widget, newState, reference);
   }
 
   const updateActionBarDatabase = newState => {
@@ -110,6 +124,17 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
       const data = snapshot.data() || [];
 
       setOpenWindows(data);
+    });
+  }
+
+  const setInitialWidgetState = () => {
+    const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
+                              .collection(roomID).doc(WIDGET_STATE_PATH);
+
+    reference.get().then(snapshot => {
+      const data = snapshot.data() || [];
+
+      setOpenWidgets(data);
     });
   }
 
@@ -132,6 +157,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   useEffect(() => {
     setInitialWindowState();
+    setInitialWidgetState();
     // eslint-disable-next-line
   }, []);
 
@@ -141,7 +167,9 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         roomID,
         roomDetails,
         openWindows,
+        openWidgets,
         changeWindowState,
+        changeWidgetState,
         navigateToInnerWindow,
         navigateFromInnerWindow,
         windowProperties,

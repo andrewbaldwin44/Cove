@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Widgets() {
+function Notepad({ position }) {
   return (
-    <div>Widgets</div>
+    <div>Notes</div>
   )
 }
 
-export default Widgets;
+
+
+
+export default Notepad;

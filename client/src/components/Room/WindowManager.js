@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, createRef } from 'react';
 import styled from 'styled-components';
 
 import Windows from './Windows/index';
@@ -14,6 +14,8 @@ function WindowManager() {
   const {
     openWindows,
   } = useContext(RoomContext);
+
+  const appWindow = createRef();
 
   return (
     <Wrapper>
@@ -35,8 +37,9 @@ function WindowManager() {
               containing={app}
               size={size}
               position={position}
+              appWindow={appWindow}
             >
-              {component({ innerWindow: innerWindow })}
+              {component({ innerWindow, appWindow })}
             </Windows>
           )
         }

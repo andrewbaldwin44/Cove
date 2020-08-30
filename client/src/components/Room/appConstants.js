@@ -5,9 +5,10 @@ import Games from './Windows/Games/index';
 import Youtube from './Windows/Youtube/index';
 import Deezer from './Windows/Deezer/index';
 import Activities from './Windows/Activities/index';
-import Widgets from './Windows/Widgets';
+import Widgets from './Windows/WidgetSelector';
 import Preferences from './Windows/Preferences/index';
 import Settings from './Windows/Settings';
+import Notepad from './Widgets/Notepad';
 
 import BrowserIcon from '../../assets/images/browser.png';
 import GamesIcon from '../../assets/images/game.png';
@@ -23,6 +24,7 @@ export const UTILITY_APPS = ['widgets', 'preferences', 'settings'];
 export const DEFAULTS = {
   defaultWindowPosition: { x: 0, y: 0 },
   defaultWindowSize: { width: 100, height: 100 },
+  defaultWidgetPosition: { x: 90, y: 90 }
 }
 
 export const APPS = {
@@ -70,3 +72,10 @@ export const APPS = {
     size: miniWindow,
   }
 };
+
+export const WIDGETS = {
+  notepad: {
+    name: 'Notepad',
+    component: props => (<Notepad {...props} />),
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, createRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Draggable from 'react-draggable';
@@ -13,7 +13,7 @@ import { sendChanges } from '../hooks/useSockets' ;
 import { SOCKET_PATHS } from '../../../constants';
 const { SEND_WINDOW_STATE } = SOCKET_PATHS;
 
-function Windows({ children, title, containing, size, position }) {
+function Windows({ children, title, containing, size, position, appWindow }) {
   const {
     changeWindowState,
     navigateFromInnerWindow,
@@ -21,8 +21,6 @@ function Windows({ children, title, containing, size, position }) {
     setWindowProperties,
     updateOpenWindows,
   } = useContext(RoomContext);
-
-  const appWindow = createRef();
 
   const [windowY, setWindowY] = useState(0);
   const [mouseX, setMouseX] = useState(0);
