@@ -1,6 +1,13 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+import { sendChanges } from '../../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../../constants';
+
 import { RoomContext } from '../../RoomContext';
+
+const {
+  SEND_ACTIVITY_CARDS,
+} = SOCKET_PATHS;
 
 export const ActivitiesContext = createContext(null);
 
@@ -31,15 +38,15 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
     else {
       setActivityCards([createActivityCard(0)]);
     }
+    // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (!firstRender) {
-      const newState = ['activityCards', activityCards];
+  const updateRoomDatabase = () => {
+    const newState = ['activityCards', activityCards];
 
-      changeWindowState('activity', newState);
-    }
-  }, [activityCards]);
+    changeWindowState('activity', newState);
+    sendChanges(SEND_ACTIVITY_CARDS, { app: 'activity', newState });
+  }
 
   const parseTime = timeString => {
     const [minutes, seconds] = timeString.split(':');
@@ -57,7 +64,9 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
     if (firstRender) setFirstRender(false);
 
     newActivityCards[cardIndex].time = newTime;
+
     setActivityCards(newActivityCards);
+    updateRoomDatabase();
   }
 
   const updateCardContent = (event, type, id) => {
@@ -69,7 +78,9 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
     if (firstRender) setFirstRender(false);
 
     newActivityCards[cardIndex][type] = newContent;
+
     setActivityCards(newActivityCards);
+    updateRoomDatabase();
   }
 
   return (
@@ -88,6 +99,7 @@ export function ActivitiesProvider({ children, isStarted, setIsStarted }) {
         updateCardTime,
         createActivityCard,
         updateCardContent,
+        updateRoomDatabase,
       }}
     >
       {children}

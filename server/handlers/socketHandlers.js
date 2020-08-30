@@ -6,6 +6,7 @@ const {
     SEND_ACTION_BAR,
     SEND_ROOM_DETAILS,
     SEND_WINDOW_STATE,
+    SEND_ACTIVITY_CARDS,
     RECEIVE_ACTION_BAR,
     RECEIVE_ROOM_DETAILS,
     RECEIVE_WINDOW_STATE,
@@ -56,6 +57,10 @@ function handleRoomState(socket, io, roomID) {
   socket.on(SEND_WINDOW_STATE, newData => {
     socket.to(roomID).broadcast.emit(RECEIVE_WINDOW_STATE, newData);
   });
+
+  socket.on(SEND_ACTIVITY_CARDS, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_WINDOW_STATE, newData);
+  })
 }
 
 function handleSockets(socket, io) {

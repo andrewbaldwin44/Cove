@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useContext } from 'react';
+import React, { createRef, useContext } from 'react';
 import styled from 'styled-components';
 
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
@@ -18,6 +18,7 @@ function Items() {
     firstRender,
     setFirstRender,
     createActivityCard,
+    updateRoomDatabase,
   } = useContext(ActivitiesContext);
 
   const deleteCard = (id) => {
@@ -83,12 +84,14 @@ function Items() {
 
     if (firstRender) setFirstRender(false);
     if (!firstRender) scrollToBottom();
+
     setActivityCards([...activityCards, newActivityCard]);
+    updateRoomDatabase();
   }
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     if (firstRender) setFirstRender(false);
-    
+
     const newActivityCards = arrayMove(activityCards, oldIndex, newIndex);
 
     for (let i = 0; i < newActivityCards.length; i++) {
@@ -96,6 +99,7 @@ function Items() {
     }
 
     setActivityCards(newActivityCards);
+    updateRoomDatabase();
   }
 
   const activityContainer = createRef();
@@ -107,8 +111,8 @@ function Items() {
         onSortEnd={onSortEnd}
         axis='xy'
       />
-    <AddButton onClick={addCard}>
-          <IoIosAdd />
+      <AddButton onClick={addCard}>
+        <IoIosAdd />
       </AddButton>
     </Wrapper>
   )
