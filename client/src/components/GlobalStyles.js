@@ -21,7 +21,7 @@ const GlobalStyles = createGlobalStyle`
 
     --main-width-padding: 100px;
     --main-height-padding: 50px;
-    --navbar-height: 80px;
+    --navbar-height: 85px;
     --authentication-form-width: 400px;
 
     --portal-gap: 30px;

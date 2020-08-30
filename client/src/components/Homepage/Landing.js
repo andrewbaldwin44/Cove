@@ -21,7 +21,7 @@ function Landing() {
 
 const Wrapper = styled.div`
   position: relative;
-  height: 220px;
+  height: 240px;
   width: 100%;
   background-image: url(${Beach});
   background-size: cover;
