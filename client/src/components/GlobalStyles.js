@@ -17,6 +17,10 @@ const GlobalStyles = createGlobalStyle`
     --red-highlight: #f44336;
     --main-red: ${({ colors }) => colors.overwrite || '#f44336'};
 
+    // app colors
+    --activity-red: #CE5374;
+    --activity-black: #4B515D;
+
     --heading-text-shadow: 1px 1px 12px var(--main-black);
 
     --main-width-padding: 100px;

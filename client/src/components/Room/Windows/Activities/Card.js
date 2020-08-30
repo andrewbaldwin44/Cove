@@ -66,8 +66,8 @@ function Card({ id, position, title, description, time, deleteCard }) {
           progress={50}
           size={70}
           strokeWidth={4}
-          elapsedColor='red'
-          shadowColor='gray'
+          elapsedColor='#CE5374'
+          shadowColor='#4B515D'
           isStarted={playCard}
           endCallBack={activityEnded}
           id={id}
@@ -85,7 +85,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   height: 100px;
   width: 780px;
-  border: 3px solid red;
+  border: 3px solid var(--activity-red);
   margin-top: 20px;
   margin-bottom: 10px;
   padding: 10px 20px;

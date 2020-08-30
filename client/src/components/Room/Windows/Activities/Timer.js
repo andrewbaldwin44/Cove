@@ -27,8 +27,8 @@ function Timer() {
         progress={50}
         size={350}
         strokeWidth={15}
-        elapsedColor='red'
-        shadowColor='gray'
+        elapsedColor='#CE5374'
+        shadowColor='#4B515D'
         isStarted={isStarted}
         clockSize='1.2em'
         timeLimit={totalTime}
