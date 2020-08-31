@@ -129,26 +129,25 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     reference.update(newState);
   }
 
-  const setInitialWindowState = () => {
+  const setInitialState = (path, callBack) => {
     const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
-                              .collection(roomID).doc(WINDOW_STATE_PATH);
+                              .collection(roomID).doc(path);
 
     reference.get().then(snapshot => {
       const data = snapshot.data() || [];
 
-      setOpenWindows(data);
+      callBack(data);
     });
   }
 
-  const setInitialWidgetState = () => {
-    const reference = database.collection(ROOMS_PATH).doc(ROOM_STATE_PATH)
-                              .collection(roomID).doc(WIDGET_STATE_PATH);
+  const handleInitialWidgetState = data => {
+    setOpenWidgets(data);
 
-    reference.get().then(snapshot => {
-      const data = snapshot.data() || [];
+    const { notepad } = data;
 
-      setOpenWidgets(data);
-    });
+    if (notepad && notepad.content) {
+      setNote(notepad.content);
+    }
   }
 
   const navigateToInnerWindow = (innerWindow, app) => {
@@ -169,8 +168,8 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   }
 
   useEffect(() => {
-    setInitialWindowState();
-    setInitialWidgetState();
+    setInitialState(WINDOW_STATE_PATH, setOpenWindows);
+    setInitialState(WIDGET_STATE_PATH, handleInitialWidgetState);
     // eslint-disable-next-line
   }, []);
 

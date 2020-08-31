@@ -12,25 +12,26 @@ const {
 } = SOCKET_PATHS;
 
 function Notepad({ position }) {
-  const { note, setNote } = useContext(RoomContext);
+  const {
+    note,
+    setNote,
+    changeWidgetState,
+  } = useContext(RoomContext);
 
   const updateNote = event => {
     const newNote = event.target.value;
-    
+    const newState = ['content', newNote];
+
+    changeWidgetState('notepad', newState);
     setNote(newNote);
     sendChanges(SEND_NOTE, newNote);
-  }
-
-  const saveNote = event => {
-
   }
 
   return (
     <Wrapper>
       <Header />
       <StyledTextArea
-        onInput={updateNote}
-        onChange={saveNote}
+        onChange={updateNote}
         value={note}
       />
     </Wrapper>

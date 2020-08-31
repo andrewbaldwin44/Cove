@@ -44,7 +44,7 @@ function Widgets({ children, appWindow, containing, position }) {
       onStop={handleDragStop}
       defaultPosition={position}
     >
-      <div>
+      <div position={position}>
         {children}
       </div>
     </Draggable>
