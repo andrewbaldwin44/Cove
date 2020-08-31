@@ -26,6 +26,8 @@ function useSockets(roomID) {
     updateRoomDetails,
     updateOpenWindows,
     updateOpenWidgets,
+    openWidgets,
+    openWindows,
     setNote,
   } = useContext(RoomContext);
 
@@ -44,20 +46,26 @@ function useSockets(roomID) {
     socket.on(RECEIVE_ROOM_DETAILS, newRoomDetails => {
       updateRoomDetails(newRoomDetails);
     });
+
+    socket.on(RECEIVE_NOTE, (newNote) => {
+      setNote(newNote);
+    });
     // eslint-disable-next-line
   }, []);
 
-  socket.on(RECEIVE_WINDOW_STATE, ({ app, newState }) => {
-    updateOpenWindows(app, newState);
-  });
+  useEffect(() => {
+    socket.on(RECEIVE_WIDGET_STATE, ({ widget, newState }) => {
+      updateOpenWidgets(widget, newState);
+    });
+    // eslint-disable-next-line
+  }, [openWidgets])
 
-  socket.on(RECEIVE_WIDGET_STATE, ({ widget, newState }) => {
-    updateOpenWidgets(widget, newState);
-  });
-
-  socket.on(RECEIVE_NOTE, (newNote) => {
-    setNote(newNote);
-  });
+  useEffect(() => {
+    socket.on(RECEIVE_WINDOW_STATE, ({ app, newState }) => {
+      updateOpenWindows(app, newState);
+    });
+    // eslint-disable-next-line
+  }, [openWindows]);
 }
 
 export function sendChanges(path, newData) {

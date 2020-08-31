@@ -80,6 +80,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   const updateOpenWidgets = (widget, newData) => {
     const newOpenWidgets = createNewRoomState(widget, newData, openWidgets);
+    console.log(newOpenWidgets)
 
     setOpenWidgets(newOpenWidgets);
   }
