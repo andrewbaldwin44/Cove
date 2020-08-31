@@ -3,8 +3,14 @@ import styled from 'styled-components';
 
 function Settings() {
   return (
-    <div>Settings</div>
+    <Wrapper>
+      Settings
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  padding: 20px 30px;
+`;
 
 export default Settings;
