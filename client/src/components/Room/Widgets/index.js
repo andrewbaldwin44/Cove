@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Draggable from 'react-draggable';
 
 import { sendChanges } from '../hooks/useSockets';
@@ -12,12 +12,11 @@ function Widgets({ children, appWindow, containing, parent, position, isSelected
   const {
     changeWidgetState,
     updateOpenWidgets,
+    closeWindow,
   } = useContext(RoomContext);
 
-  const [firstRender, setFirstRender] = useState(true);
-
   const handleDrag = () => {
-    if (parent === 'selector' && firstRender) {
+    if (parent === 'selector') {
       setIsSelected(true);
 
       if (appWindow) {
@@ -33,26 +32,24 @@ function Widgets({ children, appWindow, containing, parent, position, isSelected
   }
 
   const handleDragStop = (event, ui) => {
+    if (appWindow && appWindow.current) {
+      appWindow.current.style.opacity = 1;
+    }
+
     let windowPosition;
-    if (firstRender) {
-      const { clientX, clientY } = event;
-      windowPosition = { x: clientX, y: clientY };
+    if (parent === 'selector') {
+      setIsSelected(false);
+      closeWindow('widgets');
+      return;
     }
     else {
       const { x, y } = ui;
       windowPosition = { x, y };
     }
-    setFirstRender(false);
-
-    if (appWindow && appWindow.current) {
-      appWindow.current.style.opacity = 1;
-    }
 
     const newState = ['position', windowPosition];
     changeWidgetState(containing, newState);
     sendChanges(SEND_WIDGET_STATE, { widget: containing, newState });
-
-    if (isSelected) setIsSelected(false);
   }
 
 

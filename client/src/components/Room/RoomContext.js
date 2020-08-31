@@ -80,7 +80,6 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   const updateOpenWidgets = (widget, newData) => {
     const newOpenWidgets = createNewRoomState(widget, newData, openWidgets);
-    console.log(newOpenWidgets)
 
     setOpenWidgets(newOpenWidgets);
   }
@@ -168,6 +167,13 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     sendChanges(SEND_WINDOW_STATE, { app, newState });
   }
 
+  const closeWindow = app => {
+    const newState = ['isOpen', false];
+    changeWindowState(app, newState);
+    updateOpenWindows(app, newState);
+    sendChanges(SEND_WINDOW_STATE, { app, newState });
+  }
+
   useEffect(() => {
     setInitialState(WINDOW_STATE_PATH, setOpenWindows);
     setInitialState(WIDGET_STATE_PATH, handleInitialWidgetState);
@@ -183,6 +189,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         openWidgets,
         changeWindowState,
         changeWidgetState,
+        closeWindow,
         navigateToInnerWindow,
         navigateFromInnerWindow,
         windowProperties,
