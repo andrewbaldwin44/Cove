@@ -37,6 +37,7 @@ const Body = styled.div`
   padding: 40px 50px;
   height: 100%;
   overflow-y: scroll;
+  margin-top: var(--window-header-height);
 `;
 
 const SearchResult = styled.div`

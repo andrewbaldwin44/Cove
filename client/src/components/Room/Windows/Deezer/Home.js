@@ -6,18 +6,21 @@ import { BsSearch } from 'react-icons/bs';
 import AppHeader from  '../AppHeader';
 import SearchedSongs from './SearchedSongs';
 
-import { getDeezerSearch } from '../../../../utils/authenticationUtils';
+import { getDeezerSearch, getDeezerChart } from '../../../../utils/authenticationUtils';
 
 function Home({ deezerID, userID }) {
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
-  console.log(currentlyPlaying);
-
   const requestDeezerResults = searchValue => {
     getDeezerSearch(searchValue, deezerID, userID)
       .then(({ searchResults }) => setSearchResults(searchResults))
+  }
+
+  const requestDeezerChart = () => {
+      getDeezerChart()
+        .then(({ deezerChart }) => setSearchResults(deezerChart.tracks.data));
   }
 
   const getSearchResults = event => {
@@ -32,7 +35,7 @@ function Home({ deezerID, userID }) {
 
   // homepage
   // eslint-disable-next-line
-  useEffect(() => requestDeezerResults('chart'), []);
+  useEffect(() => requestDeezerChart(), []);
 
   return(
     <Wrapper>
@@ -54,7 +57,7 @@ function Home({ deezerID, userID }) {
         searchResults={searchResults}
         setCurrentlyPlaying={setCurrentlyPlaying}
       />
-      <Footer>
+    <div>
         <Player
           scrolling='no'
           frameBorder='0'
@@ -63,7 +66,7 @@ function Home({ deezerID, userID }) {
                 &color=007FEB&layout=dark&size=medium&type=tracks&id=${currentlyPlaying}& \
                 app_id=431662`}
         />
-      </Footer>
+      </div>
     </Wrapper>
   )
 }
@@ -71,7 +74,7 @@ function Home({ deezerID, userID }) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100% + 2px);
+  height: calc(100% + 3px);
 `;
 
 const DeezerSearch = styled.input`
@@ -94,10 +97,6 @@ const SearchButton = styled.button`
 const Player = styled.iframe`
   width: 100vw;
   height: 90px;
-`;
-
-const Footer = styled.div`
-
 `;
 
 export default Home;

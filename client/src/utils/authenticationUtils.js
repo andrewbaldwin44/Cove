@@ -57,6 +57,11 @@ export function getDeezerSearch(search, deezerID, userID) {
     .catch(error => console.log(error))
 }
 
+export function getDeezerChart() {
+  return fetch('/api/deezer_chart')
+    .then(response => response.json());
+}
+
 export function createLoginLink(redirect, inviteID, type) {
   let query = '?'
 

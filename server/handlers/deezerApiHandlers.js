@@ -61,7 +61,7 @@ function handleDeezerRegistration(req, res) {
 
 async function handleDeezerSearch(req, res) {
   const { search, deezerID, userID } = req.body;
-  //deezer.get("artist",{method:"top",id: "27"})
+
   try {
     const searchRequest = {
       resource: 'search/track',
@@ -85,8 +85,16 @@ async function handleDeezerSearch(req, res) {
   }
 }
 
+async function handleDeezerChart(req, res) {
+  const deezerResponse = await fetch('https://api.deezer.com/chart');
+  const deezerChart = await deezerResponse.json();
+
+  res.status(200).json({ status: 200, deezerChart });
+}
+
 module.exports = {
   handleDeezerLogin,
   handleDeezerRegistration,
   handleDeezerSearch,
+  handleDeezerChart,
 };

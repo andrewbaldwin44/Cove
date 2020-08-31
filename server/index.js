@@ -40,6 +40,7 @@ const {
   handleDeezerLogin,
   handleDeezerRegistration,
   handleDeezerSearch,
+  handleDeezerChart,
 } = require('./handlers/deezerApiHandlers');
 
 io.on('connection', socket => handleSockets(socket, io));
@@ -77,5 +78,6 @@ app
 .get('/api/deezer_login', handleDeezerLogin)
 .post('/api/register_deezer_id', handleDeezerRegistration)
 .post('/api/deezer_search', handleDeezerSearch)
+.get('/api/deezer_chart', handleDeezerChart)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));
