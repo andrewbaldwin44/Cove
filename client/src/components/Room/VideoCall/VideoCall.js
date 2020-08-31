@@ -108,7 +108,7 @@ function VideoCall() {
         if (newUserID !== userData.userID) connectToPeer(newUserID);
       });
     }
-
+  // eslint-disable-next-line 
   }, [userStream, userData]);
 
   // connect to peer by calling THEIR peerID and sending USER stream

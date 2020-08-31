@@ -5,7 +5,7 @@ import { GrMicrophone, GrVideo } from 'react-icons/gr';
 import { CgArrowsExpandDownLeft } from 'react-icons/cg'
 
 function Call({ createVideoElement, userStream, peerStreams }) {
-  const [strikeThru, setStrikeThu] = useState({ mic: true, video: true });
+  const [strikeThru, setStrikeThu] = useState({ mic: false, video: false });
 
   const toggleVideo = () => {
     const toggle = !strikeThru.video;

@@ -13,10 +13,10 @@ function Preferences({ innerWindow }) {
 
   const direction = menuItem => menuItem === 'theme' ? 'left' : 'right';
 
-  const [navigate, setNavigate] = useState(direction(innerWindow));
+  const [navigate, setNavigate] = useState(direction(innerWindow || 'theme'));
 
   useEffect(() => {
-    setNavigate(direction(innerWindow));
+    setNavigate(direction(innerWindow || 'theme'));
   }, [innerWindow]);
 
   return (
