@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { AuthenticationContext } from '../../../AuthenticationContext';
+import { getDeezerLogin } from '../../../../utils/authenticationUtils';
 
 import Login from './Login';
 import Home from './Home';
@@ -22,10 +23,9 @@ function Deezer() {
       setDeezerID(deezerID);
     }
     else {
-      setDeezerID(null);
+      setDeezerID(null); // handle logout
 
-      fetch(`/api/deezer_login`)
-        .then(response => response.json())
+      getDeezerLogin()
         .then(({ loginUrl }) => setLoginUrl(loginUrl));
     }
   }, [userData, deezerID]);

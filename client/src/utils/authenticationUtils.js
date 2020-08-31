@@ -43,6 +43,11 @@ export function validateInvitation(email, inviteID, roomID) {
     .then(response => response.json());
 }
 
+export function getDeezerLogin() {
+  return fetch('/api/deezer_login')
+    .then(response => response.json());
+}
+
 export function getDeezerSearch(search, deezerID, userID) {
   return fetch('/api/deezer_search', {
     ...postRequestHeaders,

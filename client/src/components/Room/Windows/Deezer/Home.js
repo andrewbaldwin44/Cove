@@ -32,7 +32,7 @@ function Home({ deezerID, userID }) {
 
   // homepage
   // eslint-disable-next-line
-//  useEffect(() => requestDeezerResults('chart'), []);
+  useEffect(() => requestDeezerResults('chart'), []);
 
   return(
     <Wrapper>
