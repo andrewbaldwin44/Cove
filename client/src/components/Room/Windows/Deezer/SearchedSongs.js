@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 function SearchedSongs({ searchResults, setCurrentlyPlaying }) {
   return (
-    <Body>
+    <Wrapper>
       {searchResults && searchResults.map(result => {
         const {
           id,
@@ -25,11 +25,11 @@ function SearchedSongs({ searchResults, setCurrentlyPlaying }) {
           </SearchResult>
         )
       })}
-    </Body>
+    </Wrapper>
   )
 }
 
-const Body = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -37,7 +37,6 @@ const Body = styled.div`
   padding: 40px 50px;
   height: 100%;
   overflow-y: scroll;
-  margin-top: var(--window-header-height);
 `;
 
 const SearchResult = styled.div`

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
 
 import AppHeader from  '../AppHeader';
+import Sidebar from './Sidebar';
 import SearchedSongs from './SearchedSongs';
 
 import { getDeezerSearch, getDeezerChart } from '../../../../utils/authenticationUtils';
@@ -53,11 +54,13 @@ function Home({ deezerID, userID }) {
           </SearchButton>
         </form>
       </AppHeader>
-      <SearchedSongs
-        searchResults={searchResults}
-        setCurrentlyPlaying={setCurrentlyPlaying}
-      />
-    <div>
+      <Main>
+        <Sidebar />
+        <Body>
+        <SearchedSongs
+          searchResults={searchResults}
+          setCurrentlyPlaying={setCurrentlyPlaying}
+        />
         <Player
           scrolling='no'
           frameBorder='0'
@@ -66,15 +69,17 @@ function Home({ deezerID, userID }) {
                 &color=007FEB&layout=dark&size=medium&type=tracks&id=${currentlyPlaying}& \
                 app_id=431662`}
         />
-      </div>
+        </Body>
+      </Main>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: calc(100% + 3px);
+  height: 100%;
 `;
 
 const DeezerSearch = styled.input`
@@ -94,8 +99,23 @@ const SearchButton = styled.button`
   }
 `;
 
+const Main = styled.div`
+  display: flex;
+  height 100%;
+  width: 100%;
+  max-height: calc(100% - var(--window-header-height));
+  margin-top: var(--window-header-height);
+`;
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  height 100%;
+  width: 90%;
+`;
+
 const Player = styled.iframe`
-  width: 100vw;
+  width: 100%;
   height: 90px;
 `;
 
