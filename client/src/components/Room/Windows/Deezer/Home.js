@@ -73,15 +73,6 @@ const Wrapper = styled.div`
   height: calc(100% + 2px);
 `;
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 70px;
-  background-color: var(--main-headers);
-`;
-
 const DeezerSearch = styled.input`
   height: 40px;
   width: 400px;
