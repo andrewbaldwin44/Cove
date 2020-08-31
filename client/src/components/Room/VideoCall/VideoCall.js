@@ -57,10 +57,6 @@ function VideoCall() {
         }
       })
 
-      // navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
-      //   setUserStream(userStream);
-      // });
-
       setPeerConnection(newPeerConnection);
     }
     // eslint-disable-next-line
@@ -68,24 +64,20 @@ function VideoCall() {
 
 
   const startCall = () => {
-    setCallStarted(true);
-    socket.emit('call-started');
-    socket.emit('join-call');
-
-    socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
-      setAllUsers(newUsers);
-      if (newUserID !== userData.userID) connectToPeer(newUserID);
-    });
-
-    peerConnection.on('call', call => {
-      call.answer(userStream);
-
-      call.on('stream', peerStream => {
-        addPeerStream(peerStream)
-      })
-    });
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(userStream => {
       setUserStream(userStream);
+
+      setCallStarted(true);
+      socket.emit('call-started');
+      socket.emit('join-call');
+
+      peerConnection.on('call', call => {
+        call.answer(userStream);
+
+        call.on('stream', peerStream => {
+          addPeerStream(peerStream)
+        })
+      });
     });
   }
 
@@ -97,25 +89,38 @@ function VideoCall() {
       setUserStream(userStream);
 
       socket.emit('join-call');
-    });
 
-    socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
-      setAllUsers(newUsers);
-      if (newUserID !== userData.userID) connectToPeer(newUserID);
-    });
+      peerConnection.on('call', call => {
+        call.answer(userStream);
 
-    peerConnection.on('call', call => {
-      call.answer(userStream);
-
-      call.on('stream', peerStream => {
-        addPeerStream(peerStream)
-      })
+        call.on('stream', peerStream => {
+          addPeerStream(peerStream)
+        })
+      });
     });
   }
 
+  useEffect(() => {
+    if (isContainingData(userData)) {
+
+      socket.on('user-connected', ({ allUsers: newUsers, newUserID }) => {
+        setAllUsers(newUsers);
+        if (newUserID !== userData.userID) connectToPeer(newUserID);
+      });
+    }
+
+  }, [userStream, userData]);
+
   // connect to peer by calling THEIR peerID and sending USER stream
   const connectToPeer = peerID => {
-    console.log(userStream)
+    if (!peerConnection) {
+      setTimeout(() => {
+        connectToPeer(peerID);
+      }, 500);
+
+      return;
+    }
+
     const call = peerConnection.call(peerID, userStream);
 
     call.on('stream', peerStream => {
