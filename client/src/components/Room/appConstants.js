@@ -15,6 +15,7 @@ import GamesIcon from '../../assets/images/game.png';
 import YoutubeIcon from '../../assets/images/youtube.png';
 import DeezerIcon from '../../assets/images/deezer.png';
 import ActivitiesIcon from '../../assets/images/activity.png';
+import NotepadIcon from '../../assets/images/notepad.png';
 
 const windowCenter = { x: window.innerWidth / 4, y: window.innerHeight / 4 };
 const miniWindow = { width: 50, height: 50 };
@@ -77,5 +78,6 @@ export const WIDGETS = {
   notepad: {
     name: 'Notepad',
     component: props => (<Notepad {...props} />),
+    icon: NotepadIcon
   }
 }

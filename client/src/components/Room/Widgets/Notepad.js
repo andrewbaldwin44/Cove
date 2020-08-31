@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { sendChanges } from '../hooks/useSockets';
@@ -8,7 +8,6 @@ import { RoomContext } from '../RoomContext';
 
 const {
   SEND_NOTE,
-  RECEIVE_NOTE,
 } = SOCKET_PATHS;
 
 function Notepad({ position }) {
