@@ -12,23 +12,27 @@ function Deezer() {
 
   const [loginUrl, setLoginUrl] = useState(null);
   const [deezerID, setDeezerID] = useState(null);
+  const [userID, setUserID] = useState(null);
 
   useEffect(() => {
-    const { deezerID = null } = userData;
+    const { deezerID = null, userID } = userData;
 
-    if (deezerID) {
+    if (deezerID && userID) {
+      setUserID(userID);
       setDeezerID(deezerID);
     }
     else {
+      setDeezerID(null);
+
       fetch(`/api/deezer_login`)
         .then(response => response.json())
         .then(({ loginUrl }) => setLoginUrl(loginUrl));
     }
-  }, [userData]);
+  }, [userData, deezerID]);
 
   if (deezerID) {
     return (
-      <Home deezerID={deezerID} />
+      <Home deezerID={deezerID} userID={userID} />
     )
   }
   else {

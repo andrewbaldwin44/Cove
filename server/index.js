@@ -76,6 +76,6 @@ app
 
 .get('/api/deezer_login', handleDeezerLogin)
 .post('/api/register_deezer_id', handleDeezerRegistration)
-.get('/api/deezer_search', handleDeezerSearch)
+.post('/api/deezer_search', handleDeezerSearch)
 
 server.listen(PORT, () => console.info(`Listening on port ${PORT}`));

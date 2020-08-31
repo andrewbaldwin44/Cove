@@ -6,9 +6,11 @@ const appSecret = process.env.DEEZER_API_SECRET;
 
 const admin = require('firebase-admin');
 const database = admin.firestore();
+const FieldValue = admin.firestore.FieldValue;
 
 const {
   updateDatabase,
+  destroyDatabase,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -17,34 +19,48 @@ const {
   },
 } = require('../constants');
 
-function handleDeezerLogin(req, res) {
-  const redirectUrl = 'http://localhost:3000/api/deezer_authenticated';
-  const loginUrl = deezer.getLoginUrl(appID, redirectUrl);
+function handleDeezerLogout(userID) {
+  destroyDatabase(USERS_PATH, userID, 'deezerID', database, FieldValue);
+}
 
-  res.status(200).json({ status: 200, loginUrl });
+function handleDeezerLogin(req, res) {
+  try {
+    const redirectUrl = 'http://localhost:3000/api/deezer_authenticated';
+    const loginUrl = deezer.getLoginUrl(appID, redirectUrl);
+
+    res.status(200).json({ status: 200, loginUrl });
+  }
+  catch {
+    res.status(400).json({ status: 400, message: 'Could not get login URL' });
+  }
 }
 
 function handleDeezerRegistration(req, res) {
   const { userID, deezerID } = req.body;
 
-  deezer.createSession(appID, appSecret, deezerID, async (error, response) => {
-    if (response) {
-      const { accessToken } = response;
+  try {
+    deezer.createSession(appID, appSecret, deezerID, async (error, response) => {
+      if (response) {
+        const { accessToken } = response;
 
-      const newUserData = { deezerID: accessToken };
+        const newUserData = { deezerID: accessToken };
 
-      await updateDatabase(USERS_PATH, userID, newUserData, database);
+        await updateDatabase(USERS_PATH, userID, newUserData, database);
 
-      res.status(200).json({ status: 200, deezerID: accessToken });
-    }
-    else {
-      res.status(400).json({ status: 400, message: error });
-    }
-  });
+        res.status(200).json({ status: 200, deezerID: accessToken });
+      }
+      else {
+        res.status(400).json({ status: 400, message: 'Could not create session' })
+      }
+    });
+  }
+  catch ({ message }) {
+    res.status(400).json({ status: 400, message });
+  }
 }
 
 async function handleDeezerSearch(req, res) {
-  const { search, code } = req.query;
+  const { search, deezerID, userID } = req.body;
   //deezer.get("artist",{method:"top",id: "27"})
   try {
     const searchRequest = {
@@ -53,19 +69,19 @@ async function handleDeezerSearch(req, res) {
       fields: { q: search }
     }
 
-    deezer.request(code, searchRequest, (error, results) => {
+    deezer.request(deezerID, searchRequest, (error, results) => {
       if (results) {
         const { data } = results;
 
         res.status(200).json({ status: 200, searchResults: data });
       }
       else {
-        throw new Error(error);
+        handleDeezerLogout(userID);
       }
     });
   }
   catch (error) {
-    res.status(400).json({ status: 400, message: error });
+    handleDeezerLogout(userID);
   }
 }
 

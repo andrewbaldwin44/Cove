@@ -43,6 +43,15 @@ export function validateInvitation(email, inviteID, roomID) {
     .then(response => response.json());
 }
 
+export function getDeezerSearch(search, deezerID, userID) {
+  return fetch('/api/deezer_search', {
+    ...postRequestHeaders,
+    body: JSON.stringify({  search, deezerID, userID })
+  })
+    .then(response => response.json())
+    .catch(error => console.log(error))
+}
+
 export function createLoginLink(redirect, inviteID, type) {
   let query = '?'
 

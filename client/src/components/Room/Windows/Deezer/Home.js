@@ -6,7 +6,9 @@ import { BsSearch } from 'react-icons/bs';
 import AppHeader from  '../AppHeader';
 import SearchedSongs from './SearchedSongs';
 
-function Home({ deezerID }) {
+import { getDeezerSearch } from '../../../../utils/authenticationUtils';
+
+function Home({ deezerID, userID }) {
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
@@ -14,8 +16,7 @@ function Home({ deezerID }) {
   console.log(currentlyPlaying);
 
   const requestDeezerResults = searchValue => {
-    fetch(`/api/deezer_search?search=${searchValue}&code=${deezerID}`)
-      .then(response => response.json())
+    getDeezerSearch(searchValue, deezerID, userID)
       .then(({ searchResults }) => setSearchResults(searchResults))
   }
 
@@ -31,7 +32,7 @@ function Home({ deezerID }) {
 
   // homepage
   // eslint-disable-next-line
-  useEffect(() => requestDeezerResults('chart'), []);
+//  useEffect(() => requestDeezerResults('chart'), []);
 
   return(
     <Wrapper>

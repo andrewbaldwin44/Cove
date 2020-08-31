@@ -213,6 +213,7 @@ module.exports = {
   queryDatabase,
   writeDatabase,
   updateDatabase,
+  destroyDatabase,
   isReturningUser,
   getMemberIDs,
   createNewRoom,
@@ -225,5 +226,5 @@ module.exports = {
   registerInvite,
   isValidInvite,
   registerNewRoomMember,
-  getUidFromEmail
+  getUidFromEmail,
 }
