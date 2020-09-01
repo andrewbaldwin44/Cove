@@ -44,3 +44,5 @@ export const SOCKET_PATHS = {
   RECEIVE_NOTE: 'receive-note',
   RECEIVE_URL: 'receive-url',
 }
+
+export const BASE_URL = 'http://localhost:3000';

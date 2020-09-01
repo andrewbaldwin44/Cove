@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
+import InviteDialogue from './InviteDialogue';
+
 import { getRoomMembers } from '../../../../utils/authenticationUtils';
 import { RoomContext } from '../../RoomContext';
 
@@ -10,6 +12,7 @@ function Members() {
   } = useContext(RoomContext);
 
   const [members, setMemebers] = useState(null);
+  const [openDialogue, setOpenDialogue] = useState(false);
 
   useEffect(() => {
     getRoomMembers(roomID)
@@ -17,9 +20,30 @@ function Members() {
       // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    window.onclick = event => {
+      if (event.target.classList.contains('invite-dialogue')) setOpenDialogue(false);
+    }
+
+    return () => {
+      window.onclick = null;
+    }
+  });
+
   return (
     <Wrapper>
-      <h4>Members</h4>
+      {openDialogue && (
+        <InviteDialogue />
+      )}
+      <Header>
+        <h4>Members</h4>
+        <button
+          type='button'
+          onClick={() => setOpenDialogue(true)}
+        >
+          Invite
+        </button>
+      </Header>
       <Body>
         {members && members.map(members => {
           const { displayName, email, photoURL } = members;
@@ -40,9 +64,21 @@ function Members() {
 }
 
 const Wrapper = styled.div`
-  padding: 20px 30px;
+  padding: 20px 50px;
   height: 100%;
   width: 100%;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+
+  button {
+    box-shadow: 0 0 5px var(--light-blue);
+    padding: 10px 20px;
+  }
 `;
 
 const Body = styled.div`

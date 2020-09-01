@@ -32,12 +32,11 @@ export function getRoomMembers(roomID) {
 }
 
 export function requestInvite(roomID, type) {
-  fetch('/users/rooms/invite_members', {
+  return fetch('/users/rooms/invite_members', {
     ...postRequestHeaders,
     body: JSON.stringify({ roomID, type })
   })
-    .then(response => response.json())
-    .then(data => console.log(data));
+    .then(response => response.json());
 }
 
 export function validateInvitation(email, inviteID, roomID) {
