@@ -12,6 +12,7 @@
     "array-move": "^3.0.1",
     "draggable": "^4.2.0",
     "firebase": "^7.18.0",
+    "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draggable": "^4.4.3",

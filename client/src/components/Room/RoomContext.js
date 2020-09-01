@@ -61,8 +61,10 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   }
 
   const updateMessages = (currentMessageData) => {
+    const previousMessageData = messageData || [];
+
     const newMessageData = [
-      ...messageData,
+      ...previousMessageData,
       currentMessageData
     ]
 

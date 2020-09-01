@@ -21,8 +21,9 @@ function Body() {
   const {
     userData: {
       displayName,
-      photoURL,
+      email,
     },
+    userData,
   } = useContext(AuthenticationContext);
 
   const chatMessage = createRef();
@@ -33,7 +34,7 @@ function Body() {
     event.preventDefault();
 
     const newMessage = chatMessage.current.value;
-    const senderData = { displayName, photoURL };
+    const senderData = { displayName, email };
     const messageTimeStamp = new Date();
     const messageData = {
       message: newMessage,
@@ -50,13 +51,21 @@ function Body() {
   return (
     <Wrapper>
       <ChatArea>
-        {toArray(messageData).map(([messageID, messageContent]) => {
-          const { message, displayName, photoURL, timeStamp } = messageContent;
+        {messageData && toArray(messageData).map(([messageID, messageContent]) => {
+          const { message, displayName, email } = messageContent;
 
           return (
-            <div key={messageID}>
-              <span>{message}</span>
-            </div>
+            <Bubble
+              className={email === userData.email ? 'user-message' : ''}
+              key={messageID}
+            >
+              <div className='chat-message'>
+                <span>{message}</span>
+              </div>
+              <div className='chat-details'>
+                <span>{displayName}</span>
+              </div>
+            </Bubble>
           )
         })}
       </ChatArea>
@@ -77,8 +86,46 @@ const Wrapper = styled.div`
 `;
 
 const ChatArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: light-blue;
   height: 85%;
   width: 100%;
+  max-width: 100%;
+  padding: 0 10px;
+  overflow-y: scroll;
+
+  .user-message {
+    align-self: flex-end;
+  }
+
+  .user-message > .chat-message{
+    background-color: var(--light-gray);
+  }
+`;
+
+const Bubble = styled.div`
+  margin-bottom: 5px;
+
+  .chat-message {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    min-height: 50px;
+    min-width: 150px;
+    max-width: 230px;
+    border-radius: 5px;
+    background-color: var(--light-blue);
+  }
+
+  .chat-details span {
+    font-size: 0.9em;
+    padding-left: 5px;
+    padding-top: 3px;
+    color: #9e9e9e;
+    font-style: italic;
+  }
 `;
 
 const ChatForm = styled.form`

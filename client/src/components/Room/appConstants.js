@@ -62,8 +62,8 @@ export const APPS = {
     name: 'Chat',
     component: props => (<Chat {...props} />),
     icon: ChatIcon,
-    position: { ...windowCenter, y: window.innerHeight / 6 },
-    size: { ...miniWindow, height: 70 },
+    position: { x: window.innerWidth / 3, y: window.innerHeight / 7 },
+    size: { width: 30, height: 70 },
   },
   widgets: {
     name: 'Widgets',
