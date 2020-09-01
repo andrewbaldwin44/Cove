@@ -28,7 +28,7 @@ const SOCKET_PATHS = {
   RECEIVE_CHAT: 'receive-chat',
 }
 
-const APPS = ['web', 'games', 'youtube', 'deezer', 'activity'];
+const APPS = ['web', 'youtube', 'deezer', 'activity'];
 const DEFAULT_BOTTOM_ACTION_BAR_LENGTH = '80%';
 
 module.exports = {
