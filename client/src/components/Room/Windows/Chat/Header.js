@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { getRoomMembers } from '../../../../utils/authenticationUtils';
 import { RoomContext } from '../../RoomContext';
 
-function Chat() {
+function Header() {
   const {
     roomID,
   } = useContext(RoomContext);
@@ -69,7 +69,7 @@ const Wrapper = styled.div`
   height: 15%;
   width: 100%;
   padding: 5px 15px;
-  border-bottom: 1px solid var(--light-blue);
+  box-shadow: 0 1px 10px var(--light-blue);
 `;
 
 const Profiles = styled.div`
@@ -85,4 +85,4 @@ const Profiles = styled.div`
   }
 `;
 
-export default Chat;
+export default Header;

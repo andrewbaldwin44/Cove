@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Header from './Header';
+import Body from './Body';
 
 function Chat() {
   return (
     <Wrapper>
       <Header />
+      <Body />
     </Wrapper>
   )
 }
