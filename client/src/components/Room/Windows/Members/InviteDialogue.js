@@ -30,6 +30,11 @@ function InviteDialogue() {
       .then(link => setPublicLink(link));
   }
 
+  const handleInputFoucs = event => {
+    event.target.select();
+    document.execCommand('copy');
+  }
+
   useEffect(() => {
     requestPrivateLink();
     requestPublicLink();
@@ -42,7 +47,11 @@ function InviteDialogue() {
         <div>
           <h4>Private</h4>
           <Actions>
-            <input type='text' defaultValue={privateLink} />
+            <input
+              type='text'
+              defaultValue={privateLink}
+              onFocus={handleInputFoucs}
+            />
             <button type='button' onClick={requestPrivateLink}>
               <FiRefreshCcw />
             </button>
@@ -51,7 +60,11 @@ function InviteDialogue() {
         <div>
           <h4>Public</h4>
           <Actions>
-            <input type='text' defaultValue={publicLink} />
+            <input
+              type='text'
+              defaultValue={publicLink}
+              onFocus={handleInputFoucs}
+            />
             <button type='button' onClick={requestPublicLink}>
               <FiRefreshCcw />
             </button>

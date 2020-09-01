@@ -12,7 +12,7 @@ function Members() {
   } = useContext(RoomContext);
 
   const [members, setMemebers] = useState(null);
-  const [openDialogue, setOpenDialogue] = useState(false);
+  const [openDialogue, setOpenDialogue] = useState(true);
 
   useEffect(() => {
     getRoomMembers(roomID)

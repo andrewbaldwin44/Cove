@@ -45,4 +45,4 @@ export const SOCKET_PATHS = {
   RECEIVE_URL: 'receive-url',
 }
 
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = window.location.protocol + '//' + window.location.host;
