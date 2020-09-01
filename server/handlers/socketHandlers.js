@@ -10,12 +10,14 @@ const {
     SEND_ACTIVITY_CARDS,
     SEND_NOTE,
     SEND_URL,
+    SEND_CHAT,
     RECEIVE_ACTION_BAR,
     RECEIVE_ROOM_DETAILS,
     RECEIVE_WINDOW_STATE,
     RECEIVE_WIDGET_STATE,
     RECEIVE_NOTE,
-    RECEIVE_URL
+    RECEIVE_URL,
+    RECEIVE_CHAT,
   }
 } = require('../constants');
 
@@ -78,6 +80,10 @@ function handleRoomState(socket, io, roomID) {
 
   socket.on(SEND_URL, newData => {
     socket.to(roomID).broadcast.emit(RECEIVE_URL, newData);
+  });
+
+  socket.on(SEND_CHAT, newData => {
+    socket.to(roomID).broadcast.emit(RECEIVE_CHAT, newData);
   })
 }
 

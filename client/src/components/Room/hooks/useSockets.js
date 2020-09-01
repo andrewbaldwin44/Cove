@@ -15,6 +15,7 @@ const {
   RECEIVE_WIDGET_STATE,
   RECEIVE_NOTE,
   RECEIVE_URL,
+  RECEIVE_CHAT,
 } = SOCKET_PATHS;
 
 function useSockets(roomID) {
@@ -31,6 +32,8 @@ function useSockets(roomID) {
     openWindows,
     setNote,
     setUrl,
+    messageData,
+    updateMessages,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -72,6 +75,13 @@ function useSockets(roomID) {
     });
     // eslint-disable-next-line
   }, [openWindows]);
+
+  useEffect(() => {
+    socket.on(RECEIVE_CHAT, (newChat) => {
+      updateMessages(newChat);
+    });
+    // eslint-disable-next-line
+  }, [messageData])
 }
 
 export function sendChanges(path, newData) {

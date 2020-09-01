@@ -80,7 +80,6 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         const data = snapshot.data();
 
         if (isContainingData(data)) {
-          console.log(data);
           newChatMessages = [
             ...data.messages,
             messageData
@@ -91,15 +90,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         reference.set({
           'messages': newChatMessages
         });
-      })
-
-    //
-    // const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
-    // const path = `messages.${messageID}`;
-    //
-    // reference.update({
-    //   [path]: newMessage
-    // });
+      });
   }
 
   const createNewRoomState = (app, newData, originalState) => {

@@ -7,6 +7,9 @@ import { toArray } from '../../../../utils/index';
 import { sendChanges } from '../../hooks/useSockets';
 import { RoomContext } from '../../RoomContext';
 import { AuthenticationContext } from '../../../AuthenticationContext';
+import { SOCKET_PATHS } from '../../../../constants';
+
+const { SEND_CHAT } = SOCKET_PATHS;
 
 function Body() {
   const {
@@ -40,6 +43,7 @@ function Body() {
 
     updateMessages(messageData);
     saveMessages(messageData);
+    sendChanges(SEND_CHAT, messageData);
     clearChatMessage();
   }
 
