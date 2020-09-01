@@ -12,6 +12,7 @@ function Body() {
   const {
     messageData,
     updateMessages,
+    saveMessages,
   } = useContext(RoomContext);
 
   const {
@@ -23,22 +24,24 @@ function Body() {
 
   const chatMessage = createRef();
 
+  const clearChatMessage = () => chatMessage.current.value = ''
+
   const sendChat = event => {
     event.preventDefault();
 
     const newMessage = chatMessage.current.value;
-    updateMessages(newMessage, { displayName, photoURL });
-    chatMessage.current.value = '';
-  }
+    const senderData = { displayName, photoURL };
 
-  console.log(messageData);
+    const { messageTimeStamp, messageID } = updateMessages(newMessage, senderData);
+    saveMessages(newMessage, senderData, messageTimeStamp, messageID);
+    clearChatMessage();
+  }
 
   return (
     <Wrapper>
       <ChatArea>
         {toArray(messageData).map(([messageID, messageContent]) => {
           const { message, displayName, photoURL, timeStamp } = messageContent;
-          console.log(message)
 
           return (
             <div key={messageID}>

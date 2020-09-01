@@ -27,6 +27,7 @@ export const DATABASE_PATHS = {
   WIDGET_STATE_PATH: 'widgets',
   ACTION_BAR_STATE_PATH: 'action_bars',
   USERS_PATH: 'users',
+  CHAT_PATH: 'chat',
 }
 
 export const SOCKET_PATHS = {

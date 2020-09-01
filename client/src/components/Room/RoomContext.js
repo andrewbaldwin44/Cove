@@ -9,6 +9,7 @@ const {
   WINDOW_STATE_PATH,
   WIDGET_STATE_PATH,
   ACTION_BAR_STATE_PATH,
+  CHAT_PATH
 } = DATABASE_PATHS;
 
 const {
@@ -60,20 +61,35 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     setActionBars(newData);
   }
 
-  const updateMessages = (message, senderData) => {
-    const messageTimeStamp = new Date();
-    const messageID = uuidv4();
-
-    const newMessageData = {
-      ...messageData,
+  const createMessageData = (message, senderData, messageTimeStamp, messageID) => {
+    return {
       [messageID]: {
         message,
         timeStamp: messageTimeStamp,
         ...senderData
       }
     }
+  }
+
+  const updateMessages = (message, senderData) => {
+    const messageTimeStamp = new Date();
+    const messageID = uuidv4();
+    const currentMessageData = createMessageData(message, senderData, messageTimeStamp, messageID);
+
+    const newMessageData = {
+      ...messageData,
+      ...currentMessageData
+    }
 
     setMessageData(newMessageData);
+
+    return { messageID, messageTimeStamp };
+  }
+
+  const saveMessages = (message, senderData, messageTimeStamp, messageID) => {
+    const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
+
+    updateWindowState('messages', messageID, reference);
   }
 
   const createNewRoomState = (app, newData, originalState) => {
@@ -228,6 +244,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         messageData,
         setMessageData,
         updateMessages,
+        saveMessages,
       }}
     >
       {children}
