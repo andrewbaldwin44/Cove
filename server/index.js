@@ -23,6 +23,7 @@ const {
   handleNewRoom,
   validateRoomMember,
   handleRoomDetails,
+  handleRoomMembers,
   handleUserSearch,
   handleInviteCreation,
   handleInviteValidation,
@@ -70,6 +71,7 @@ app
 .post('/users/rooms/invite_members', handleInviteCreation)
 .post('/users/rooms/validate_invite', handleInviteValidation)
 .post('/rooms/newroom', handleNewRoom)
+.get('/users/rooms/members/:roomID', handleRoomMembers)
 
 .get('/search_users', handleUserSearch)
 

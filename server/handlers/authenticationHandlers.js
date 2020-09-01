@@ -18,6 +18,7 @@ const {
   isValidInvite,
   getUidFromEmail,
   registerNewRoomMember,
+  getMemberData,
 } = require('../utils/authenticationUtils');
 
 const {
@@ -190,11 +191,29 @@ async function handleInviteValidation(req, res) {
   }
 }
 
+async function handleRoomMembers(req, res) {
+  const { roomID } = req.params;
+
+  try {
+    const membersResponse = await queryDatabase(ROOMS_PATH, ROOMS_MEMBERS_PATH, database);
+    const allMembersData = membersResponse.data();
+    const roomMemberIDs = allMembersData[roomID];
+
+    const roomMembers = await getMemberData(roomMemberIDs, database);
+
+    res.status(200).json({ status: 200, roomMembers });
+  }
+  catch (error) {
+    res.status(404).json({ status: 404, message: 'No room members found!' });
+  }
+}
+
 module.exports = {
   handleLogin,
   handleNewRoom,
   validateRoomMember,
   handleRoomDetails,
+  handleRoomMembers,
   handleUserSearch,
   handleInviteCreation,
   handleInviteValidation,

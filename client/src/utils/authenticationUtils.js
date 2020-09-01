@@ -26,6 +26,11 @@ export function getRoomDetails(userRooms) {
     .then(response => response.json());
 }
 
+export function getRoomMembers(roomID) {
+  return fetch(`/users/rooms/members/${roomID}`)
+    .then(response => response.json());
+}
+
 export function requestInvite(roomID, type) {
   fetch('/users/rooms/invite_members', {
     ...postRequestHeaders,

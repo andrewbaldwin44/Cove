@@ -104,6 +104,10 @@ async function setDefaultRoomState(roomID, database) {
     bottom: {
       apps: APPS,
       length: DEFAULT_BOTTOM_ACTION_BAR_LENGTH,
+    },
+    left :{
+      apps: ['members'],
+      length: '40%',
     }
   }
 
@@ -209,6 +213,17 @@ async function registerNewRoomMember(userID, roomID, database) {
   return updateRoomMembers(userID, roomID, database);
 }
 
+async function getMemberData(memberIDs, database) {
+  const convertMemberIDs = toArray(memberIDs, 'keys').map(async memberID => {
+    const response = await queryDatabase(USERS_PATH, memberID, database);
+    return response.data();
+  });
+
+  const memberData = await Promise.all(convertMemberIDs);
+
+  return memberData;
+}
+
 module.exports = {
   queryDatabase,
   writeDatabase,
@@ -227,4 +242,5 @@ module.exports = {
   isValidInvite,
   registerNewRoomMember,
   getUidFromEmail,
+  getMemberData,
 }
