@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AppHeader from './AppHeader';
 
 import { BsSearch } from 'react-icons/bs';
+import BrowserIcon from '../../../assets/images/browser.png';
 
 function Browser() {
   const searchInput = createRef();
@@ -32,10 +33,22 @@ function Browser() {
           </SearchButton>
         </form>
       </AppHeader>
-      <StyledIframe
-        src={url}
-        width='100%'
-      />
+      <Body>
+        {url ? (
+          <StyledIframe
+            src={url}
+            width='100%'
+          />
+        ) : (
+          <Landing>
+            <img src={BrowserIcon} alt='Browser' />
+            <div>
+              <h4>Welcome to the Web!</h4>
+              <span>Enter a URL to get Started</span>
+            </div>
+          </Landing>
+        )}
+      </Body>
     </>
   )
 }
@@ -57,9 +70,38 @@ const SearchButton = styled.button`
   }
 `;
 
-const StyledIframe = styled.iframe`
-  margin-top: 70px;
+const Body = styled.div`
+  padding-top: 70px;
   height: calc(100% - 50px);
+`;
+
+const StyledIframe = styled.iframe`
+
+`;
+
+const Landing = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  img {
+    height: 70px;
+    width: 70px;
+  }
+
+  h4 {
+    font-size: 1.2em;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    height: 50px;
+    margin-left: 40px;
+  }
 `;
 
 export default Browser;
