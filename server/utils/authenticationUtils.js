@@ -106,7 +106,7 @@ async function setDefaultRoomState(roomID, database) {
       length: DEFAULT_BOTTOM_ACTION_BAR_LENGTH,
     },
     left :{
-      apps: ['members'],
+      apps: ['members', 'chat'],
       length: '40%',
     }
   }

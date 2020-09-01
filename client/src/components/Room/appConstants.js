@@ -5,6 +5,7 @@ import Games from './Windows/Games/index';
 import Youtube from './Windows/Youtube/index';
 import Deezer from './Windows/Deezer/index';
 import Activities from './Windows/Activities/index';
+import Chat from './Windows/Chat/index';
 import Widgets from './Windows/WidgetSelector';
 import Preferences from './Windows/Preferences/index';
 import Members from './Windows/Members/index';
@@ -16,6 +17,7 @@ import GamesIcon from '../../assets/images/game.png';
 import YoutubeIcon from '../../assets/images/youtube.png';
 import DeezerIcon from '../../assets/images/deezer.png';
 import ActivitiesIcon from '../../assets/images/activity.png';
+import ChatIcon from '../../assets/images/chat.png';
 import NotepadIcon from '../../assets/images/notepad.png';
 import MemberIcon from '../../assets/images/default-profile.png';
 
@@ -55,6 +57,13 @@ export const APPS = {
     name: 'Timed Activities',
     component: props => (<Activities {...props} />),
     icon: ActivitiesIcon,
+  },
+  chat: {
+    name: 'Chat',
+    component: props => (<Chat {...props} />),
+    icon: ChatIcon,
+    position: { ...windowCenter, y: window.innerHeight / 6 },
+    size: { ...miniWindow, height: 70 },
   },
   widgets: {
     name: 'Widgets',
