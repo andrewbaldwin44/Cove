@@ -1,4 +1,4 @@
-import React, { useContext, createRef } from 'react';
+import React, { useContext, createRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { IoMdSend } from 'react-icons/io';
@@ -27,6 +27,7 @@ function Body() {
   } = useContext(AuthenticationContext);
 
   const chatMessage = createRef();
+  const chatArea = createRef();
 
   const clearChatMessage = () => chatMessage.current.value = ''
 
@@ -48,9 +49,17 @@ function Body() {
     clearChatMessage();
   }
 
+  useEffect(() => {
+    const chatAreaElement = chatArea.current ;
+
+    if (chatAreaElement) {
+      chatAreaElement.scrollTop = chatAreaElement.scrollHeight;
+    }
+  }, [messageData, chatArea])
+
   return (
     <Wrapper>
-      <ChatArea>
+      <ChatArea ref={chatArea}>
         {messageData && toArray(messageData).map(([messageID, messageContent]) => {
           const { message, displayName, email } = messageContent;
 
@@ -88,7 +97,6 @@ const Wrapper = styled.div`
 const ChatArea = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   background-color: light-blue;
   height: 85%;
   max-height: 85%;
