@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 
+import { isContainingData } from '../../utils/index';
 import { sendChanges } from './hooks/useSockets';
 import { DATABASE_PATHS, SOCKET_PATHS } from '../../constants';
 const {
@@ -15,8 +16,6 @@ const {
 const {
   SEND_WINDOW_STATE
 } = SOCKET_PATHS ;
-
-const { v4: uuidv4 } = require('uuid');
 
 export const RoomContext = createContext(null);
 
@@ -47,7 +46,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const [openWidgets, setOpenWidgets] = useState([]);
   const [note, setNote] = useState('');
   const [url, setUrl] = useState('');
-  const [messageData, setMessageData] = useState({});
+  const [messageData, setMessageData] = useState([]);
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
@@ -61,35 +60,46 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     setActionBars(newData);
   }
 
-  const createMessageData = (message, senderData, messageTimeStamp, messageID) => {
-    return {
-      [messageID]: {
-        message,
-        timeStamp: messageTimeStamp,
-        ...senderData
-      }
-    }
-  }
-
-  const updateMessages = (message, senderData) => {
-    const messageTimeStamp = new Date();
-    const messageID = uuidv4();
-    const currentMessageData = createMessageData(message, senderData, messageTimeStamp, messageID);
-
-    const newMessageData = {
+  const updateMessages = (currentMessageData) => {
+    const newMessageData = [
       ...messageData,
-      ...currentMessageData
-    }
+      currentMessageData
+    ]
 
     setMessageData(newMessageData);
-
-    return { messageID, messageTimeStamp };
   }
 
-  const saveMessages = (message, senderData, messageTimeStamp, messageID) => {
+  const saveMessages = (messageData) => {
     const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
 
-    updateWindowState('messages', messageID, reference);
+    let newChatMessages = [messageData];
+
+    reference
+      .get()
+      .then(snapshot => {
+        const data = snapshot.data();
+
+        if (isContainingData(data)) {
+          console.log(data);
+          newChatMessages = [
+            ...data.messages,
+            messageData
+          ]
+        }
+      })
+      .then(() => {
+        reference.set({
+          'messages': newChatMessages
+        });
+      })
+
+    //
+    // const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
+    // const path = `messages.${messageID}`;
+    //
+    // reference.update({
+    //   [path]: newMessage
+    // });
   }
 
   const createNewRoomState = (app, newData, originalState) => {
@@ -186,6 +196,17 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     }
   }
 
+  const getExistingMessages = () => {
+    const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
+
+    reference.get().then(snapshot => {
+      const data = snapshot.data() || {};
+      console.log(data)
+
+      setMessageData(data.messages);
+    });
+  }
+
   const navigateToInnerWindow = (innerWindow, app) => {
     const newState = ['innerWindow', innerWindow];
 
@@ -213,6 +234,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   useEffect(() => {
     setInitialState(WINDOW_STATE_PATH, setOpenWindows);
     setInitialState(WIDGET_STATE_PATH, handleInitialWidgetState);
+    //getExistingMessages();
     // eslint-disable-next-line
   }, []);
 

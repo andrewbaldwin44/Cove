@@ -31,9 +31,15 @@ function Body() {
 
     const newMessage = chatMessage.current.value;
     const senderData = { displayName, photoURL };
+    const messageTimeStamp = new Date();
+    const messageData = {
+      message: newMessage,
+      timeStamp: messageTimeStamp,
+      ...senderData
+    }
 
-    const { messageTimeStamp, messageID } = updateMessages(newMessage, senderData);
-    saveMessages(newMessage, senderData, messageTimeStamp, messageID);
+    updateMessages(messageData);
+    saveMessages(messageData);
     clearChatMessage();
   }
 
