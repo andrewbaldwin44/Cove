@@ -91,6 +91,7 @@ const ChatArea = styled.div`
   justify-content: flex-end;
   background-color: light-blue;
   height: 85%;
+  max-height: 85%;
   width: 100%;
   max-width: 100%;
   padding: 0 10px;

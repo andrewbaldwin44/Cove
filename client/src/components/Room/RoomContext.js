@@ -81,16 +81,18 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
       .then(snapshot => {
         const data = snapshot.data();
 
-        if (isContainingData(data)) {
+        if (isContainingData(data) && data[roomID]) {
           newChatMessages = [
-            ...data.messages,
+            ...data[roomID].messages,
             messageData
           ]
         }
       })
       .then(() => {
-        reference.set({
-          'messages': newChatMessages
+        const path = `${roomID}.messages`;
+
+        reference.update({
+          [path]: newChatMessages
         });
       });
   }
@@ -193,7 +195,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
 
     reference.get().then(snapshot => {
-      const data = snapshot.data() || [];
+      const data = snapshot.data()[roomID] || [];
 
       setMessageData(data.messages);
     });
