@@ -74,9 +74,11 @@ function Main({ isOwner }) {
       {actionBars && toArray(actionBars).map(([position, details], index) => {
         const { apps, length } = details;
 
+        if (apps.length === 0) return null;
+
         return (
           <ActionBar key={`actionbar${index}`} length={length} position={position}>
-            {apps.map((appID, index) => {
+            {apps.length > 0 && apps.map((appID, index) => {
               const { icon, name } = APPS[appID];
 
               return (

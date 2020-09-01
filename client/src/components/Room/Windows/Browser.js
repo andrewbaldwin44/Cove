@@ -1,4 +1,4 @@
-import React, { createRef, useState, useContext } from 'react';
+import React, { createRef, useContext } from 'react';
 import styled from 'styled-components';
 
 import AppHeader from './AppHeader';
