@@ -7,6 +7,8 @@ import AppHeader from '../AppHeader'
 import SearchedVideos from './SearchedVideos';
 import Video from './Video';
 
+import YoutubeHead from '../../../../assets/images/youtube-head.png';
+
 import { RoomContext } from '../../RoomContext';
 
 function Youtube({ innerWindow }) {
@@ -49,6 +51,7 @@ function Youtube({ innerWindow }) {
   return (
     <Wrapper>
       <AppHeader>
+        <StyledYoutubeHead src={YoutubeHead} alt='Youtube' />
         <form onSubmit={getSearchResults}>
           <YoutubeSearch
             type='text'
@@ -82,6 +85,13 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
+`;
+
+const StyledYoutubeHead = styled.img`
+  height: 50px;
+  width: 140px;
+  position: absolute;
+  left: 200px;
 `;
 
 const YoutubeSearch = styled.input`
