@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import AppHeader from './AppHeader';
@@ -6,15 +6,28 @@ import AppHeader from './AppHeader';
 import { BsSearch } from 'react-icons/bs';
 import BrowserIcon from '../../../assets/images/browser.png';
 
-function Browser() {
-  const searchInput = createRef();
+import { sendChanges } from '../hooks/useSockets';
+import { SOCKET_PATHS } from '../../../constants';
 
-  const [url, setUrl] = useState('');
+import { RoomContext } from '../RoomContext';
+
+const { SEND_URL } = SOCKET_PATHS;
+
+function Browser() {
+  const {
+    url,
+    setUrl,
+  } = useContext(RoomContext);
+
+  const searchInput = createRef();
 
   const getWebsite = event => {
     event.preventDefault();
 
-    setUrl(searchInput.current.value);
+    const newURL = searchInput.current.value;
+
+    setUrl(newURL);
+    sendChanges(SEND_URL, newURL);
   }
 
   return (
@@ -25,6 +38,7 @@ function Browser() {
             type='text'
             ref={searchInput}
             placeholder='Url'
+            defaultValue={url}
           />
           <SearchButton
             type='submit'
@@ -72,11 +86,11 @@ const SearchButton = styled.button`
 
 const Body = styled.div`
   padding-top: 70px;
-  height: calc(100% - 50px);
+  height: 100%;
 `;
 
 const StyledIframe = styled.iframe`
-
+  height: 100%;
 `;
 
 const Landing = styled.div`

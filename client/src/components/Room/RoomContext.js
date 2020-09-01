@@ -43,6 +43,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const [openWindows, setOpenWindows] = useState([]);
   const [openWidgets, setOpenWidgets] = useState([]);
   const [note, setNote] = useState('');
+  const [url, setUrl] = useState('');
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
@@ -203,6 +204,8 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         updateOpenWidgets,
         note,
         setNote,
+        url,
+        setUrl,
       }}
     >
       {children}

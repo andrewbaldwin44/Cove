@@ -36,9 +36,11 @@ export const SOCKET_PATHS = {
   SEND_WIDGET_STATE: 'send-widget-state',
   SEND_ACTIVITY_CARDS: 'send-activity-cards',
   SEND_NOTE: 'send-note',
+  SEND_URL: 'send-url',
   RECEIVE_ACTION_BAR: 'receive-action-bar',
   RECEIVE_ROOM_DETAILS: 'receive-room-details',
   RECEIVE_WINDOW_STATE: 'receive-window-state',
   RECEIVE_WIDGET_STATE: 'receive-widget-state',
   RECEIVE_NOTE: 'receive-note',
+  RECEIVE_URL: 'receive-url',
 }

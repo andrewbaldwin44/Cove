@@ -14,6 +14,7 @@ const {
   RECEIVE_WINDOW_STATE,
   RECEIVE_WIDGET_STATE,
   RECEIVE_NOTE,
+  RECEIVE_URL,
 } = SOCKET_PATHS;
 
 function useSockets(roomID) {
@@ -29,6 +30,7 @@ function useSockets(roomID) {
     openWidgets,
     openWindows,
     setNote,
+    setUrl,
   } = useContext(RoomContext);
 
   useEffect(() => {
@@ -49,6 +51,10 @@ function useSockets(roomID) {
 
     socket.on(RECEIVE_NOTE, (newNote) => {
       setNote(newNote);
+    });
+
+    socket.on(RECEIVE_URL, (newURL) => {
+      setUrl(newURL);
     });
     // eslint-disable-next-line
   }, []);
