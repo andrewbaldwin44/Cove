@@ -200,8 +200,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
     const reference = database.collection(ROOMS_PATH).doc(CHAT_PATH);
 
     reference.get().then(snapshot => {
-      const data = snapshot.data() || {};
-      console.log(data)
+      const data = snapshot.data() || [];
 
       setMessageData(data.messages);
     });
@@ -234,7 +233,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   useEffect(() => {
     setInitialState(WINDOW_STATE_PATH, setOpenWindows);
     setInitialState(WIDGET_STATE_PATH, handleInitialWidgetState);
-    //getExistingMessages();
+    getExistingMessages();
     // eslint-disable-next-line
   }, []);
 
