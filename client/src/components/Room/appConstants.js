@@ -7,6 +7,7 @@ import Deezer from './Windows/Deezer/index';
 import Activities from './Windows/Activities/index';
 import Widgets from './Windows/WidgetSelector';
 import Preferences from './Windows/Preferences/index';
+import Members from './Windows/Members/index';
 import Settings from './Windows/Settings';
 import Notepad from './Widgets/Notepad';
 
@@ -16,6 +17,7 @@ import YoutubeIcon from '../../assets/images/youtube.png';
 import DeezerIcon from '../../assets/images/deezer.png';
 import ActivitiesIcon from '../../assets/images/activity.png';
 import NotepadIcon from '../../assets/images/notepad.png';
+import MemberIcon from '../../assets/images/default-profile.png';
 
 const windowCenter = { x: window.innerWidth / 4, y: window.innerHeight / 4 };
 const miniWindow = { width: 50, height: 50 };
@@ -71,6 +73,13 @@ export const APPS = {
     component: props => (<Settings {...props} />),
     position: windowCenter,
     size: miniWindow,
+  },
+  members: {
+    name: 'Members',
+    component: props => (<Members {...props} />),
+    position: windowCenter,
+    size: miniWindow,
+    icon: MemberIcon,
   }
 };
 
