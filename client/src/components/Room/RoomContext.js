@@ -15,6 +15,8 @@ const {
   SEND_WINDOW_STATE
 } = SOCKET_PATHS ;
 
+const { v4: uuidv4 } = require('uuid');
+
 export const RoomContext = createContext(null);
 
 function updateWindowState(app, newState, reference) {
@@ -44,6 +46,7 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
   const [openWidgets, setOpenWidgets] = useState([]);
   const [note, setNote] = useState('');
   const [url, setUrl] = useState('');
+  const [messageData, setMessageData] = useState({});
   const [windowProperties, setWindowProperties] = useState({
     isMinimized: false,
     position: null,
@@ -55,6 +58,22 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
 
   const updateActionBars = (newData) => {
     setActionBars(newData);
+  }
+
+  const updateMessages = (message, senderData) => {
+    const messageTimeStamp = new Date();
+    const messageID = uuidv4();
+
+    const newMessageData = {
+      ...messageData,
+      [messageID]: {
+        message,
+        timeStamp: messageTimeStamp,
+        ...senderData
+      }
+    }
+
+    setMessageData(newMessageData);
   }
 
   const createNewRoomState = (app, newData, originalState) => {
@@ -206,6 +225,9 @@ export function RoomProvider({ children, roomID, roomDetails: initialRoomDetails
         setNote,
         url,
         setUrl,
+        messageData,
+        setMessageData,
+        updateMessages,
       }}
     >
       {children}

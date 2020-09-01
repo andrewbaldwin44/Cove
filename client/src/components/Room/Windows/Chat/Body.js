@@ -1,19 +1,54 @@
-import React from 'react';
+import React, { useContext, createRef } from 'react';
 import styled from 'styled-components';
 
 import { IoMdSend } from 'react-icons/io';
 
+import { toArray } from '../../../../utils/index';
+import { sendChanges } from '../../hooks/useSockets';
+import { RoomContext } from '../../RoomContext';
+import { AuthenticationContext } from '../../../AuthenticationContext';
+
 function Body() {
+  const {
+    messageData,
+    updateMessages,
+  } = useContext(RoomContext);
+
+  const {
+    userData: {
+      displayName,
+      photoURL,
+    },
+  } = useContext(AuthenticationContext);
+
+  const chatMessage = createRef();
+
   const sendChat = event => {
     event.preventDefault();
-    console.log('hi')
+
+    const newMessage = chatMessage.current.value;
+    updateMessages(newMessage, { displayName, photoURL });
+    chatMessage.current.value = '';
   }
+
+  console.log(messageData);
 
   return (
     <Wrapper>
-      <ChatArea></ChatArea>
+      <ChatArea>
+        {toArray(messageData).map(([messageID, messageContent]) => {
+          const { message, displayName, photoURL, timeStamp } = messageContent;
+          console.log(message)
+
+          return (
+            <div key={messageID}>
+              <span>{message}</span>
+            </div>
+          )
+        })}
+      </ChatArea>
       <ChatForm onSubmit={sendChat}>
-        <ChatInput />
+        <ChatInput ref={chatMessage} />
         <button type='submit'>
           <IoMdSend />
         </button>
