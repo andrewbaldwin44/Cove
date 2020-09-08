@@ -21,8 +21,10 @@ Cove is a collaborative platform made to improve the experience of interacting o
 
 **_Create Your Cove_**
 
-<img src='./screenshots/portals.png' alt='Cove Portals' width='49%' />
-<img src='./screenshots/room.png' alt='Cove' width='49%' /><br><br>
+<div align='center'>
+  <img src='./screenshots/portals.png' alt='Cove Portals' width='49%' />
+  <img src='./screenshots/room.png' alt='Cove' width='49%' />
+</div><br><br>
 
 **_Hop in a Video Call or Use the Live Chat_**
 
@@ -32,23 +34,35 @@ Cove is a collaborative platform made to improve the experience of interacting o
 
 **_Make Your Cove Your Own!_**
 
-<img src='./screenshots/desktop.png' alt='Desktop Background' /><br>
+<div align='center'>
+  <img src='./screenshots/desktop.png' alt='Desktop Background' width='49%' />
+  <img src='./screenshots/action_bars.gif' alt='Action Bars' width='49%' />
+</div><br><br>
 
-**Collaborate Together on Your Favourite Apps!_**
+**_Collaborate Together on Your Favourite Apps!_**
 
-<img src='./screenshots/youtube.png' alt='Youtube' width='49%' />
-<img src='./screenshots/deezer.png' alt='Deezer' width='49%' />
-<img src='./screenshots/web.png' alt='Web Browser' width='49%' />
-<img src='./screenshots/activities.png' alt='Timed Activities App' width='49%' /><br><br>
+<div align='center'>
+  <img src='./screenshots/youtube.png' alt='Youtube' width='49%' />
+  <img src='./screenshots/deezer.png' alt='Deezer' width='49%' />
+  <img src='./screenshots/web.png' alt='Web Browser' width='49%' />
+  <img src='./screenshots/activities.png' alt='Timed Activities App' width='49%' /><br><br>
+  <img src='./screenshots/window_sync.gif' alt='Syncronized Windows' width='100%' />
+</div><br><br>
+
 
 **_Pin Widgets to the Desktop_**
 
-<img src='./screenshots/widgets.png' alt='Notepad Widget' /><br>
+<div align='center'>
+  <img src='./screenshots/widgets.png' alt='Notepad Widget' />
+  <img src='./screenshots/notepad.gif' alt='Synchronized Notepad' width='100%' />
+</div><br><br>
 
 **_Invite All Your Friends!_**
 
-<img src='./screenshots/members.png' alt='Members Menu' width='49%' />
-<img src='./screenshots/invite.png' alt='Invite Menu' width='49%' />
+<div align='center'>
+  <img src='./screenshots/members.png' alt='Members Menu' width='45%' />
+  <img src='./screenshots/invite.png' alt='Invite Menu' width='45%' />
+</div><br>
 
 ### Deploy the Project
 
