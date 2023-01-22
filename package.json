@@ -1,13 +1,8 @@
 {
   "name": "Cove",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Collaborative Platform",
   "private": "true",
   "author": "Andrew Baldwin",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "peer": "^0.5.3",
-    "peerjs": "^1.3.1",
-    "react-hook-form": "^6.5.1"
-  }
+  "license": "MIT"
 }

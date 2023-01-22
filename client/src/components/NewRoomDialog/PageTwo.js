@@ -1,56 +1,51 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
-import SelectUsers from './SelectUsers';
+import SelectUsers from "./SelectUsers";
 
-import { StyledInput } from './index';
+import { StyledInput } from "./index";
 
-import { ReactComponent as DoorIcon } from '../../assets/images/door.svg';
+import { ReactComponent as DoorIcon } from "../../assets/images/door.svg";
+import { request } from "../../utils/api";
 
 function PageTwo({ pageSwitch, createNewRoom, addMember }) {
   const [users, setUsers] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleUserSearch = event => {
+  const handleUserSearch = (event) => {
     const search = event.target.value;
 
     if (search.length > 0) setHasSearched(true);
     else setHasSearched(false);
 
-    fetch(`/search_users?search=${search}`)
-      .then(response => response.json())
+    request(`/search_users?search=${search}`)
+      .then((response) => response.json())
       .then(({ searchedUsers }) => setUsers(searchedUsers));
-  }
+  };
 
   return (
-    <Wrapper
-      onSubmit={createNewRoom}
-      pageSwitch={pageSwitch}
-    >
-      <label htmlFor='user-select'>Invite your Friends!</label>
+    <Wrapper onSubmit={createNewRoom} pageSwitch={pageSwitch}>
+      <label htmlFor="user-select">Invite your Friends!</label>
       <StyledInput
-        id='user-select'
-        name='user-select'
-        type='text'
+        id="user-select"
+        name="user-select"
+        type="text"
         onInput={handleUserSearch}
-        autoComplete='off'
+        autoComplete="off"
       />
       <SelectUsers
         users={users}
         hasSearched={hasSearched}
         addMember={addMember}
       />
-    <SubmitContainer>
-        <SubmitButton
-          type='submit'
-          pageSwitch={pageSwitch}
-          >
+      <SubmitContainer>
+        <SubmitButton type="submit" pageSwitch={pageSwitch}>
           <StyledDoorIcon />
           Open
         </SubmitButton>
       </SubmitContainer>
     </Wrapper>
-  )
+  );
 }
 
 const FadeInRight = keyframes`
@@ -72,7 +67,7 @@ const Wrapper = styled.form`
   opacity: 1;
   transform: translateX(900px);
 
-  animation-name: ${({ pageSwitch }) => pageSwitch ? FadeInRight : ''};
+  animation-name: ${({ pageSwitch }) => (pageSwitch ? FadeInRight : "")};
   animation-fill-mode: forwards;
   animation-duration: 1s;
 `;

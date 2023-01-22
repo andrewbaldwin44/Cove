@@ -1,84 +1,70 @@
-import React, { useContext, createRef, useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useContext, createRef, useState, useEffect } from "react";
+import styled from "styled-components";
 
-import { BsSearch } from 'react-icons/bs';
+import { BsSearch } from "react-icons/bs";
 
-import AppHeader from '../AppHeader'
-import SearchedVideos from './SearchedVideos';
-import Video from './Video';
+import AppHeader from "../AppHeader";
+import SearchedVideos from "./SearchedVideos";
+import Video from "./Video";
 
-import YoutubeHead from '../../../../assets/images/youtube-head.png';
+import YoutubeHead from "../../../../assets/images/youtube-head.png";
 
-import { RoomContext } from '../../RoomContext';
+import { RoomContext } from "../../RoomContext";
+import { request } from "../../../../utils/api";
 
 function Youtube({ innerWindow }) {
-  const {
-    navigateInnerWindow,
-  } = useContext(RoomContext);
+  const { navigateInnerWindow } = useContext(RoomContext);
 
   const searchInput = createRef();
   const [searchResults, setSearchResults] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
-  const requestYoutubeResults = searchValue => {
-    fetch(`/api/youtube_search?search=${searchValue}`)
-      .then(response => response.json())
+  const requestYoutubeResults = (searchValue) => {
+    request(`/api/youtube_search?search=${searchValue}`)
+      .then((response) => response.json())
       .then(({ searchResults, message }) => {
         if (searchResults) {
-          setSearchResults(searchResults)
-        }
-        else {
-          setMessage(message)
+          setSearchResults(searchResults);
+        } else {
+          setMessage(message);
         }
       });
-  }
+  };
 
-  const getSearchResults = event => {
+  const getSearchResults = (event) => {
     event.preventDefault();
 
     const searchValue = searchInput.current.value;
 
     if (searchValue.length > 0) {
-      requestYoutubeResults(searchValue)
+      requestYoutubeResults(searchValue);
 
-      navigateInnerWindow('youtube');
+      navigateInnerWindow("youtube");
     }
-  }
+  };
 
   // homepage
-  useEffect(() => requestYoutubeResults(''), []);
+  useEffect(() => requestYoutubeResults(""), []);
 
   return (
     <Wrapper>
       <AppHeader>
-        <StyledYoutubeHead src={YoutubeHead} alt='Youtube' />
+        <StyledYoutubeHead src={YoutubeHead} alt="Youtube" />
         <form onSubmit={getSearchResults}>
-          <YoutubeSearch
-            type='text'
-            ref={searchInput}
-            placeholder='Search'
-          />
-          <SearchButton
-            type='submit'
-          >
-              <BsSearch />
+          <YoutubeSearch type="text" ref={searchInput} placeholder="Search" />
+          <SearchButton type="submit">
+            <BsSearch />
           </SearchButton>
         </form>
       </AppHeader>
-      {message.length > 0 && (
-        <Error>{message}</Error>
-      )}
+      {message.length > 0 && <Error>{message}</Error>}
       {innerWindow ? (
-        <Video
-          videoId={innerWindow}
-        />
+        <Video videoId={innerWindow} />
       ) : (
-        <SearchedVideos
-          searchResults={searchResults}
-        />
+        <SearchedVideos searchResults={searchResults} />
       )}
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -104,7 +90,7 @@ const YoutubeSearch = styled.input`
 const SearchButton = styled.button`
   width: 70px;
   height: 40px;
-  background-color:#4B515D;
+  background-color: #4b515d;
 
   svg {
     color: white;

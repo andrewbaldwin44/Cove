@@ -1,73 +1,70 @@
+import { request } from "../utils/api";
+
 export const postRequestHeaders = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-}
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+};
 
 export function sendUserData(userData) {
-  return fetch('/users/login', {
+  return request("/users/login", {
     ...postRequestHeaders,
     body: JSON.stringify(userData),
   });
 }
 
 export function validateRoomMember(idToken, roomID) {
-  return fetch('/users/rooms/validate_member', {
+  return request("/users/rooms/validate_member", {
     ...postRequestHeaders,
     body: JSON.stringify({ idToken, roomID }),
-  })
-    .then(response => response.json())
+  }).then((response) => response.json());
 }
 
 export function getRoomDetails(userRooms) {
-  return fetch('/users/rooms/details', {
+  return request("/users/rooms/details", {
     ...postRequestHeaders,
     body: JSON.stringify({ userRooms }),
-  })
-    .then(response => response.json());
+  }).then((response) => response.json());
 }
 
 export function getRoomMembers(roomID) {
-  return fetch(`/users/rooms/members/${roomID}`)
-    .then(response => response.json());
+  return request(`/users/rooms/members/${roomID}`).then((response) =>
+    response.json()
+  );
 }
 
 export function requestInvite(roomID, type) {
-  return fetch('/users/rooms/invite_members', {
+  return request("/users/rooms/invite_members", {
     ...postRequestHeaders,
-    body: JSON.stringify({ roomID, type })
-  })
-    .then(response => response.json());
+    body: JSON.stringify({ roomID, type }),
+  }).then((response) => response.json());
 }
 
 export function validateInvitation(email, inviteID, roomID) {
-  return fetch('/users/rooms/validate_invite', {
+  return request("/users/rooms/validate_invite", {
     ...postRequestHeaders,
-    body: JSON.stringify({ email, inviteID, roomID })
-  })
-    .then(response => response.json());
+    body: JSON.stringify({ email, inviteID, roomID }),
+  }).then((response) => response.json());
 }
 
 export function getDeezerLogin() {
-  return fetch('/api/deezer_login')
-    .then(response => response.json());
+  return request("/api/deezer_login").then((response) => response.json());
 }
 
 export function getDeezerSearch(search, deezerID, userID) {
-  return fetch('/api/deezer_search', {
+  return request("/api/deezer_search", {
     ...postRequestHeaders,
-    body: JSON.stringify({  search, deezerID, userID })
+    body: JSON.stringify({ search, deezerID, userID }),
   })
-    .then(response => response.json())
-    .catch(error => console.log(error))
+    .then((response) => response.json())
+    .catch((error) => console.log(error));
 }
 
 export function getDeezerChart() {
-  return fetch('/api/deezer_chart')
-    .then(response => response.json());
+  return request("/api/deezer_chart").then((response) => response.json());
 }
 
 export function createLoginLink(redirect, inviteID, type) {
-  let query = '?'
+  let query = "?";
 
   if (redirect) query += `redirect=${redirect}&`;
   if (inviteID) query += `id=${inviteID}`;

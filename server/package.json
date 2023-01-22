@@ -1,23 +1,24 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "Andrew Baldwin",
   "license": "UNLICENSED",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "file-system": "^2.2.2",
     "firebase-admin": "^9.1.0",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "^1.10.0",
     "node-deezer": "^0.3.3",
+    "peer": "^0.5.3",
     "socket.io": "^2.3.0",
     "styled-components": "^5.1.1"
   },
