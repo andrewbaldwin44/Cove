@@ -1,4 +1,5 @@
 # Cove
+
 > Collaborative Platform Made for Concordia University
 
 <div align='center'>  
@@ -7,7 +8,7 @@
 
 ## Demo
 
-[View the Live Demo](https://andrewbaldwin-cove.herokuapp.com/)
+[View the Live Demo](https://cove-iq7x.onrender.com/)
 
 ## About
 
@@ -48,7 +49,6 @@ Cove is a collaborative platform made to improve the experience of interacting o
   <img src='./screenshots/activities.png' alt='Timed Activities App' width='49%' /><br><br>
   <img src='./screenshots/window_sync.gif' alt='Syncronized Windows' width='100%' />
 </div><br><br>
-
 
 **_Pin Widgets to the Desktop_**
 
